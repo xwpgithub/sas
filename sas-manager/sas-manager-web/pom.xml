@@ -8,6 +8,7 @@
   <artifactId>sas-manager-web</artifactId>
   <packaging>war</packaging>
   <!-- 依赖管理 -->
+  <!-- xwp2—test -->
 	<dependencies>
 		<dependency>
 			<groupId>com.xwp.sas</groupId>
