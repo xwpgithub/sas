@@ -8,7 +8,6 @@
 */
 package com.sas.service.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,7 +19,6 @@ import com.sas.pojo.OrganizationDictionary;
 import com.sas.pojo.OrganizationDictionaryExample;
 import com.sas.pojo.OrganizationDictionaryExample.Criteria;
 import com.sas.service.OrganizationService;
-import com.sas.service.TestService;
 
 
 /** 
@@ -49,6 +47,49 @@ public class OrganizationServiceImpl implements OrganizationService {
 				return null;
 			}
 			return result;
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: insert</p> 
+	* <p>Description: </p> 
+	* @param organizationDictionary
+	* @return 
+	* @see com.sas.service.OrganizationService#insert(com.sas.pojo.OrganizationDictionary) 
+	*/
+	@Override
+	public int insert(OrganizationDictionary organizationDictionary) {
+		int result = organizationDictionaryMapper.insert(organizationDictionary);
+		return result;
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: update</p> 
+	* <p>Description: </p> 
+	* @param organizationDictionary
+	* @return 
+	* @see com.sas.service.OrganizationService#update(com.sas.pojo.OrganizationDictionary) 
+	*/
+	@Override
+	public int update(OrganizationDictionary organizationDictionary) {
+		int result = organizationDictionaryMapper.updateByPrimaryKey(organizationDictionary);
+		return result;
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: delete</p> 
+	* <p>Description: </p> 
+	* @param organizationDictionary
+	* @return 
+	* @see com.sas.service.OrganizationService#delete(com.sas.pojo.OrganizationDictionary) 
+	*/
+	@Override
+	public int delete(OrganizationDictionary organizationDictionary) {
+		int result = organizationDictionaryMapper.deleteByPrimaryKey(organizationDictionary.getOrganizationid());
+		OrganizationDictionaryExample example = new OrganizationDictionaryExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andParentidEqualTo(organizationDictionary.getOrganizationid());
+		int result2 = organizationDictionaryMapper.deleteByExample(example);
+		return result*result2;
 	}
 	
 	

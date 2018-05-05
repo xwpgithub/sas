@@ -103,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 function initZtree(){
 	  $("#btnSelectCustomer").show();
        <c:forEach items="${departments}" var="dp">  
-       zNode.push({id:"${dp.departmentid}", pId:"${dp.fatherid}", name:"${dp.name}",number:"${dp.number}",fatherid:"${dp.fatherid}",remark:"${dp.remark}",open:true});
+       zNode.push({id:"${dp.organizationid}", pId:"${dp.parentid}", name:"${dp.organizationname}",fatherid:"${dp.parentid}",open:true});
        </c:forEach> 
 	   $.fn.zTree.init($("#treeDemo"), setting, zNode);
 	 }
@@ -116,39 +116,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	      $("#btndpinsert").attr({"disabled":"disabled"});
 	      $("#btndpupdate").attr({"disabled":"disabled"});
 	      $("#btndpdelete").attr({"disabled":"disabled"});
-	       $("#txtjigoubianhao").val("");
 	      $("#txtjigoumingcheng").val("");
-	       $("#txtremark").val("");
 		}
 		//机构保存操作
 		function dpsave(){
-		var bianhao=$("#txtjigoubianhao").val().trim();
 		var mingcheng=$("#txtjigoumingcheng").val().trim();
 		var fathid=$("#cboshangjijigou").val();
-		var remark=$("#txtremark").val();
 		//insert==1进行机构新增
 		if(insert==1){
-		if(bianhao!=""&& mingcheng!=""){
-		 if(panduan(mingcheng,bianhao)){
-		 alert("该机构名称或编号已经存在，请重新输入！");
+		if(mingcheng!=""){
+		 if(panduan(mingcheng)){
+		 alert("该机构名称已经存在，请重新输入！");
 		}
 		else{
-		  ajax("/setDeparment/insert.do?fatherid="+fathid+"&name="+mingcheng+"&number="+bianhao+"&remark="+remark,"新增");
+		  ajax("/setDeparment/insert?fatherid="+fathid+"&name="+mingcheng,"新增");
 		  	} 
 		}
 		else{
-		alert("机构编号或机构名称不能为空");
+		alert("机构名称不能为空");
 		}
 		}
 		else{
 		//编辑进行保存
 		if(update==1){
-		if(bianhao!=""&& mingcheng!=""){
-		 if(panduan(mingcheng,bianhao,departmentid)){
+		if(mingcheng!=""){
+		 if(panduan(mingcheng,departmentid)){
 		 alert("该机构名称或编号已经存在，请重新输入！");
 		}
 		else{
-		  ajax("/setDeparment/update.do?fatherid="+fathid+"&name="+mingcheng+"&number="+bianhao+"&remark="+remark+"&departmentid="+departmentid,"修改");
+		  ajax("/setDeparment/update?fatherid="+fathid+"&name="+mingcheng+"&departmentid="+departmentid,"更新");
 		  	} 
 		}
 		else{
@@ -165,20 +161,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		activechange(document.getElementById("renshiguanli"),document.getElementById("setDepartment"),"setDeparment/main");
 		}
 		//判断机构编号是否相同
-		function panduan(name,number,id){
+		function panduan(name){
 		var b=false;
 		for (var i = 0; i < zNode.length; i++) {
-		if(zNode[i].id!=id){
-        if(zNode[i].number.trim()==number||zNode[i].name.trim()==name){
+		
+        if(zNode[i].name.trim()==name){
 	        b=true; 
 	       }
-		}
+		
 		}
 		return b;
 		}
 		//机构删除操作
 		function dpdelete(){
-		
+			if(confirm("是否确定删除此机构")){
+				   ajax("/setDeparment/delete?departmentid="+departmentid,"删除");
+				} 
 		}
 		
 		//ajax操作
@@ -332,7 +330,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 	<div class="onediv">
 	<fieldset><legend>选择机构↓↓↓</legend>
-    <ul  id="treeDemo" class="ztree" style="margin-top:0; width:160px;" ></ul>
+    <ul  id="treeDemo" class="ztree" style="margin-top:0; width:260px;" ></ul>
     </fieldset>
     </div>
     <div>
@@ -381,56 +379,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <td><select id="cboshangjijigou" disabled="disabled" >
     <option value="0" >无上级机构</option>
      <c:forEach items="${departments}" var="dp">  
-     <option value="${dp.departmentid}" >${dp.name}</option>
+     <option value="${dp.organizationid}" >${dp.organizationname}</option>
        </c:forEach> 
     </select></td>
-    </tr>
-    <tr>
-    <td>机构编号</td>
-    <td><input id="txtjigoubianhao" disabled="disabled"></td>
     </tr>
     <tr>
     <td>机构名称</td>
     <td><input id="txtjigoumingcheng" disabled="disabled"></td>
     </tr>
-    <tr>
-    <td>备注</td>
-    <td><input id="txtremark" disabled="disabled"></td>
-    </tr>
     </table>
     </fieldset>
-    </div>
-    <div>
-    <fieldset>
-    <legend style="margin-bottom: 5px;">机构职务操作↓↓↓</legend> 
-    <button id="btndpinsert" type="button" 
-										onclick="insertPosition('add')"
-										class="btn btn-info btn-sm" style="font-size:14px">
-										新增职务 <i class="icon-plus-sign icon-on-right bigger-120"></i>
-									</button>
-						<div class="table-responsive" style="position:relative;">
-							<table id="sample-table-2" style="border: 2px solid #dddddd;"
-								class="table table-striped table-bordered table-hover">
-								<thead>
-									<tr>
-										<th style="text-align: center;">操作</th>
-										<th style="text-align: center;">机构名称</th>
-										<th style="text-align: center;">机构编号</th>
-										<th style="text-align: center;">职位名称</th>
-									 </tr>
-								</thead>
-								<tbody id="tbodyid">
-								</tbody>
-							</table>
-						</div>
-					</fieldset>
-    </div>
-    </div>
-    
  
 
  <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">加载模态框</button>   -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">  
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">  
   <div class="modal-dialog">  
     <div class="modal-content">  
      <div class="modal-header">  
@@ -450,7 +412,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      </div>  
    </div>
   </div> 
-</div>
+</div> -->
  
  
   </body>
