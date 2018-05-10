@@ -5,6 +5,7 @@
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set value="${pageContext.request.contextPath}" scope="page" var="ctx"></c:set>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -23,6 +24,7 @@
 <script type="text/javascript" src="${ctx}/js/jquery.ztree.core.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
+<script type="text/javascript" src="${ctx}/js/datechange.js"></script>
 <style type="text/css">
 .thistop {
 	padding-left: 15px;
@@ -150,10 +152,10 @@
 						$("#menuContent1").hide();
 						$("#myModal").modal("hide");//隐藏模态框
 						bangdingDepartment();//查询部门下拉树
-						bangdingOpsitionType();//查询职位状态
-						bangdingGroupCbo();
+						/* bangdingOpsitionType();//查询职位状态
+						bangdingGroupCbo(); */
 						selectAllStaff();//查询所有员工 
-						bangdingSystemCbo();
+						/* bangdingSystemCbo(); */
 						fromYanZhen();
 						//图片变更
 						$("#upimg")
@@ -209,7 +211,7 @@
 		$("#thistr").show();
 		$("#lizhi").hide();
 		$("#myModal").modal("show");
-		$("#tladd_edit")[0].innerHTML = "新增员工";
+		$("#tladd_edit")[0].innerHTML = "新增教师";
 	}
 	/** 表单提交验证**/
 	function fromYanZhen() {
@@ -308,10 +310,10 @@
 	//新增员工
 	function submitForm() {
 		var formData = new FormData($("#form")[0]);
-		if ($("#tladd_edit")[0].innerHTML.trim() == "新增员工") {
+		if ($("#tladd_edit")[0].innerText.trim() == "新增教师") {
 			if ($("#form").valid()) {
 				$.ajax({
-					url : "${ctx}/staff/insertStaff.do",
+					url : "${ctx}/teacherController/insertTeacher",
 					type : 'POST',
 					data : formData,
 					async : false,
@@ -376,15 +378,15 @@
 		$.ajax({
 			async : false,//同步异步
 			type : 'post',
-			url : '${ctx}/staff/selectDepartment.do',
+			url : '${ctx}/teacherController/selectDepartment',
 			dataType : "json",
 			scriptCharset : "utf-8",
 			success : function(data) {
 				for ( var i = 0; i < data.length; i++) {
 					zNode.push({
-						id : data[i].departmentid,
-						pId : data[i].fatherid,
-						name : data[i].name,
+						id : data[i].organizationid,
+						pId : data[i].parentid,
+						name : data[i].organizationname,
 						open : true
 					});
 				}
@@ -467,9 +469,9 @@
 				.ajax({
 					async : false,//同步异步
 					type : 'post',
-					url : "${ctx}/staff/selectAllStaff.do?departmentids="
+					url : "${ctx}/teacherController/selectAllTeacher?departmentids="
 							+ departmentNodes,
-					data : {
+					/* data : {
 						positionid : $("#cboPositonid").val() == null ? 0 : $(
 								"#cboPositonid").val(),
 						typeid : $("#cboPositionTypeid").val() == null ? 0 : $(
@@ -477,63 +479,39 @@
 						number : $("#txtNumber").val(),
 						name : $("#txtName").val(),
 						groupid : $("#cboGroupid").val(),
-					},
+					}, */
 					dataType : "json",
 					scriptCharset : "utf-8",
 					success : function(data) {
 						$('#tbodyStaff').empty();
 						for ( var i = 0; i < data.length; i++) {
-							var xingbie = data[i].sex == 0 ? "女" : "男";
+							var xingbie = data[i].teachersex == 0 ? "女" : "男";
 							var html = "<tr onclick='onclickStaffRow(this)'><td><a href='javascript:deleteStaff("
-									+ data[i].staffid
+									+ data[i].teacherid
 									+ ")'>【删除】</a><a href='javascript:updateStaff("
-									+ data[i].staffid
+									+ data[i].teacherid
 									+ ")'>【编辑】</a></td>"
-									+ "<td><a><img style='width:50px;height:38px'  src='/pic/"+data[i].headimage+"'></a></td>"
+									+ "<td><a><img style='width:50px;height:38px'  src='/pic/"+data[i].image+"'></a></td>"
 									+ "<td>"
-									+ data[i].positiontype.name
-									+ "</td>"
-									+ "<td>"
-									+ data[i].staffPosition.department.name
-									+ "</td>"
-									+ "<td>"
-									+ data[i].staffPosition.position.name
-									+ "</td>"
-									+ "<td>"
-									+ data[i].system.systemname
-									+ "</td>"
-									+ "<td>"
-									+ data[i].groupname.name
-									+ "</td>"
-									+ "<td>"
-									+ data[i].staffname
+									+ data[i].teachername
 									+ "</td>"
 									+ "<td>"
 									+ xingbie
 									+ "</td>"
 									+ "<td>"
-									+ data[i].staffnumber
+									+ data[i].teacherage
 									+ "</td>"
 									+ "<td>"
-									+ data[i].loginnumber
-									+ "</td>"
-									+ "<td>"
-									+ data[i].dateofentry
-									+ "</td>"
-									+ "<td>"
-									+ data[i].leavedate
-									+ "</td>"
-									+ "<td>"
-									+ data[i].idcar
+									+ data[i].jobnum
 									+ "</td>"
 									+ "<td>"
 									+ data[i].email
 									+ "</td>"
 									+ "<td>"
-									+ data[i].cardnumber
-									+ "</td>"
+									+ data[i].peoplenum
+									+ "</td>"																																																				
 									+ "<td>"
-									+ data[i].remark + "</td></tr>";
+									+ data[i].entrytime + "</td></tr>";
 							$('#tbodyStaff').append(html);
 						}
 					},
@@ -581,6 +559,7 @@
 		});
 	}
 
+	
 	//修改员工信息
 	function updateStaff(staffid) {
 		$("label[class='error']").remove();
@@ -738,21 +717,14 @@
 						<tr>
 							<th style="text-align: center; width: 104px;">操作</th>
 							<th style="text-align: center;">头像</th>
-							<th style="text-align: center;">状态</th>
-							<th style="text-align: center;">机构</th>
-							<th style="text-align: center;">职务</th>
-							<th style="text-align: center;">考勤制度</th>
-							<th style="text-align: center;">班组</th>
 							<th style="text-align: center;">姓名</th>
 							<th style="text-align: center;">性别</th>
-							<th style="text-align: center;">员工编号</th>
-							<th style="text-align: center;">登记号码</th>
-							<th style="text-align: center;">入职日期</th>
-							<th style="text-align: center;">离职日期</th>
-							<th style="text-align: center;">身份证号码</th>
-							<th style="text-align: center;">电子邮件</th>
-							<th style="text-align: center;">卡片号码</th>
-							<th style="text-align: center;min-width: 145px;">备注</th>
+							<th style="text-align: center;">年龄</th>
+							<th style="text-align: center;">工号</th>
+							<th style="text-align: center;">邮箱</th>
+							<th style="text-align: center;">身份证号</th>
+							<th style="text-align: center;">入职时间</th>
+						
 
 						</tr>
 					</thead>
@@ -770,7 +742,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增人员</h4>
+					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增教师</h4>
 				</div>
 				<div class="modal-body" style=" max-height: 495px;">
 					<div class="row">
@@ -786,13 +758,13 @@
 												style="border: 1px solid #dddddd">
 												<tr>
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>工作机构</div>
+														<div style="font-size: 17px;" align='right'>机构名称</div>
 													</td>
 													<td><input id="gouzuojigou"
 														style="margin-bottom: 0px;" readonly="readonly"
 														onclick="tianchujigou(this)" type="text"
 														class="form-control"> <input type="hidden"
-														id="gouzuojigouid"> <input type="hidden"
+														id="gouzuojigouid" name ="organizationid"> <input type="hidden"
 														name="staffid" id="staffid">
 														<div id="menuContent1" class="menuContent"
 															style="displayx: none; position: absolute;z-index: 99;background-color: #f9f9f9;min-height: 200px;">
@@ -800,12 +772,11 @@
 																style="margin-top: 0; width: 200px;">
 															</ul>
 														</div></td>
+								
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>职务</div></td>
-													<td><select name="staffpositionid"
-														id="cboStaffpositionid"
-														class="col-lg-12 col-xs-12 col-sm-12">
-													</select></td>
+														<div style="font-size: 17px;" align='right'>入职日期</div></td>
+													<td><input id="dateofentry" name="entrytimes"
+														type="date" class="form-control"></td>
 
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>选择照片</div>
@@ -817,24 +788,24 @@
 												</tr>
 												<tr>
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>员工姓名</div>
+														<div style="font-size: 17px;" align='right'>教师姓名</div>
 													</td>
-													<td><input id="staffname" name="staffname" type="text"
+													<td><input id="staffname" name="teachername" type="text"
 														class="form-control"></td>
 
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>员工编号</div>
+														<div style="font-size: 17px;" align='right'>教师工号</div>
 													</td>
-													<td><input id="staffnumber" name="staffnumber"
+													<td><input id="staffnumber" name="jobnum"
 														type="text" class="form-control"></td>
-													<td rowspan="4" style="background-color: #ebf3fb;">
+													<td rowspan="3" style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>照片预览</div>
 													</td>
-													<td rowspan="4">
+													<td rowspan="3">
 														<div id="show">
 															<div id="item"
 																style="height:216px;width:265px;border:1px solid #bbb;">
-																<img name="img" id="image-view"
+																<img name="image" id="image-view"
 																	style="height:216px; width:265px" />
 															</div>
 														</div></td>
@@ -843,14 +814,14 @@
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>性别</div>
 														<div style="font-size: 17px;" align='right'></div></td>
-													<td><label> <input id="boy" name="sex"
+													<td><label> <input id="boy" name="teachersex"
 															type="radio" class="ace" value="1"> <span
 															class="lbl">男</span> </label> &nbsp;&nbsp;&nbsp; <label>
 															<input id="girl" name="sex" type="radio" class="ace"
 															value="0"> <span class="lbl">女</span> </label></td>
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>登记号码</div></td>
-													<td><input id="loginnumber" name="loginnumber"
+														<div style="font-size: 17px;" align='right'>年龄</div></td>
+													<td><input id="loginnumber" name="teacherage"
 														type="text" class="form-control"></td>
 
 												</tr>
@@ -858,57 +829,14 @@
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>身份证号</div>
 													</td>
-													<td><input id="idcar" name="idcar" type="text"
+													<td><input id="idcar" name="peoplenum" type="text"
 														class="form-control"></td>
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>电子邮件</div></td>
 													<td><input id="email" name="email" type="text"
 														class="form-control"></td>
-												</tr>
-												<tr>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>卡片号码</div>
-													</td>
-													<td><input id="carnumber" name="cardnumber"
-														type="text" class="form-control"></td>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>入职日期</div></td>
-													<td><input id="dateofentry" name="dateofentry"
-														type="date" class="form-control"></td>
-												</tr>
-												<tr id="lizhi">
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>状态</div>
-													</td>
-													<td><select name="positiontypeid"
-														id="updatePositiontypeid"
-														class="col-lg-12 col-xs-12 col-sm-12">
-													</select></td>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>离职日期</div></td>
-													<td><input id="leavedate" name="leavedate" type="date"
-														class="form-control"></td>
-												</tr>
-
-												<tr>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>班组</div>
-													</td>
-													<td><select name="groupid" id="cboGroup"
-														class="col-lg-12 col-xs-12 col-sm-12">
-													</select></td>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>考勤制度</div></td>
-													<td><select name="systemid" id="cboSystem"
-														class="col-lg-12 col-xs-12 col-sm-12">
-													</select></td>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>备注</div></td>
-
-													<td colspan=""><input style="width: 258px;"
-														id="remark" name="remark" type="text" class="form-control">
-													</td>
-												</tr>
+												</tr>											
+											
 												<tr id="thistr">
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>账号</div></td>

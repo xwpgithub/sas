@@ -31,6 +31,8 @@ public class Course {
 
     private String modifyby;
 
+    private Integer courseadminid;
+
     public Integer getCourseid() {
         return courseid;
     }
@@ -141,5 +143,13 @@ public class Course {
 
     public void setModifyby(String modifyby) {
         this.modifyby = modifyby == null ? null : modifyby.trim();
+    }
+
+    public Integer getCourseadminid() {
+        return courseadminid;
+    }
+
+    public void setCourseadminid(Integer courseadminid) {
+        this.courseadminid = courseadminid;
     }
 }

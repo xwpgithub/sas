@@ -180,7 +180,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									</a>
 								</li>
 								<li id="renyuanluru"
-								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('renyuanluru'),'menuController/selectStaff')">
+								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('renyuanluru'),'teacherController/selectStaff')">
 									<a >
 										<i class="icon-double-angle-right"></i>
 										教师录入

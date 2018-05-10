@@ -7,6 +7,7 @@
     <result column="LoginName" property="loginname" jdbcType="VARCHAR" />
     <result column="LoginPassWord" property="loginpassword" jdbcType="VARCHAR" />
     <result column="LoginType" property="logintype" jdbcType="INTEGER" />
+    <result column="OrganizationId" property="organizationid" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Id, UserId, LoginName, LoginPassWord, LoginType
+    Id, UserId, LoginName, LoginPassWord, LoginType, OrganizationId
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.UserLoginInfoExample" >
     select
@@ -101,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.sas.pojo.UserLoginInfo" >
     insert into user_login_info (Id, UserId, LoginName, 
-      LoginPassWord, LoginType)
+      LoginPassWord, LoginType, OrganizationId
+      )
     values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{loginname,jdbcType=VARCHAR}, 
-      #{loginpassword,jdbcType=VARCHAR}, #{logintype,jdbcType=INTEGER})
+      #{loginpassword,jdbcType=VARCHAR}, #{logintype,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.UserLoginInfo" >
     insert into user_login_info
@@ -123,6 +126,9 @@
       <if test="logintype != null" >
         LoginType,
       </if>
+      <if test="organizationid != null" >
+        OrganizationId,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -139,6 +145,9 @@
       </if>
       <if test="logintype != null" >
         #{logintype,jdbcType=INTEGER},
+      </if>
+      <if test="organizationid != null" >
+        #{organizationid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -166,6 +175,9 @@
       <if test="record.logintype != null" >
         LoginType = #{record.logintype,jdbcType=INTEGER},
       </if>
+      <if test="record.organizationid != null" >
+        OrganizationId = #{record.organizationid,jdbcType=INTEGER},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -177,7 +189,8 @@
       UserId = #{record.userid,jdbcType=INTEGER},
       LoginName = #{record.loginname,jdbcType=VARCHAR},
       LoginPassWord = #{record.loginpassword,jdbcType=VARCHAR},
-      LoginType = #{record.logintype,jdbcType=INTEGER}
+      LoginType = #{record.logintype,jdbcType=INTEGER},
+      OrganizationId = #{record.organizationid,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -197,6 +210,9 @@
       <if test="logintype != null" >
         LoginType = #{logintype,jdbcType=INTEGER},
       </if>
+      <if test="organizationid != null" >
+        OrganizationId = #{organizationid,jdbcType=INTEGER},
+      </if>
     </set>
     where Id = #{id,jdbcType=INTEGER}
   </update>
@@ -205,7 +221,8 @@
     set UserId = #{userid,jdbcType=INTEGER},
       LoginName = #{loginname,jdbcType=VARCHAR},
       LoginPassWord = #{loginpassword,jdbcType=VARCHAR},
-      LoginType = #{logintype,jdbcType=INTEGER}
+      LoginType = #{logintype,jdbcType=INTEGER},
+      OrganizationId = #{organizationid,jdbcType=INTEGER}
     where Id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

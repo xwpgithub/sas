@@ -27,6 +27,10 @@ public class Teacher {
 
     private String modifyby;
 
+    private String email;
+
+    private String image;
+
     public Integer getTeacherid() {
         return teacherid;
     }
@@ -121,5 +125,21 @@ public class Teacher {
 
     public void setModifyby(String modifyby) {
         this.modifyby = modifyby == null ? null : modifyby.trim();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email == null ? null : email.trim();
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image == null ? null : image.trim();
     }
 }

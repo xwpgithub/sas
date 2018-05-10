@@ -1011,6 +1011,66 @@ public class CourseExample {
             addCriterion("ModifyBy not between", value1, value2, "modifyby");
             return (Criteria) this;
         }
+
+        public Criteria andCourseadminidIsNull() {
+            addCriterion("CourseAdminId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidIsNotNull() {
+            addCriterion("CourseAdminId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidEqualTo(Integer value) {
+            addCriterion("CourseAdminId =", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidNotEqualTo(Integer value) {
+            addCriterion("CourseAdminId <>", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidGreaterThan(Integer value) {
+            addCriterion("CourseAdminId >", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("CourseAdminId >=", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidLessThan(Integer value) {
+            addCriterion("CourseAdminId <", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidLessThanOrEqualTo(Integer value) {
+            addCriterion("CourseAdminId <=", value, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidIn(List<Integer> values) {
+            addCriterion("CourseAdminId in", values, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidNotIn(List<Integer> values) {
+            addCriterion("CourseAdminId not in", values, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidBetween(Integer value1, Integer value2) {
+            addCriterion("CourseAdminId between", value1, value2, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andCourseadminidNotBetween(Integer value1, Integer value2) {
+            addCriterion("CourseAdminId not between", value1, value2, "courseadminid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

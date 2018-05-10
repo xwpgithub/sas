@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sas.pojo.OrganizationDictionary;
+import com.sas.pojo.UserLoginInfo;
 import com.sas.service.OrganizationService;
 
 @Controller
@@ -20,8 +21,17 @@ public class OrganizationController  {
 
 	@RequestMapping("/main")
 	public String selectAll( HttpServletRequest request) {
-		List<OrganizationDictionary> departments = organizationService.selectAll();
-		request.setAttribute("departments", departments);
+		UserLoginInfo userLoginInfo = (UserLoginInfo) request.getSession().getAttribute("user");
+		System.out.println(userLoginInfo.getOrganizationid()+"号组织管理员进入系统------------------");
+		if (userLoginInfo.getOrganizationid()==0) {
+			List<OrganizationDictionary> departments = organizationService.selectAll();
+			request.setAttribute("departments", departments);
+		}
+		else {
+			List<OrganizationDictionary> departments = organizationService.selectAllByOId(userLoginInfo.getOrganizationid());
+			request.setAttribute("departments", departments);
+		}
+		
 		return "/renshiguanli/jigoushezhi/main";
 	}
 

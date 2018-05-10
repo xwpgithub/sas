@@ -423,6 +423,66 @@ public class UserLoginInfoExample {
             addCriterion("LoginType not between", value1, value2, "logintype");
             return (Criteria) this;
         }
+
+        public Criteria andOrganizationidIsNull() {
+            addCriterion("OrganizationId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidIsNotNull() {
+            addCriterion("OrganizationId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidEqualTo(Integer value) {
+            addCriterion("OrganizationId =", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidNotEqualTo(Integer value) {
+            addCriterion("OrganizationId <>", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidGreaterThan(Integer value) {
+            addCriterion("OrganizationId >", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("OrganizationId >=", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidLessThan(Integer value) {
+            addCriterion("OrganizationId <", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidLessThanOrEqualTo(Integer value) {
+            addCriterion("OrganizationId <=", value, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidIn(List<Integer> values) {
+            addCriterion("OrganizationId in", values, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidNotIn(List<Integer> values) {
+            addCriterion("OrganizationId not in", values, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidBetween(Integer value1, Integer value2) {
+            addCriterion("OrganizationId between", value1, value2, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrganizationidNotBetween(Integer value1, Integer value2) {
+            addCriterion("OrganizationId not between", value1, value2, "organizationid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

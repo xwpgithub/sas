@@ -11,6 +11,8 @@ public class UserLoginInfo {
 
     private Integer logintype;
 
+    private Integer organizationid;
+
     public Integer getId() {
         return id;
     }
@@ -49,5 +51,13 @@ public class UserLoginInfo {
 
     public void setLogintype(Integer logintype) {
         this.logintype = logintype;
+    }
+
+    public Integer getOrganizationid() {
+        return organizationid;
+    }
+
+    public void setOrganizationid(Integer organizationid) {
+        this.organizationid = organizationid;
     }
 }

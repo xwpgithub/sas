@@ -8,6 +8,7 @@
 */
 package com.sas.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -90,6 +91,37 @@ public class OrganizationServiceImpl implements OrganizationService {
 		criteria.andParentidEqualTo(organizationDictionary.getOrganizationid());
 		int result2 = organizationDictionaryMapper.deleteByExample(example);
 		return result*result2;
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAllByOId</p> 
+	* <p>Description: </p> 
+	* @param oid
+	* @return 
+	* @see com.sas.service.OrganizationService#selectAllByOId(int) 
+	*/
+	@Override
+	public List<OrganizationDictionary> selectAllByOId(int oid) {
+		List<OrganizationDictionary> list = new ArrayList<OrganizationDictionary>();
+		OrganizationDictionaryExample example = new OrganizationDictionaryExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andOrganizationidEqualTo(oid);
+		System.out.println("管理员来自"+organizationDictionaryMapper.selectByExample(example).get(0).getOrganizationname());
+		list.addAll(organizationDictionaryMapper.selectByExample(example));
+		OrganizationDictionaryExample example1 = new OrganizationDictionaryExample();
+		Criteria criteria1 = example1.createCriteria();
+		criteria1.andParentidEqualTo(oid);
+		List<OrganizationDictionary> list1 = organizationDictionaryMapper.selectByExample(example1); 
+		list.addAll(list1);
+		for (int i = 0; i < list1.size(); i++) {
+			System.out.println(list1.size()+"---"+list1.get(i).getOrganizationname());
+			OrganizationDictionaryExample example2 = new OrganizationDictionaryExample();
+			Criteria criteria2 = example2.createCriteria();
+			criteria2.andParentidEqualTo(list1.get(i).getOrganizationid());
+			list.addAll(organizationDictionaryMapper.selectByExample(example2));
+		}
+		
+		return list;
 	}
 	
 	

@@ -14,6 +14,8 @@
     <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
+    <result column="Email" property="email" jdbcType="VARCHAR" />
+    <result column="Image" property="image" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +77,7 @@
   </sql>
   <sql id="Base_Column_List" >
     TeacherId, OrganizationId, TeacherName, TeacherSex, TeacherAge, JobNum, PeopleNum, 
-    EntryTime, CreateBy, CreateDate, ModifyDate, ModifyBy
+    EntryTime, CreateBy, CreateDate, ModifyDate, ModifyBy, Email, Image
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.TeacherExample" >
     select
@@ -111,13 +113,13 @@
     insert into teacher (TeacherId, OrganizationId, TeacherName, 
       TeacherSex, TeacherAge, JobNum, 
       PeopleNum, EntryTime, CreateBy, 
-      CreateDate, ModifyDate, ModifyBy
-      )
+      CreateDate, ModifyDate, ModifyBy, 
+      Email, Image)
     values (#{teacherid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{teachername,jdbcType=VARCHAR}, 
       #{teachersex,jdbcType=INTEGER}, #{teacherage,jdbcType=INTEGER}, #{jobnum,jdbcType=INTEGER}, 
       #{peoplenum,jdbcType=VARCHAR}, #{entrytime,jdbcType=DATE}, #{createby,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=TIMESTAMP}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
-      )
+      #{createdate,jdbcType=TIMESTAMP}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{image,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Teacher" >
     insert into teacher
@@ -158,6 +160,12 @@
       <if test="modifyby != null" >
         ModifyBy,
       </if>
+      <if test="email != null" >
+        Email,
+      </if>
+      <if test="image != null" >
+        Image,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="teacherid != null" >
@@ -195,6 +203,12 @@
       </if>
       <if test="modifyby != null" >
         #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -243,6 +257,12 @@
       <if test="record.modifyby != null" >
         ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
       </if>
+      <if test="record.email != null" >
+        Email = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.image != null" >
+        Image = #{record.image,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,7 +281,9 @@
       CreateBy = #{record.createby,jdbcType=VARCHAR},
       CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
-      ModifyBy = #{record.modifyby,jdbcType=VARCHAR}
+      ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
+      Email = #{record.email,jdbcType=VARCHAR},
+      Image = #{record.image,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,6 +324,12 @@
       <if test="modifyby != null" >
         ModifyBy = #{modifyby,jdbcType=VARCHAR},
       </if>
+      <if test="email != null" >
+        Email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null" >
+        Image = #{image,jdbcType=VARCHAR},
+      </if>
     </set>
     where TeacherId = #{teacherid,jdbcType=INTEGER}
   </update>
@@ -317,7 +345,9 @@
       CreateBy = #{createby,jdbcType=VARCHAR},
       CreateDate = #{createdate,jdbcType=TIMESTAMP},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
-      ModifyBy = #{modifyby,jdbcType=VARCHAR}
+      ModifyBy = #{modifyby,jdbcType=VARCHAR},
+      Email = #{email,jdbcType=VARCHAR},
+      Image = #{image,jdbcType=VARCHAR}
     where TeacherId = #{teacherid,jdbcType=INTEGER}
   </update>
 </mapper>
