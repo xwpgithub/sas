@@ -13,6 +13,7 @@ public interface RoleMapper {
     int deleteByPrimaryKey(Integer roleid);
 
     int insert(Role record);
+    int insertAndgetkey(Role record);
 
     int insertSelective(Role record);
 

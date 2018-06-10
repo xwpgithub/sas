@@ -21,6 +21,8 @@
 	<mvc:resources location="/js/" mapping="/js/**"/>
 	<mvc:resources location="/images/" mapping="/images/**"/>
 	<mvc:resources location="/style/" mapping="/style/**"/>
+	<mvc:resources location="/layui/" mapping="/layui/**"/>
+	<mvc:resources location="/lay/" mapping="/lay/**"/>
 	<mvc:resources location="/face_files/" mapping="/face_files/**"/>
 	<!-- <mvc:resources location="/WEB-INF/" mapping="/*.html"/> -->
 	

@@ -20,11 +20,16 @@
 <meta http-equiv="description" content="This is my page">
 <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
 <link rel="stylesheet" href="${ctx}/css/zTreeStyle.css" type="text/css">
+<link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all"> 
 <script type="text/javascript" src="${ctx}/js/jquery.min.js"></script>
+<script type="text/javascript" src="${ctx}/layui/layui.js"></script>
+<script src="${ctx}/lay/modules/laypage.js" type="text/javascript"></script> 
 <script type="text/javascript" src="${ctx}/js/jquery.ztree.core.js"></script>
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/js/datechange.js"></script>
+<%-- <script src="${ctx}/js/pintuer.js"></script>
+<link rel="stylesheet" href="${ctx}/css/pintuer.css"> --%>
 <style type="text/css">
 .thistop {
 	padding-left: 15px;
@@ -154,9 +159,11 @@
 						bangdingDepartment();//查询部门下拉树
 						/* bangdingOpsitionType();//查询职位状态
 						bangdingGroupCbo(); */
-						selectAllStaff();//查询所有员工 
+						selectAllStaff(1);//查询所有员工 
 						/* bangdingSystemCbo(); */
 						fromYanZhen();
+						selectOpsition();
+						//dianjibangding();
 						//图片变更
 						$("#upimg")
 								.change(
@@ -313,7 +320,7 @@
 		if ($("#tladd_edit")[0].innerText.trim() == "新增教师") {
 			if ($("#form").valid()) {
 				$.ajax({
-					url : "${ctx}/teacherController/insertTeacher",
+					url : "${ctx}/personnelController/insertTeacher",
 					type : 'POST',
 					data : formData,
 					async : false,
@@ -321,11 +328,11 @@
 					scriptCharset : "utf-8",
 					contentType : false,
 					processData : false,
-					dataType : "json",
+					dataType : 'HTML',
 					success : function(data) {
 						if (data == "1") {
 							alert("新增成功");
-							selectAllStaff();
+							selectAllStaff(1);
 							$("#myModal").modal("hide");
 						} else {
 							alert("新增失败");
@@ -346,7 +353,7 @@
 				ajax("${ctx}/staff/updateStaffSystem.do?staffid="+ $("#staffid").val()+"&systemid="+$("#cboSystem").val());
 				}
 				$.ajax({
-					url : "${ctx}/staff/updateStaff.do",
+					url : "${ctx}/personnelController/updateTeacher",
 					type : 'POST',
 					data : formData,
 					async : false,
@@ -358,7 +365,7 @@
 					success : function(data) {
 						if (data == "1") {
 							alert("修改成功");
-							selectAllStaff();
+							selectAllStaff(1);
 							$("#myModal").modal("hide");
 						} else {
 							alert("修改失败");
@@ -401,8 +408,7 @@
 		$.ajax({
 			async : false,//同步异步
 			type : 'post',
-			url : '${ctx}/staff/selectOpsition.do' + "?departmentids="
-					+ departmentNodes,
+			url : '${ctx}/roleController/selectAllRole',
 			dataType : "json",
 			scriptCharset : "utf-8",
 			success : function(data) {
@@ -410,8 +416,8 @@
 				$("#cboPositonid").append(
 						"<option selected='selected' value='0'>全部</option>");
 				for ( var i = 0; i < data.length; i++) {
-					var html = "<option value='"+data[i].positionid+"'>"
-							+ data[i].position.name + "</option>";
+					var html = "<option value='"+data[i].roleid+"'>"
+							+ data[i].rolename + "</option>";
 					$("#cboPositonid").append(html);
 				}
 			},
@@ -463,57 +469,154 @@
 				});
 	}
 
-	//模糊查询员工信息
-	function selectAllStaff() {
+	//查询所有员工信息
+	function selectAllStaff(pagenum,pagesize) {
+		if(pagesize==null){
+			pagesize = 10;
+		}
 		$
 				.ajax({
 					async : false,//同步异步
 					type : 'post',
-					url : "${ctx}/teacherController/selectAllTeacher?departmentids="
-							+ departmentNodes,
-					/* data : {
-						positionid : $("#cboPositonid").val() == null ? 0 : $(
-								"#cboPositonid").val(),
-						typeid : $("#cboPositionTypeid").val() == null ? 0 : $(
-								"#cboPositionTypeid").val(),
-						number : $("#txtNumber").val(),
-						name : $("#txtName").val(),
-						groupid : $("#cboGroupid").val(),
-					}, */
+					url : "${ctx}/personnelController/selectAllTeacher?departmentid="
+							+ ${user.organizationid}+"&&pageNum="+pagenum+"&&pageSize="+pagesize,
 					dataType : "json",
 					scriptCharset : "utf-8",
-					success : function(data) {
-						$('#tbodyStaff').empty();
-						for ( var i = 0; i < data.length; i++) {
-							var xingbie = data[i].teachersex == 0 ? "女" : "男";
-							var html = "<tr onclick='onclickStaffRow(this)'><td><a href='javascript:deleteStaff("
-									+ data[i].teacherid
+					success : function(data) {			
+						$('#tbodyStaff').empty();					
+						for ( var i = 0; i < data[0].length; i++) {
+							var xingbie = data[0][i].sex == 0 ? "女" : "男";
+							var html = "<tr onclick='onclickStaffRow(this)'><td><a  href='javascript:deleteStaff("
+									+ data[0][i].id
 									+ ")'>【删除】</a><a href='javascript:updateStaff("
-									+ data[i].teacherid
+									+ data[0][i].id
 									+ ")'>【编辑】</a></td>"
-									+ "<td><a><img style='width:50px;height:38px'  src='/pic/"+data[i].image+"'></a></td>"
+									+ "<td><a><img style='width:50px;height:38px'  src='/pic/"+data[0][i].image+"'></a></td>"
 									+ "<td>"
-									+ data[i].teachername
+									+ data[0][i].name
 									+ "</td>"
 									+ "<td>"
 									+ xingbie
 									+ "</td>"
 									+ "<td>"
-									+ data[i].teacherage
+									+ data[0][i].age
 									+ "</td>"
 									+ "<td>"
-									+ data[i].jobnum
+									+ data[0][i].jobnum
 									+ "</td>"
 									+ "<td>"
-									+ data[i].email
+									+ data[0][i].email
 									+ "</td>"
 									+ "<td>"
-									+ data[i].peoplenum
+									+ data[0][i].peoplenum
 									+ "</td>"																																																				
 									+ "<td>"
-									+ data[i].entrytime + "</td></tr>";
-							$('#tbodyStaff').append(html);
-						}
+									+ data[0][i].entrytime + "</td></tr>";										
+							$('#tbodyStaff').append(html);						
+						}						
+						// 使用laypage调用分页
+						layui.use('laypage', function(){
+							var laypage = layui.laypage;						
+							//分页
+							  laypage.render({
+							    elem: 'page' //分页容器的id
+							    /* ,pages:data[1].pages */
+							    ,curr:data[1].pageNum 
+							    ,skin: '#36648B' //自定义选中色值
+							    ,skip: true //开启跳页
+							    ,count: data[1].total
+							    ,limit:data[1].pageSize
+							    ,theme: '#4F94CD'
+							    ,groups: 5 //连续显示分页数
+							    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+							    ,jump: function(obj, first){
+							      if(!first){
+							        selectAllStaff(obj.curr,obj.limit);
+							        
+							      }						   
+							    }
+							  });     
+						}); 	
+					},
+				});
+	}
+	
+	
+	//模糊查询员工信息
+	function selectStaffByValue(pagenum,pagesize,departmentid,jobnum,peoplenum,teachername) {
+		if(pagesize==null){
+			pagesize = 10;
+		}
+		if(pagenum==null){
+			pagenum = 1;
+		}
+		departmentid = $("#txtDepartmentid").val();
+		jobnum = $("#jobnum").val();
+		peoplenum = $("#peoplenum").val();
+		teachername = $("#name").val();
+		$
+				.ajax({
+					async : false,//同步异步
+					type : 'post',
+					url : "${ctx}/personnelController/selectAllTeacher?departmentid="
+							+ departmentid+"&&pageNum="+pagenum+"&&pageSize="+pagesize+"&&jobnum="+jobnum+"&&peoplenum="+peoplenum+"&&teachername="+teachername,
+					dataType : "json",
+					scriptCharset : "utf-8",
+					success : function(data) {			
+						$('#tbodyStaff').empty();					
+						for ( var i = 0; i < data[0].length; i++) {
+							var xingbie = data[0][i].teachersex == 0 ? "女" : "男";
+							var html = "<tr onclick='onclickStaffRow(this)'><td><a  href='javascript:deleteStaff("
+									+ data[0][i].id
+									+ ")'>【删除】</a><a href='javascript:updateStaff("
+									+ data[0][i].id
+									+ ")'>【编辑】</a></td>"
+									+ "<td><a><img style='width:50px;height:38px'  src='/pic/"+data[0][i].image+"'></a></td>"
+									+ "<td>"
+									+ data[0][i].name
+									+ "</td>"
+									+ "<td>"
+									+ xingbie
+									+ "</td>"
+									+ "<td>"
+									+ data[0][i].age
+									+ "</td>"
+									+ "<td>"
+									+ data[0][i].jobnum
+									+ "</td>"
+									+ "<td>"
+									+ data[0][i].email
+									+ "</td>"
+									+ "<td>"
+									+ data[0][i].peoplenum
+									+ "</td>"																																																				
+									+ "<td>"
+									+ data[0][i].entrytime + "</td></tr>";										
+							$('#tbodyStaff').append(html);						
+						}						
+						// 使用laypage调用分页
+						layui.use('laypage', function(){
+							var laypage = layui.laypage;						
+							//分页
+							  laypage.render({
+							    elem: 'page' //分页容器的id
+							    /* ,pages:data[1].pages */
+							    ,curr:data[1].pageNum 
+							    ,skin: '#36648B' //自定义选中色值
+							    ,skip: true //开启跳页
+							    ,count: data[1].total
+							    ,limit:data[1].pageSize
+							    ,theme: '#4F94CD'
+							    ,groups: 5 //连续显示分页数
+							    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
+							    ,jump: function(obj, first){
+							      if(!first){
+							    	  selectStaffByValue(obj.curr,obj.limit,departmentid,jobnum,peoplenum,teachername);
+							        
+							      }						   
+							    }
+							  });     
+						}); 	
 					},
 				});
 	}
@@ -522,6 +625,7 @@
 		$("#tbodyStaff tr").removeClass("trClass");
 		$(tr).addClass("trClass");
 	}
+	
 	//新增操作下拉树加载
 	function tianchujigou(event) {
 		var cityObj = $("#gouzuojigou");
@@ -531,7 +635,7 @@
 			offsetTop : event.offsetTop
 		}).slideDown("fast");
 	}
-	//点击新增员工工作机构下拉树时触发
+	
 	function onclickinsert(e, treeId, treeNode) {
 		dianjibangding(treeNode);
 	}
@@ -539,34 +643,34 @@
 	function dianjibangding(treeNode) {
 		$("#gouzuojigouid").val(treeNode.id);
 		$("#gouzuojigou").val(treeNode.name);
-		$("#menuContent1").fadeOut("fast");
+		$("#menuContent1").fadeOut("fast");  
+		alert("绑定新增人员角色"+treeNode.id);
 		//获取部门职务
 		$.ajax({
 			async : false,//同步异步
 			type : 'post',
-			url : '${ctx}/setDeparment/selectOpsition.do' + "?departmentid="
-					+ treeNode.id,
+			url : '${ctx}/roleController/selectAllRole',
 			dataType : "json",
 			scriptCharset : "utf-8",
 			success : function(data) {
 				$("#cboStaffpositionid").empty();
 				for ( var i = 0; i < data.length; i++) {
-					var html = "<option value='"+data[i].staffpositionid+"'>"
-							+ data[i].position.name + "</option>";
+					var html = "<option value='"+data[i].roleid+"'>"
+							+ data[i].rolename + "</option>";
 					$("#cboStaffpositionid").append(html);
 				}
 			},
 		});
-	}
+	} 
 
 	
 	//修改员工信息
-	function updateStaff(staffid) {
+	function updateStaff(teacherid) {
 		$("label[class='error']").remove();
 		$.ajax({
 			async : false,//同步异步
 			type : 'post',
-			url : "${ctx}/staff/selectByStaffid.do?staffid=" + staffid,
+			url : "${ctx}/personnelController/selectByTeacherid?teacherid=" + teacherid,
 			dataType : "json",
 			scriptCharset : "utf-8",
 			success : function(data) {
@@ -577,28 +681,23 @@
 				$("#lizhi").show();
 				var tree = $.fn.zTree.getZTreeObj("Ztree");
 				var node = tree.getNodeByParam("id",
-						data[0].staffPosition.departmentid);
+						data.organizationid);
 				tree.selectNode(node, true);
-				dianjibangding(node);
-				$("#staffid").val(data[0].staffid);
-				$("#cboStaffpositionid").val(data[0].staffpositionid);
-				$("#staffname").val(data[0].staffname);
-				$("#staffnumber").val(data[0].staffnumber);
-				data[0].sex == 1 ? $("#boy")[0].checked = true
-						: $("#girl")[0].checked = true;
-				$("#loginnumber").val(data[0].loginnumber);
-				$("#idcar").val(data[0].idcar);
-				$("#email").val(data[0].email);
-				$("#carnumber").val(data[0].cardnumber);
-				$("#dateofentry").val(data[0].dateofentry);
-				$("#remark").val(data[0].remark);
-				$("#image-view")[0].src = "/pic/" + data[0].headimage;
-				$("#updatePositiontypeid").val(data[0].positiontypeid);
-				$("#leavedate").val(data[0].leavedate);
-				$("#cboGroup").val(data[0].groupid);
-				BanZuID = data[0].groupid;
-				ZhiDuID= data[0].systemid;
-				$("#cboSystem").val(data[0].systemid);
+				dianjibangding(node);	
+				alert(data.id);
+				$("#tid").val(data.id);
+				$("#staffname").val(data.name);
+				$("#staffnumber").val(data.jobnum);
+				data.sex == 1 ? $("#boy").attr("checked", true)
+						: $("#girl").attr("checked", true);		
+				$("#idcar").val(data.peoplenum);
+				$("#age").val(data.age);				
+				$("#email").val(data.email);
+				$("#dateofentry").val(data.entrytime);				
+				$("#image-view").src = "/pic/" + data.image;				
+				BanZuID = data.groupid;
+				ZhiDuID= data.systemid;
+				$("#cboSystem").val(data.systemid);
 			},
 		});
 
@@ -607,22 +706,25 @@
 	function qingkongbiaodan() {
 		$("#form")[0].reset();
 		$("#cboStaffpositionid").empty();
+		$("#tid").empty();
+		$("#boy").empty();
+		$("#girl").empty();
 		$("#image-view")[0].src = "";
 	}
 
 	//删除员工信息
-	function deleteStaff(staffid) {
+	function deleteStaff(teacherid) {
 		if (confirm("删除之后无法恢复此数据，你确定要删除此数据吗？")) {
 			$.ajax({
 				async : false,//同步异步
 				type : 'post',
-				url : "${ctx}/staff/deleteStaff.do?id=" + staffid,
+				url : "${ctx}/personnelController/deleteTeacher?teacherid=" + teacherid,
 				dataType : "json",
 				scriptCharset : "utf-8",
 				success : function(data) {
 					if (data == "1") {
 						alert("删除成功！");
-						selectAllStaff();
+						selectAllStaff(1);
 					} else {
 						alert("删除失败！");
 					}
@@ -659,7 +761,7 @@
 			<li class="active">人员录入</li>
 		</ul>
 	</div>
-
+	
 	<div class="content_wrap">
 		<div class="zTreeDemoBackground left"
 			style="margin: 10px; font-size: 15px;">
@@ -667,24 +769,21 @@
 				<tr>
 					<td>所属机构:</td>
 					<td><input id="Department" readonly="readonly" type="text"
-						onblur="hideMenu()" onclick="showMenu()" style="width:115px"
+						onblur="hideMenu()" onclick="showMenu()" style="width:200px"
 						class="form-control"> <input type="hidden"
 						id="txtDepartmentid">
 					</td>
 					<td>职务:</td>
 					<td><select id="cboPositonid" style="width: 95px;">
 					</select></td>
-					<td>状态:</td>
-					<td><select id="cboPositionTypeid" style="width: 95px;">
-					</select></td>
-					<td>班组:</td>
-					<td><select id="cboGroupid" style="width: 95px;"></select></td>
-					<td><input id="txtNumber" placeholder="人员编号" type="text"
+					<td><input id="jobnum" placeholder="工号" type="text"
 						style="width: 100px;" class="form-control"></td>
-					<td><input id="txtName" placeholder="姓名" type="text"
+					<td><input id="peoplenum" placeholder="身份证号码" type="text"
+						style="width: 300px;" class="form-control"></td>
+					<td><input id="name" placeholder="姓名" type="text"
 						style="width: 100px;" class="form-control"></td>
 					<td>
-						<button type="button" onclick="selectAllStaff()"
+						<button type="button" onclick="selectStaffByValue()"
 							class="btn btn-info btn-sm"
 							style="font-size:14px;margin-right: 5px;">
 							查询 <i class="icon-search icon-on-right bigger-120"></i>
@@ -701,7 +800,7 @@
 	</div>
 	<div id="menuContent" class="menuContent"
 		style="displayx: none; position: absolute;z-index: 99;background-color: #f9f9f9;min-height: 200px;">
-		<ul id="treeDemo" class="ztree" style="margin-top: 0; width: 110px;">
+		<ul id="treeDemo" class="ztree" style="margin-top: 0; width: 195px;">
 		</ul>
 	</div>
 
@@ -715,7 +814,7 @@
 					class="table  table-bordered table_hover">
 					<thead>
 						<tr>
-							<th style="text-align: center; width: 104px;">操作</th>
+							<th style="text-align: center; width: 120px;">操作</th>
 							<th style="text-align: center;">头像</th>
 							<th style="text-align: center;">姓名</th>
 							<th style="text-align: center;">性别</th>
@@ -731,9 +830,13 @@
 					<tbody id="tbodyStaff">
 					</tbody>
 				</table>
-			</div>
-		</fieldset>
+				
+			</div>		
+				
+		</fieldset>	
+		<div id="page" align="center"></div>	
 	</div>
+	
 	<div style="width:inherit;left: 426px;top: 5%;"
 		class="modal hide fade in" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
@@ -753,7 +856,7 @@
 									<form id="form" enctype="multipart/form-data"
 										accept-charset="UTF-8">
 										<fieldset>
-											<%-- <input type="hidden" name="id" value="${employee.id}"/> --%>
+											<input type="hidden" id="tid" name="id"/>
 											<table class="table table-bordered"
 												style="border: 1px solid #dddddd">
 												<tr>
@@ -771,8 +874,7 @@
 															<ul id="Ztree" class="ztree"
 																style="margin-top: 0; width: 200px;">
 															</ul>
-														</div></td>
-								
+														</div></td>													
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>入职日期</div></td>
 													<td><input id="dateofentry" name="entrytimes"
@@ -790,7 +892,7 @@
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>教师姓名</div>
 													</td>
-													<td><input id="staffname" name="teachername" type="text"
+													<td><input id="staffname" name="name" type="text"
 														class="form-control"></td>
 
 													<td style="background-color: #ebf3fb;">
@@ -798,15 +900,15 @@
 													</td>
 													<td><input id="staffnumber" name="jobnum"
 														type="text" class="form-control"></td>
-													<td rowspan="3" style="background-color: #ebf3fb;">
+													<td rowspan="2" style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>照片预览</div>
 													</td>
-													<td rowspan="3">
+													<td rowspan="2">
 														<div id="show">
 															<div id="item"
-																style="height:216px;width:265px;border:1px solid #bbb;">
+																style="height:180px;width:180px;border:1px solid #bbb;">
 																<img name="image" id="image-view"
-																	style="height:216px; width:265px" />
+																	style="height:180px; width:180px"  />
 															</div>
 														</div></td>
 												</tr>
@@ -814,14 +916,14 @@
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>性别</div>
 														<div style="font-size: 17px;" align='right'></div></td>
-													<td><label> <input id="boy" name="teachersex"
+													<td><label> <input id="boy" name="sex"
 															type="radio" class="ace" value="1"> <span
 															class="lbl">男</span> </label> &nbsp;&nbsp;&nbsp; <label>
 															<input id="girl" name="sex" type="radio" class="ace"
 															value="0"> <span class="lbl">女</span> </label></td>
 													<td style="background-color: #ebf3fb;">
 														<div style="font-size: 17px;" align='right'>年龄</div></td>
-													<td><input id="loginnumber" name="teacherage"
+													<td><input id="age" name="age"
 														type="text" class="form-control"></td>
 
 												</tr>
@@ -835,7 +937,13 @@
 														<div style="font-size: 17px;" align='right'>电子邮件</div></td>
 													<td><input id="email" name="email" type="text"
 														class="form-control"></td>
-												</tr>											
+														<td style="background-color: #ebf3fb;">
+														<div style="font-size: 17px;" align='right'>角色</div></td>
+													<td><select name="roleid"
+														id="cboStaffpositionid"
+														class="col-lg-12 col-xs-12 col-sm-12">
+													</select></td>
+												</tr>																					
 											
 												<tr id="thistr">
 													<td style="background-color: #ebf3fb;">
@@ -852,7 +960,7 @@
 													<td><input type="password" name="topassword"
 														id="topassword" class="form-control">
 													</td>
-												</tr>
+												</tr>													
 											</table>
 
 										</fieldset>

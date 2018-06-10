@@ -105,7 +105,7 @@ public class LoginInterceotor implements HandlerInterceptor {
 				|| uri.contains("register")||uri.contains("registersend")
 				||uri.contains("doctorpage")||uri.contains("searchbydepartmentbyid")
 				||uri.contains("searchbycondition")||uri.contains("departmentpage")||uri.contains("hospitalpage")
-				||uri.contains("hospitaldetails")||uri.contains("foreground/noticedetails")) {
+				||uri.contains("hospitaldetails")||uri.contains("foreground/noticedetails")||uri.contains("setDeparment")) {
 			return true;
 		}
 		if (session.getAttribute("user") != null) {

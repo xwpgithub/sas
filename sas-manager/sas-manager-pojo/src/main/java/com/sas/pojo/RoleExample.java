@@ -165,6 +165,66 @@ public class RoleExample {
             return (Criteria) this;
         }
 
+        public Criteria andSchoolidIsNull() {
+            addCriterion("SchoolId is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidIsNotNull() {
+            addCriterion("SchoolId is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidEqualTo(Integer value) {
+            addCriterion("SchoolId =", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidNotEqualTo(Integer value) {
+            addCriterion("SchoolId <>", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidGreaterThan(Integer value) {
+            addCriterion("SchoolId >", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidGreaterThanOrEqualTo(Integer value) {
+            addCriterion("SchoolId >=", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidLessThan(Integer value) {
+            addCriterion("SchoolId <", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidLessThanOrEqualTo(Integer value) {
+            addCriterion("SchoolId <=", value, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidIn(List<Integer> values) {
+            addCriterion("SchoolId in", values, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidNotIn(List<Integer> values) {
+            addCriterion("SchoolId not in", values, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidBetween(Integer value1, Integer value2) {
+            addCriterion("SchoolId between", value1, value2, "schoolid");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchoolidNotBetween(Integer value1, Integer value2) {
+            addCriterion("SchoolId not between", value1, value2, "schoolid");
+            return (Criteria) this;
+        }
+
         public Criteria andRolenameIsNull() {
             addCriterion("RoleName is null");
             return (Criteria) this;

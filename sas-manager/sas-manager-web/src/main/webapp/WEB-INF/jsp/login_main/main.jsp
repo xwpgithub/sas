@@ -172,6 +172,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							</a>
 
 							<ul class="submenu">
+							<li id="setDepartment"
+								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('setDepartment'),'setFunction/main')">
+									<a>
+										<i class="icon-double-angle-right"></i>
+										角色、功能设置
+									</a>
+								</li>
 								<li id="setDepartment"
 								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('setDepartment'),'setDeparment/main')">
 									<a>
@@ -183,7 +190,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('renyuanluru'),'teacherController/selectStaff')">
 									<a >
 										<i class="icon-double-angle-right"></i>
-										教师录入
+										人员录入
 									</a>
 								</li>
 								<li id="renyuanluru"

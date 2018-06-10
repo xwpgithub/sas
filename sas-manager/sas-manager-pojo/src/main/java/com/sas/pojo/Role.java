@@ -5,6 +5,8 @@ import java.util.Date;
 public class Role {
     private Integer roleid;
 
+    private Integer schoolid;
+
     private String rolename;
 
     private String createby;
@@ -21,6 +23,14 @@ public class Role {
 
     public void setRoleid(Integer roleid) {
         this.roleid = roleid;
+    }
+
+    public Integer getSchoolid() {
+        return schoolid;
+    }
+
+    public void setSchoolid(Integer schoolid) {
+        this.schoolid = schoolid;
     }
 
     public String getRolename() {

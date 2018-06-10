@@ -21,15 +21,16 @@ public class OrganizationController  {
 
 	@RequestMapping("/main")
 	public String selectAll( HttpServletRequest request) {
+		System.out.println("连接成功------------------------------连接成功");
 		UserLoginInfo userLoginInfo = (UserLoginInfo) request.getSession().getAttribute("user");
 		System.out.println(userLoginInfo.getOrganizationid()+"号组织管理员进入系统------------------");
 		if (userLoginInfo.getOrganizationid()==0) {
 			List<OrganizationDictionary> departments = organizationService.selectAll();
-			request.setAttribute("departments", departments);
+			request.getSession().setAttribute("departments", departments);
 		}
 		else {
 			List<OrganizationDictionary> departments = organizationService.selectAllByOId(userLoginInfo.getOrganizationid());
-			request.setAttribute("departments", departments);
+			request.getSession().setAttribute("departments", departments);
 		}
 		
 		return "/renshiguanli/jigoushezhi/main";

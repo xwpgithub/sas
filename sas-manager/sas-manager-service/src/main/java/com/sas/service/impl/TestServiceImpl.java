@@ -42,11 +42,12 @@ public class TestServiceImpl implements TestService {
 	* @see com.sas.service.TestService#findByloginname(java.lang.String) 
 	*/
 	@Override
-	public UserLoginInfo findByloginname(String adminName) {
+	public UserLoginInfo findByloginname(String adminName,String password) {
 		// TODO Auto-generated method stub
 		        UserLoginInfoExample example = new UserLoginInfoExample();
 		        Criteria criteria = example.createCriteria();
 				criteria.andLoginnameEqualTo(adminName);
+				criteria.andLoginpasswordEqualTo(password);
 				List<UserLoginInfo> result = userLoginInfoMapper.selectByExample(example);
 				if (result==null||result.size()==0) {
 					return null;

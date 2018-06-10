@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   </head>
   <body>
-   <form class="form-horizontal" action="login" method="post">
+   <form class="form-horizontal" action="adminlogin" method="post">
  <div class="login">
 		 <div class="login-main">
 		 		<div class="login-top">
