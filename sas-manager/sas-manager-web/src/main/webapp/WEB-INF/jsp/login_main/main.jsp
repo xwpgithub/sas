@@ -215,7 +215,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</li>
 
 								<li id="course" 
-                              onclick="activechange(document.getElementById('paibanguangli'),document.getElementById('course'),'courseController/selectAllCourse')">
+                              onclick="activechange(document.getElementById('paibanguangli'),document.getElementById('course'),'courseAdminController/selectAllCourse')">
 									<a>
 										<i class="icon-double-angle-right"></i>
 										课程录入

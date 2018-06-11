@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.sas.mapper.UserInfoMapper;
 import com.sas.pojo.ClassRoom;
+import com.sas.pojo.CourseAdmin;
 import com.sas.pojo.OrganizationDictionary;
 import com.sas.pojo.Personnel;
 import com.sas.pojo.Teacher;
@@ -29,6 +30,7 @@ import com.sas.pojo.UserInfo;
 import com.sas.pojo.UserLoginInfo;
 import com.sas.pojo.UserRole;
 import com.sas.service.ClassRoomService;
+import com.sas.service.CourseAdminService;
 import com.sas.service.OrganizationService;
 import com.sas.service.PersonnelService;
 import com.sas.service.TeacherService;
@@ -38,17 +40,17 @@ import com.sas.service.UserRoleService;
 import com.sas.util.CommonMethod;
 
 @Controller
-@RequestMapping("/classRoomController")
-public class CourseController  {
+@RequestMapping("/courseAdminController")
+public class CourseAdminController  {
 
 	@Resource
 	private OrganizationService organizationService;
 	@Resource
-	private ClassRoomService classRoomService;
+	private CourseAdminService courseAdminService;
 	/** 员工管理 **/
-	@RequestMapping("/selectClassRoom")
+	@RequestMapping("/selectAllCourse")
 	public String redirect() {
-		return "/renshiguanli/classroom/classroom";
+		return "/renshiguanli/course/course";
 	}
 	 /**
 	  * list转json
@@ -94,9 +96,9 @@ public class CourseController  {
 		* @version V1.0
 		 */
 		@ResponseBody
-		@RequestMapping(value = "/selectAllClassRoom", produces = "text/html;charset=UTF-8")
+		@RequestMapping(value = "/selectAllCourseAdmin", produces = "text/html;charset=UTF-8")
 		public String selectAllStaff(Integer departmentid,@RequestParam(defaultValue = "1") Integer pageNum,
-				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,Integer galleryful,String classroomaddress,String classroomname) {
+				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,String cname) {
 			System.out.println("进入方法"+departmentid);
 			ArrayList<Integer> oidList = new ArrayList<Integer>();
 			if (departmentid==null) {
@@ -117,8 +119,8 @@ public class CourseController  {
 				}
 			}			
 			
-			PageInfo<ClassRoom> pageInfo = classRoomService.selectAllClassRoom(pageNum, pageSize,oidList,galleryful,classroomaddress,classroomname);
-			List<ClassRoom> list = pageInfo.getList();
+			PageInfo<CourseAdmin> pageInfo = courseAdminService.selectAllCourseAdmin(pageNum, pageSize,oidList,cname);
+			List<CourseAdmin> list = pageInfo.getList();
 			//String teachers = JSON.toJSONStringWithDateFormat(list, "yyyy-MM-dd");
 			List list2 = new ArrayList<>();
 			list2.add(list);
@@ -151,23 +153,23 @@ public class CourseController  {
 		 */
 		
 			@ResponseBody
-			@RequestMapping(value = "/insertClassRoom", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String insertTeacher(ClassRoom classRoom,String createdate2)
+			@RequestMapping(value = "/insertCourseAdmin", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+			public String insertTeacher(CourseAdmin courseAdmin,String createdate2)
 					throws Exception {	
-				System.out.println("权限id为"+classRoom.getOrganizationid());
-				classRoom.setClassroomid(null);
+				System.out.println("权限id为"+courseAdmin.getOrganizationid());
+				courseAdmin.setCid(null);
 		        //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
 		        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
 		        try {  
 		            //使用SimpleDateFormat的parse()方法生成Date  
 		            Date date = sf.parse(createdate2);  
-		            classRoom.setCreatedate(date);
+		            courseAdmin.setCreatedate(date);
 		             
 		        } catch (ParseException e) {  
 		            e.printStackTrace();  
 		        }  
 				
-				int i= classRoomService.insert(classRoom);
+				int i= courseAdminService.insert(courseAdmin);
 			
 				String result =  Integer.toString(i);
 				
@@ -191,22 +193,22 @@ public class CourseController  {
 			
 		    
 			@ResponseBody
-			@RequestMapping(value = "/updateClassRoom", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String updateStaff(ClassRoom classRoom,String createdate2,Integer id)
+			@RequestMapping(value = "/updateCourseAdmin", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+			public String updateStaff(CourseAdmin courseAdmin,String createdate2,Integer id)
 					throws Exception {
 				 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
 			        try {  
 			            //使用SimpleDateFormat的parse()方法生成Date  
 			            Date date = sf.parse(createdate2);  
-			            classRoom.setCreatedate(date);
-			            classRoom.setClassroomid(id);
+			            courseAdmin.setCreatedate(date);
+			            courseAdmin.setCid(id);
 			             
 			        } catch (ParseException e) {  
 			            e.printStackTrace();  
 			        }						
 				
 				
-				String i = Integer.toString(classRoomService.update(classRoom));
+				String i = Integer.toString(courseAdminService.update(courseAdmin));
 				return i;
 			}
 
@@ -224,10 +226,10 @@ public class CourseController  {
 			 */
 			 
 			@ResponseBody
-			@RequestMapping(value = "/selectByClassId", produces = "text/html;charset=UTF-8")
-			public String selectById(Integer classId) {
-				ClassRoom classRoom =  classRoomService.selectClassRoomById(classId);
-				String data = JSON.toJSONStringWithDateFormat(classRoom, "yyyy-MM-dd");
+			@RequestMapping(value = "/selectByCourseAdminId", produces = "text/html;charset=UTF-8")
+			public String selectById(Integer courseAdminId) {
+				CourseAdmin courseAdmin =  courseAdminService.selectCourseAdminById(courseAdminId);
+				String data = JSON.toJSONStringWithDateFormat(courseAdmin, "yyyy-MM-dd");
 				return data;
 			}
 			/**
@@ -243,9 +245,9 @@ public class CourseController  {
 			* @version V1.0
 			 */
 			@ResponseBody
-			@RequestMapping(value = "/deleteClassRoom", produces = "text/html;charset=UTF-8")
-			public String delete(int classroomid) {	
-				int flag = classRoomService.delete(classroomid);
+			@RequestMapping(value = "/deleteCourseAdmin", produces = "text/html;charset=UTF-8")
+			public String delete(int courseAdminId) {	
+				int flag = courseAdminService.delete(courseAdminId);
 				return Integer.toString(flag);
 			}
 

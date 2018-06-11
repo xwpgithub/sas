@@ -2,6 +2,7 @@ package com.sas.pojo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class CourseAdminExample {
@@ -103,6 +104,32 @@ public class CourseAdminExample {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andCidIsNull() {
@@ -316,52 +343,52 @@ public class CourseAdminExample {
         }
 
         public Criteria andCreatedateEqualTo(Date value) {
-            addCriterion("CreateDate =", value, "createdate");
+            addCriterionForJDBCDate("CreateDate =", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotEqualTo(Date value) {
-            addCriterion("CreateDate <>", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <>", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateGreaterThan(Date value) {
-            addCriterion("CreateDate >", value, "createdate");
+            addCriterionForJDBCDate("CreateDate >", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateGreaterThanOrEqualTo(Date value) {
-            addCriterion("CreateDate >=", value, "createdate");
+            addCriterionForJDBCDate("CreateDate >=", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateLessThan(Date value) {
-            addCriterion("CreateDate <", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateLessThanOrEqualTo(Date value) {
-            addCriterion("CreateDate <=", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <=", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateIn(List<Date> values) {
-            addCriterion("CreateDate in", values, "createdate");
+            addCriterionForJDBCDate("CreateDate in", values, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotIn(List<Date> values) {
-            addCriterion("CreateDate not in", values, "createdate");
+            addCriterionForJDBCDate("CreateDate not in", values, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateBetween(Date value1, Date value2) {
-            addCriterion("CreateDate between", value1, value2, "createdate");
+            addCriterionForJDBCDate("CreateDate between", value1, value2, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotBetween(Date value1, Date value2) {
-            addCriterion("CreateDate not between", value1, value2, "createdate");
+            addCriterionForJDBCDate("CreateDate not between", value1, value2, "createdate");
             return (Criteria) this;
         }
 
@@ -375,53 +402,53 @@ public class CourseAdminExample {
             return (Criteria) this;
         }
 
-        public Criteria andModifydateEqualTo(Double value) {
-            addCriterion("ModifyDate =", value, "modifydate");
+        public Criteria andModifydateEqualTo(Date value) {
+            addCriterionForJDBCDate("ModifyDate =", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateNotEqualTo(Double value) {
-            addCriterion("ModifyDate <>", value, "modifydate");
+        public Criteria andModifydateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("ModifyDate <>", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateGreaterThan(Double value) {
-            addCriterion("ModifyDate >", value, "modifydate");
+        public Criteria andModifydateGreaterThan(Date value) {
+            addCriterionForJDBCDate("ModifyDate >", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateGreaterThanOrEqualTo(Double value) {
-            addCriterion("ModifyDate >=", value, "modifydate");
+        public Criteria andModifydateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("ModifyDate >=", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateLessThan(Double value) {
-            addCriterion("ModifyDate <", value, "modifydate");
+        public Criteria andModifydateLessThan(Date value) {
+            addCriterionForJDBCDate("ModifyDate <", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateLessThanOrEqualTo(Double value) {
-            addCriterion("ModifyDate <=", value, "modifydate");
+        public Criteria andModifydateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("ModifyDate <=", value, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateIn(List<Double> values) {
-            addCriterion("ModifyDate in", values, "modifydate");
+        public Criteria andModifydateIn(List<Date> values) {
+            addCriterionForJDBCDate("ModifyDate in", values, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateNotIn(List<Double> values) {
-            addCriterion("ModifyDate not in", values, "modifydate");
+        public Criteria andModifydateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("ModifyDate not in", values, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateBetween(Double value1, Double value2) {
-            addCriterion("ModifyDate between", value1, value2, "modifydate");
+        public Criteria andModifydateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("ModifyDate between", value1, value2, "modifydate");
             return (Criteria) this;
         }
 
-        public Criteria andModifydateNotBetween(Double value1, Double value2) {
-            addCriterion("ModifyDate not between", value1, value2, "modifydate");
+        public Criteria andModifydateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("ModifyDate not between", value1, value2, "modifydate");
             return (Criteria) this;
         }
 
@@ -552,6 +579,66 @@ public class CourseAdminExample {
 
         public Criteria andOrganizationidNotBetween(Integer value1, Integer value2) {
             addCriterion("OrganizationId not between", value1, value2, "organizationid");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenIsNull() {
+            addCriterion("IsOpen is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenIsNotNull() {
+            addCriterion("IsOpen is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenEqualTo(Integer value) {
+            addCriterion("IsOpen =", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenNotEqualTo(Integer value) {
+            addCriterion("IsOpen <>", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenGreaterThan(Integer value) {
+            addCriterion("IsOpen >", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenGreaterThanOrEqualTo(Integer value) {
+            addCriterion("IsOpen >=", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenLessThan(Integer value) {
+            addCriterion("IsOpen <", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenLessThanOrEqualTo(Integer value) {
+            addCriterion("IsOpen <=", value, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenIn(List<Integer> values) {
+            addCriterion("IsOpen in", values, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenNotIn(List<Integer> values) {
+            addCriterion("IsOpen not in", values, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenBetween(Integer value1, Integer value2) {
+            addCriterion("IsOpen between", value1, value2, "isopen");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsopenNotBetween(Integer value1, Integer value2) {
+            addCriterion("IsOpen not between", value1, value2, "isopen");
             return (Criteria) this;
         }
     }

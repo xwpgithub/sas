@@ -11,11 +11,13 @@ public class CourseAdmin {
 
     private Date createdate;
 
-    private Double modifydate;
+    private Date modifydate;
 
     private String modifyby;
 
     private Integer organizationid;
+
+    private Integer isopen;
 
     public Integer getCid() {
         return cid;
@@ -49,11 +51,11 @@ public class CourseAdmin {
         this.createdate = createdate;
     }
 
-    public Double getModifydate() {
+    public Date getModifydate() {
         return modifydate;
     }
 
-    public void setModifydate(Double modifydate) {
+    public void setModifydate(Date modifydate) {
         this.modifydate = modifydate;
     }
 
@@ -71,5 +73,13 @@ public class CourseAdmin {
 
     public void setOrganizationid(Integer organizationid) {
         this.organizationid = organizationid;
+    }
+
+    public Integer getIsopen() {
+        return isopen;
+    }
+
+    public void setIsopen(Integer isopen) {
+        this.isopen = isopen;
     }
 }

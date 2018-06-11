@@ -218,7 +218,7 @@
 		$("#thistr").show();
 		$("#lizhi").hide();
 		$("#myModal").modal("show");
-		$("#tladd_edit")[0].innerHTML = "新增教室";
+		$("#tladd_edit")[0].innerHTML = "新增课程";
 	}
 	/** 表单提交验证**/
 	function fromYanZhen() {
@@ -317,10 +317,10 @@
 	//新增员工
 	function submitForm() {
 		var formData = new FormData($("#form")[0]);
-		if ($("#tladd_edit")[0].innerText.trim() == "新增教室") {
+		if ($("#tladd_edit")[0].innerText.trim() == "新增课程") {
 			if ($("#form").valid()) {
 				$.ajax({
-					url : "${ctx}/classRoomController/insertClassRoom",
+					url : "${ctx}/courseAdminController/insertCourseAdmin",
 					type : 'POST',
 					data : formData,
 					async : false,
@@ -353,7 +353,7 @@
 				ajax("${ctx}/staff/updateStaffSystem.do?staffid="+ $("#staffid").val()+"&systemid="+$("#cboSystem").val());
 				} */
 				$.ajax({
-					url : "${ctx}/classRoomController/updateClassRoom",
+					url : "${ctx}/courseAdminController/updateCourseAdmin",
 					type : 'POST',
 					data : formData,
 					async : false,
@@ -478,31 +478,25 @@
 				.ajax({
 					async : false,//同步异步
 					type : 'post',
-					url : "${ctx}/classRoomController/selectAllClassRoom?departmentid="
+					url : "${ctx}/courseAdminController/selectAllCourseAdmin?departmentid="
 							+ ${user.organizationid}+"&&pageNum="+pagenum+"&&pageSize="+pagesize,
 					dataType : "json",
 					scriptCharset : "utf-8",
 					success : function(data) {			
 						$('#tbodyStaff').empty();					
 						for ( var i = 0; i < data[0].length; i++) {
-							var isuse = data[0][i].isuse == 0 ? "可使用" : "不可使用";
+							var isopen = data[0][i].isopen == 0 ? "开课" : "不开课";
 							var html = "<tr onclick='onclickStaffRow(this)'><td><a  href='javascript:deleteStaff("
-									+ data[0][i].classroomid
+									+ data[0][i].cid
 									+ ")'>【删除】</a><a href='javascript:updateStaff("
-									+ data[0][i].classroomid
+									+ data[0][i].cid
 									+ ")'>【编辑】</a></td>"
 									+ "<td>"
-									+ data[0][i].classroomname
-									+ "</td>"
+									+ data[0][i].cname
+									+ "</td>"								
 									+ "<td>"
-									+ data[0][i].classroomaddress
-									+ "</td>"
-									+ "<td>"
-									+ isuse
-									+ "</td>"
-									+ "<td>"
-									+ data[0][i].galleryful
-									+ "</td>"																																																				
+									+ isopen
+									+ "</td>"																																																													
 									+ "<td>"
 									+ data[0][i].createdate + "</td></tr>";										
 							$('#tbodyStaff').append(html);						
@@ -536,7 +530,7 @@
 	
 	
 	//模糊查询员工信息
-	function selectStaffByValue(pagenum,pagesize,departmentid,galleryful,classroomaddress,classroomname) {
+	function selectStaffByValue(pagenum,pagesize,departmentid,cname) {
 		if(pagesize==null){
 			pagesize = 10;
 		}
@@ -544,42 +538,34 @@
 			pagenum = 1;
 		}
 		departmentid = $("#txtDepartmentid").val();
-		galleryful = $("#galleryful").val();
-		classroomaddress = $("#classroomaddress").val();
-		classroomname = $("#classroomname").val();
+		cname = $("#cname").val();
 		$
 				.ajax({
 					async : false,//同步异步
 					type : 'post',
-					url : "${ctx}/classRoomController/selectAllClassRoom?departmentid="
-							+ departmentid+"&&pageNum="+pagenum+"&&pageSize="+pagesize+"&&galleryful="+galleryful+"&&classroomaddress="+classroomaddress+"&&classroomname="+classroomname,
+					url : "${ctx}/courseAdminController/selectAllCourseAdmin?departmentid="
+							+ departmentid+"&&pageNum="+pagenum+"&&pageSize="+pagesize+"&&cname="+cname,
 					dataType : "json",
 					scriptCharset : "utf-8",
 					success : function(data) {			
 						$('#tbodyStaff').empty();					
 						for ( var i = 0; i < data[0].length; i++) {
-							var isuse = data[0][i].isuse == 0 ? "可使用" : "不可使用";
+							var isopen = data[0][i].isopen == 0 ? "开课" : "不开课";
 							var html = "<tr onclick='onclickStaffRow(this)'><td><a  href='javascript:deleteStaff("
-									+ data[0][i].classroomid
+									+ data[0][i].cid
 									+ ")'>【删除】</a><a href='javascript:updateStaff("
-									+ data[0][i].classroomid
+									+ data[0][i].cid
 									+ ")'>【编辑】</a></td>"
 									+ "<td>"
-									+ data[0][i].classroomname
-									+ "</td>"
+									+ data[0][i].cname
+									+ "</td>"								
 									+ "<td>"
-									+ data[0][i].classroomaddress
-									+ "</td>"
-									+ "<td>"
-									+ isuse
-									+ "</td>"
-									+ "<td>"
-									+ data[0][i].galleryful
-									+ "</td>"																																																				
+									+ isopen
+									+ "</td>"																																																													
 									+ "<td>"
 									+ data[0][i].createdate + "</td></tr>";										
 							$('#tbodyStaff').append(html);						
-						}						
+						}				
 						// 使用laypage调用分页
 						layui.use('laypage', function(){
 							var laypage = layui.laypage;						
@@ -597,7 +583,7 @@
 							    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
 							    ,jump: function(obj, first){
 							      if(!first){
-							    	  selectStaffByValue(obj.curr,obj.limit,departmentid,galleryful,classroomaddress,classroomname);
+							    	  selectStaffByValue(obj.curr,obj.limit,departmentid,cname);
 							        
 							      }						   
 							    }
@@ -634,18 +620,18 @@
 
 	
 	//修改员工信息
-	function updateStaff(classId) {
+	function updateStaff(courseAdminId) {
 		$("label[class='error']").remove();
 		$.ajax({
 			async : false,//同步异步
 			type : 'post',
-			url : "${ctx}/classRoomController/selectByClassId?classId=" + classId,
+			url : "${ctx}/courseAdminController/selectByCourseAdminId?courseAdminId=" + courseAdminId,
 			dataType : "json",
 			scriptCharset : "utf-8",
 			success : function(data) {
 				qingkongbiaodan();//先清空form数据
 				$("#thistr").hide();
-				$("#tladd_edit")[0].innerHTML = "修改教室";
+				$("#tladd_edit")[0].innerHTML = "修改课程";
 				$("#myModal").modal("show");
 				$("#lizhi").show();
 				var tree = $.fn.zTree.getZTreeObj("Ztree");
@@ -653,14 +639,11 @@
 						data.organizationid);
 				tree.selectNode(node, true);
 				dianjibangding(node);	
-				$("#tid").val(data.classroomid);
-				$("#staffname").val(data.classroomname);
-				$("#staffnumber").val(data.classroomaddress);
-				data.isuse == 1 ? $("#boy").attr("checked", true)
+				$("#tid").val(data.cid);
+				$("#staffname").val(data.cname);
+				data.isopen == 1 ? $("#boy").attr("checked", true)
 						: $("#girl").attr("checked", true);						
-				$("#age").val(data.galleryful);								
-				$("#dateofentry").val(data.createdate);				
-								
+				$("#dateofentry").val(data.createdate);								
 				BanZuID = data.groupid;
 				ZhiDuID= data.systemid;
 				$("#cboSystem").val(data.systemid);
@@ -678,12 +661,12 @@
 	}
 
 	//删除员工信息
-	function deleteStaff(classroomid) {
+	function deleteStaff(courseAdminId) {
 		if (confirm("删除之后无法恢复此数据，你确定要删除此数据吗？")) {
 			$.ajax({
 				async : false,//同步异步
 				type : 'post',
-				url : "${ctx}/classRoomController/deleteClassRoom?classroomid=" + classroomid,
+				url : "${ctx}/courseAdminController/deleteCourseAdmin?courseAdminId=" + courseAdminId,
 				dataType : "json",
 				scriptCharset : "utf-8",
 				success : function(data) {
@@ -723,7 +706,7 @@
 			</li>
 			<li><a href="#">人事管理</a>
 			</li>
-			<li class="active">教室录入</li>
+			<li class="active">课程录入</li>
 		</ul>
 	</div>
 	
@@ -738,11 +721,7 @@
 						class="form-control"> <input type="hidden"
 						id="txtDepartmentid">
 					</td>
-					<td><input id="galleryful" placeholder="容纳量" type="text"
-						style="width: 100px;" class="form-control"></td>
-					<td><input id="classroomaddress" placeholder="地址" type="text"
-						style="width: 300px;" class="form-control"></td>
-					<td><input id="classroomname" placeholder="教室名称" type="text"
+					<td><input id="cname" placeholder="课程名称" type="text"
 						style="width: 100px;" class="form-control"></td>
 					<td>
 						<button type="button" onclick="selectStaffByValue()"
@@ -777,10 +756,8 @@
 					<thead>
 						<tr>
 							<th style="text-align: center; width: 120px;">操作</th>
-							<th style="text-align: center;">教室名</th>
-							<th style="text-align: center;">地址</th>
-							<th style="text-align: center;">使用状态</th>
-							<th style="text-align: center;">容纳量</th>
+							<th style="text-align: center;">课程名</th>
+							<th style="text-align: center;">开课状态</th>
 							<th style="text-align: center;">录入时间</th>
 						
 
@@ -804,7 +781,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增教室</h4>
+					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增课程</h4>
 				</div>
 				<div class="modal-body" style=" max-height: 495px;">
 					<div class="row">
@@ -842,32 +819,20 @@
 												</tr>
 												<tr>
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>教室名称</div>
+														<div style="font-size: 17px;" align='right'>课程名称</div>
 													</td>
-													<td><input id="staffname" name="classroomname" type="text"
+													<td><input id="staffname" name="cname" type="text"
 														class="form-control"></td>
-
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>地址</div>
-													</td>
-													<td><input id="staffnumber" name="classroomaddress"
-														type="text" class="form-control"></td>													
-												</tr>
-												<tr>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>可否使用</div>
+														<div style="font-size: 17px;" align='right'>可否开课</div>
 														<div style="font-size: 17px;" align='right'></div></td>
-													<td><label> <input id="boy" name="isuse"
+													<td><label> <input id="boy" name="isopen"
 															type="radio" class="ace" value="1"> <span
-															class="lbl">不可使用</span> </label> &nbsp;&nbsp;&nbsp; <label>
-															<input id="girl" name="isuse" type="radio" class="ace"
-															value="0"> <span class="lbl">可使用</span> </label></td>
-													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>容纳量</div></td>
-													<td><input id="age" name="galleryful"
-														type="text" class="form-control"></td>
-
+															class="lbl">不开课</span> </label> &nbsp;&nbsp;&nbsp; <label>
+															<input id="girl" name="isopen" type="radio" class="ace"
+															value="0"> <span class="lbl">开课</span> </label></td>								
 												</tr>
+
 																																																															
 											</table>
 
