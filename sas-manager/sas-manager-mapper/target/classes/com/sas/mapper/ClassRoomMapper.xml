@@ -11,7 +11,7 @@
     <result column="UseStratTime" property="usestrattime" jdbcType="DATE" />
     <result column="UseEndTime" property="useendtime" jdbcType="DATE" />
     <result column="CreateBy" property="createby" jdbcType="VARCHAR" />
-    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createdate" jdbcType="DATE" />
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
   </resultMap>
@@ -116,7 +116,7 @@
     values (#{classroomid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{classroomname,jdbcType=VARCHAR}, 
       #{classroomaddress,jdbcType=VARCHAR}, #{galleryful,jdbcType=INTEGER}, #{isuse,jdbcType=INTEGER}, 
       #{usestrattime,jdbcType=DATE}, #{useendtime,jdbcType=DATE}, #{createby,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=TIMESTAMP}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
+      #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.ClassRoom" >
@@ -188,7 +188,7 @@
         #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        #{createdate,jdbcType=TIMESTAMP},
+        #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         #{modifydate,jdbcType=TIMESTAMP},
@@ -235,7 +235,7 @@
         CreateBy = #{record.createby,jdbcType=VARCHAR},
       </if>
       <if test="record.createdate != null" >
-        CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{record.createdate,jdbcType=DATE},
       </if>
       <if test="record.modifydate != null" >
         ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
@@ -259,7 +259,7 @@
       UseStratTime = #{record.usestrattime,jdbcType=DATE},
       UseEndTime = #{record.useendtime,jdbcType=DATE},
       CreateBy = #{record.createby,jdbcType=VARCHAR},
-      CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{record.createdate,jdbcType=DATE},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{record.modifyby,jdbcType=VARCHAR}
     <if test="_parameter != null" >
@@ -294,7 +294,7 @@
         CreateBy = #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
@@ -315,7 +315,7 @@
       UseStratTime = #{usestrattime,jdbcType=DATE},
       UseEndTime = #{useendtime,jdbcType=DATE},
       CreateBy = #{createby,jdbcType=VARCHAR},
-      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{createdate,jdbcType=DATE},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{modifyby,jdbcType=VARCHAR}
     where ClassRoomId = #{classroomid,jdbcType=INTEGER}

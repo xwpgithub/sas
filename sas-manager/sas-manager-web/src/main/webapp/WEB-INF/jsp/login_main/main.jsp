@@ -166,7 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<li id="renshiguanli">
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-list"></i>
-								<span class="menu-text"> 机构/人员/教室管理 </span>
+								<span class="menu-text"> 机构/人员管理 </span>
 
 								<b class="arrow icon-angle-down"></b>
 							</a>
@@ -179,8 +179,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										角色、功能设置
 									</a>
 								</li>
-								<li id="setDepartment"
-								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('setDepartment'),'setDeparment/main')">
+								<li id="roleset"
+								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('roleset'),'setDeparment/main')">
 									<a>
 										<i class="icon-double-angle-right"></i>
 										机构、学校设置
@@ -192,14 +192,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										<i class="icon-double-angle-right"></i>
 										人员录入
 									</a>
-								</li>
-								<li id="renyuanluru"
-								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('renyuanluru'),'menuController/selectStaff')">
-									<a >
-										<i class="icon-double-angle-right"></i>
-										教室录入
-									</a>
-								</li>
+								</li>							
 								 
 							</ul>
 						</li>
@@ -207,25 +200,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<li id="paibanguangli">
 							<a href="#" class="dropdown-toggle">
 								<i class="icon-edit"></i>
-								<span class="menu-text"> 排班管理  </span>
+								<span class="menu-text"> 教室/课程管理  </span>
 
 								<b class="arrow icon-angle-down"></b>
 							</a>
 
 							<ul class="submenu">
-								<li id="renyuanpaiban"
-                                onclick="activechange(document.getElementById('paibanguangli'),document.getElementById('renyuanpaiban'),'menuController/redirectScheduling')">
-									<a>
+								<li id="classroom"
+								onclick="activechange(document.getElementById('renshiguanli'),document.getElementById('classroom'),'classRoomController/selectClassRoom')">
+									<a >
 										<i class="icon-double-angle-right"></i>
-										人员排班 
+										教室录入
 									</a>
 								</li>
 
-								<li id="bancishezhi" 
-                              onclick="activechange(document.getElementById('paibanguangli'),document.getElementById('bancishezhi'),'menuController/selectClasses')">
+								<li id="course" 
+                              onclick="activechange(document.getElementById('paibanguangli'),document.getElementById('course'),'courseController/selectAllCourse')">
 									<a>
 										<i class="icon-double-angle-right"></i>
-										班次设置
+										课程录入
 									</a>
 								</li>
 								<!-- <li id="gudinglunbanshizhe"

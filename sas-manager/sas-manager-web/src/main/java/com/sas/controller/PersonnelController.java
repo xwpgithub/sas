@@ -100,7 +100,7 @@ public class PersonnelController  {
 		@ResponseBody
 		@RequestMapping(value = "/selectAllTeacher", produces = "text/html;charset=UTF-8")
 		public String selectAllStaff(Integer departmentid,@RequestParam(defaultValue = "1") Integer pageNum,
-				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,Integer jobnum,String peoplenum,String teachername) {
+				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,Integer jobnum,String peoplenum,String teachername,Integer roleid) {
 			System.out.println("进入方法"+departmentid);
 			ArrayList<Integer> oidList = new ArrayList<Integer>();
 			if (departmentid==null) {
@@ -121,7 +121,7 @@ public class PersonnelController  {
 				}
 			}			
 			
-			PageInfo<Personnel> pageInfo = personnelService.selectAllPersonnel(pageNum, pageSize,oidList,jobnum,peoplenum,teachername);
+			PageInfo<Personnel> pageInfo = personnelService.selectAllPersonnel(pageNum, pageSize,oidList,jobnum,peoplenum,teachername,roleid);
 			List<Personnel> list = pageInfo.getList();
 			//String teachers = JSON.toJSONStringWithDateFormat(list, "yyyy-MM-dd");
 			List list2 = new ArrayList<>();
@@ -217,7 +217,7 @@ public class PersonnelController  {
 		    
 			@ResponseBody
 			@RequestMapping(value = "/updateTeacher", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String updateStaff(Personnel personnel,String entrytimes,Integer id, MultipartFile file_img)
+			public String updateStaff(Personnel personnel,String entrytimes,Integer id,String username,String password, MultipartFile file_img)
 					throws Exception {
 				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id);
 				 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -234,6 +234,22 @@ public class PersonnelController  {
 							+ personnel.getImage());
 					personnel.setImage(CommonMethod.saveFile(file_img, "headImg/"));
 				}
+				
+				//更新登录信息
+				UserLoginInfo userLoginInfo = new  UserLoginInfo();
+				//userLoginInfo.setLoginname(username);
+				//userLoginInfo.setLoginpassword(password);
+				userLoginInfo.setOrganizationid(personnel.getOrganizationid());
+				userLoginInfo.setUserid(personnel.getId());			
+				userLoginInfoService.updateByUserid(userLoginInfo);
+				//更新用户角色信息
+				UserRole userRole = new UserRole();
+				userRole.setUserid(id);
+				userRole.setRolId(personnel.getRoleid());
+				userRoleService.updateByUserid(userRole);
+				
+				
+				
 				String i = Integer.toString(personnelService.update(personnel));
 				return i;
 			}
@@ -272,8 +288,13 @@ public class PersonnelController  {
 			 */
 			@ResponseBody
 			@RequestMapping(value = "/deleteTeacher", produces = "text/html;charset=UTF-8")
-			public String delete(int teacherid) {				
-				return Integer.toString(personnelService.delete(teacherid));
+			public String delete(int teacherid) {	
+				int flag1 = userInfoService.deleteByUserid(teacherid);
+				int flag2 = userLoginInfoService.deleteByUserid(teacherid);
+				int flag3 = userRoleService.deleteByUserid(teacherid);
+				int flag4 = personnelService.delete(teacherid);
+				System.out.println(flag4+"---"+flag1+"---"+flag2+"---"+flag3);
+				return Integer.toString(flag4*flag1);
 			}
 
 	

@@ -47,7 +47,7 @@ public class PersonnelServiceImpl implements PersonnelService {
 	* 
 	*/
 	@Override
-	public PageInfo<Personnel> selectAllPersonnel(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer jobnum,String peoplenum,String teachername) {
+	public PageInfo<Personnel> selectAllPersonnel(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer jobnum,String peoplenum,String teachername,Integer roleid ) {
 						
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 5 : pageSize;
@@ -72,6 +72,12 @@ public class PersonnelServiceImpl implements PersonnelService {
 		}
 		else {
 			criteria.andNameLike("%"+teachername+"%");
+		}
+		if (roleid ==null|| roleid==0) {
+			
+		}
+		else {
+			criteria.andRoleidEqualTo(roleid);
 		}
 		
 		List<Personnel> list = personnelMapper.selectByExample(example);

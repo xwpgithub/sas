@@ -53,6 +53,31 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return userInfoMapper.insert(userInfo);
 	}
 
+	/* (非 Javadoc) 
+	* <p>Title: update</p> 
+	* <p>Description: </p> 
+	* @param userInfo
+	* @return 
+	* @see com.sas.service.UserInfoService#update(com.sas.pojo.UserInfo) 
+	*/
+	@Override
+	public int updateByUserid(UserInfo userInfo) {	
+		return userInfoMapper.updateByPrimaryKeySelective(userInfo);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: deleteByUserid</p> 
+	* <p>Description: </p> 
+	* @param userInfo
+	* @return 
+	* @see com.sas.service.UserInfoService#deleteByUserid(com.sas.pojo.UserInfo) 
+	*/
+	@Override
+	public int deleteByUserid(int id) {
+		// TODO Auto-generated method stub
+		return userInfoMapper.deleteByPrimaryKey(id);
+	}
+
 	
 	
 

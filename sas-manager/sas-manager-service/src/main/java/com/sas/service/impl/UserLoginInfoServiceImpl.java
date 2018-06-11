@@ -50,6 +50,36 @@ public class UserLoginInfoServiceImpl implements UserLoginInfoService {
 		return userLoginInfoMapper.insert(userLoginInfo);
 	}
 
+	/* (非 Javadoc) 
+	* <p>Title: update</p> 
+	* <p>Description: </p> 
+	* @param userLoginInfo
+	* @return 
+	* @see com.sas.service.UserLoginInfoService#update(com.sas.pojo.UserLoginInfo) 
+	*/
+	@Override
+	public int updateByUserid(UserLoginInfo userLoginInfo) {
+		UserLoginInfoExample example = new UserLoginInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(userLoginInfo.getUserid());
+		return userLoginInfoMapper.updateByExampleSelective(userLoginInfo, example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: deleteByUserid</p> 
+	* <p>Description: </p> 
+	* @param userLoginInfo
+	* @return 
+	* @see com.sas.service.UserLoginInfoService#deleteByUserid(com.sas.pojo.UserLoginInfo) 
+	*/
+	@Override
+	public int deleteByUserid(int id) {
+		UserLoginInfoExample example = new UserLoginInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(id);
+		return userLoginInfoMapper.deleteByExample(example);
+	}
+
 	
 	
 

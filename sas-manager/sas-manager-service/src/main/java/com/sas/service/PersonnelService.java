@@ -12,7 +12,7 @@ import com.sun.tools.internal.ws.processor.model.Request;
 
 
 public interface PersonnelService {
-	PageInfo<Personnel> selectAllPersonnel(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer jobnum,String peoplenum,String teachername);//所有老师名称遍历
+	PageInfo<Personnel> selectAllPersonnel(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer jobnum,String peoplenum,String teachername,Integer roleid);//所有老师名称遍历
 	int insert(Personnel teacher);//添加老师
 	int update(Personnel teacher);//更新老师
 	int delete(Integer teacherid);//删除老师

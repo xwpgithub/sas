@@ -543,7 +543,7 @@
 	
 	
 	//模糊查询员工信息
-	function selectStaffByValue(pagenum,pagesize,departmentid,jobnum,peoplenum,teachername) {
+	function selectStaffByValue(pagenum,pagesize,departmentid,jobnum,peoplenum,teachername,roleid) {
 		if(pagesize==null){
 			pagesize = 10;
 		}
@@ -554,12 +554,13 @@
 		jobnum = $("#jobnum").val();
 		peoplenum = $("#peoplenum").val();
 		teachername = $("#name").val();
+		roleid = $("#cboPositonid").val();
 		$
 				.ajax({
 					async : false,//同步异步
 					type : 'post',
 					url : "${ctx}/personnelController/selectAllTeacher?departmentid="
-							+ departmentid+"&&pageNum="+pagenum+"&&pageSize="+pagesize+"&&jobnum="+jobnum+"&&peoplenum="+peoplenum+"&&teachername="+teachername,
+							+ departmentid+"&&pageNum="+pagenum+"&&pageSize="+pagesize+"&&jobnum="+jobnum+"&&peoplenum="+peoplenum+"&&teachername="+teachername+"&&roleid="+roleid,
 					dataType : "json",
 					scriptCharset : "utf-8",
 					success : function(data) {			
@@ -611,7 +612,7 @@
 							    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip']
 							    ,jump: function(obj, first){
 							      if(!first){
-							    	  selectStaffByValue(obj.curr,obj.limit,departmentid,jobnum,peoplenum,teachername);
+							    	  selectStaffByValue(obj.curr,obj.limit,departmentid,jobnum,peoplenum,teachername,roleid);
 							        
 							      }						   
 							    }
@@ -644,7 +645,6 @@
 		$("#gouzuojigouid").val(treeNode.id);
 		$("#gouzuojigou").val(treeNode.name);
 		$("#menuContent1").fadeOut("fast");  
-		alert("绑定新增人员角色"+treeNode.id);
 		//获取部门职务
 		$.ajax({
 			async : false,//同步异步
@@ -684,7 +684,6 @@
 						data.organizationid);
 				tree.selectNode(node, true);
 				dianjibangding(node);	
-				alert(data.id);
 				$("#tid").val(data.id);
 				$("#staffname").val(data.name);
 				$("#staffnumber").val(data.jobnum);
@@ -773,10 +772,10 @@
 						class="form-control"> <input type="hidden"
 						id="txtDepartmentid">
 					</td>
-					<td>职务:</td>
+					<td>角色:</td>
 					<td><select id="cboPositonid" style="width: 95px;">
 					</select></td>
-					<td><input id="jobnum" placeholder="工号" type="text"
+					<td><input id="jobnum" placeholder="工号/学号" type="text"
 						style="width: 100px;" class="form-control"></td>
 					<td><input id="peoplenum" placeholder="身份证号码" type="text"
 						style="width: 300px;" class="form-control"></td>
@@ -819,10 +818,10 @@
 							<th style="text-align: center;">姓名</th>
 							<th style="text-align: center;">性别</th>
 							<th style="text-align: center;">年龄</th>
-							<th style="text-align: center;">工号</th>
+							<th style="text-align: center;">工号/学号</th>
 							<th style="text-align: center;">邮箱</th>
 							<th style="text-align: center;">身份证号</th>
-							<th style="text-align: center;">入职时间</th>
+							<th style="text-align: center;">录入时间</th>
 						
 
 						</tr>
@@ -845,7 +844,7 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增教师</h4>
+					<h4 id="tladd_edit" style="text-align:center" class="modal-title">新增人员</h4>
 				</div>
 				<div class="modal-body" style=" max-height: 495px;">
 					<div class="row">
@@ -876,7 +875,7 @@
 															</ul>
 														</div></td>													
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>入职日期</div></td>
+														<div style="font-size: 17px;" align='right'>录入日期</div></td>
 													<td><input id="dateofentry" name="entrytimes"
 														type="date" class="form-control"></td>
 
@@ -890,13 +889,13 @@
 												</tr>
 												<tr>
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>教师姓名</div>
+														<div style="font-size: 17px;" align='right'>人员姓名</div>
 													</td>
 													<td><input id="staffname" name="name" type="text"
 														class="form-control"></td>
 
 													<td style="background-color: #ebf3fb;">
-														<div style="font-size: 17px;" align='right'>教师工号</div>
+														<div style="font-size: 17px;" align='right'>工号/学号</div>
 													</td>
 													<td><input id="staffnumber" name="jobnum"
 														type="text" class="form-control"></td>
