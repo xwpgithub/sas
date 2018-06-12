@@ -5,7 +5,9 @@
 * @author tangliang 
 * @date 2017年4月14日 下午3:57:10 
 * @version V1.0   
-*/
+*//*
+
+*//**
 package com.sas.service.impl;
 
 import java.util.ArrayList;
@@ -32,23 +34,23 @@ import com.sas.service.CourseAdminService;
  * @author xieweipeng
  * @date 2018年4月24日 下午3:57:10 
  * @version V1.0 
- */
+ *//*
 @Service
-public class CourseAdminServiceImpl implements CourseAdminService {
+public class CourseServiceImpl implements CourseAdminService {
 	
 	@Resource private CourseAdminMapper courseAdminMapper;
 
 
 	
 
-	/* (非 Javadoc) 
+	 (非 Javadoc) 
 	* <p>Title: selectAllTeacher</p> 
 	* <p>Description: </p> 
 	* @return 
 	* 
-	*/
+	
 	@Override
-	public PageInfo<CourseAdmin> selectAllCourseAdmin(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,String cname ) {
+	public PageInfo<CourseAdmin> selectAllClassRoom(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer galleryful,String classroomaddress,String classroomname ) {
 						
 		pageNum = pageNum == null ? 1 : pageNum;
 		pageSize = pageSize == null ? 5 : pageSize;
@@ -59,12 +61,20 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 		for (int i = 0; i < oidList.size(); i++) {
 			System.out.println("查询personen的oid有"+oidList);
 		}
-		
-		if (cname ==null || cname.isEmpty()) {
+		if (galleryful!=null) {
+			criteria.andGalleryfulEqualTo(galleryful);
+		}
+		if (classroomaddress ==null || classroomaddress.isEmpty()) {
+			
+		}
+		else{
+			criteria.andClassroomaddressLike("%"+classroomaddress+"%");
+		}
+		if (classroomname ==null || classroomname.isEmpty()) {
 			
 		}
 		else {
-			criteria.andCnameLike("%"+cname+"%");
+			criteria.andClassroomnameLike("%"+classroomname+"%");
 		}
 		
 		
@@ -78,79 +88,60 @@ public class CourseAdminServiceImpl implements CourseAdminService {
 		return pageInfo;
 	}
 
-	/* (非 Javadoc) 
+	 (非 Javadoc) 
 	* <p>Title: insert</p> 
 	* <p>Description: </p> 
 	* @param teacher
 	* @return 
 	* @see com.sas.service.TeacherService#insert(com.sas.pojo.Teacher) 
-	*/
+	
 	@Override
-	public int insert(CourseAdmin courseAdmin) {
+	public int insert(ClassRoom classRoom) {
 			
 		
-		return courseAdminMapper.insert(courseAdmin);
+		return classRoomMapper.insert(classRoom);
 	}
 
-	/* (非 Javadoc) 
+	 (非 Javadoc) 
 	* <p>Title: update</p> 
 	* <p>Description: </p> 
 	* @param teacher
 	* @return 
 	* @see com.sas.service.TeacherService#update(com.sas.pojo.Teacher) 
-	*/
+	
 	@Override
-	public int update(CourseAdmin courseAdmin) {
-		int result = courseAdminMapper.updateByPrimaryKeySelective(courseAdmin);
+	public int update(ClassRoom classRoom) {
+		int result = classRoomMapper.updateByPrimaryKeySelective(classRoom);
 		return result;
 	}
 
-	/* (非 Javadoc) 
+	 (非 Javadoc) 
 	* <p>Title: delete</p> 
 	* <p>Description: </p> 
 	* @param teacher
 	* @return 
 	* @see com.sas.service.TeacherService#delete(com.sas.pojo.Teacher) 
-	*/
+	
 	@Override
-	public int delete(Integer courseAdminid) {		
-		return courseAdminMapper.deleteByPrimaryKey(courseAdminid);
+	public int delete(Integer classroomid) {		
+		return classRoomMapper.deleteByPrimaryKey(classroomid);
 	}
 
-	/* (非 Javadoc) 
+	 (非 Javadoc) 
 	* <p>Title: selectTeacherById</p> 
 	* <p>Description: </p> 
 	* @param teacherId
 	* @return 
 	* @see com.sas.service.TeacherService#selectTeacherById(int) 
-	*/
+	
 	@Override
-	public CourseAdmin selectCourseAdminById(int courseAdminid) {
+	public ClassRoom selectClassRoomById(int classroomid) {
 		
-		return courseAdminMapper.selectByPrimaryKey(courseAdminid);
-	}
-
-	/* (非 Javadoc) 
-	* <p>Title: selectAllCourseAdminByOid</p> 
-	* <p>Description: </p> 
-	* @param Oid
-	* @return 
-	* @see com.sas.service.CourseAdminService#selectAllCourseAdminByOid(java.lang.Integer) 
-	*/
-	@Override
-	public List<CourseAdmin> selectAllCourseAdminByOid(Integer Oid) {
-		CourseAdminExample example = new CourseAdminExample();
-		Criteria criteria = example.createCriteria();
-		criteria.andOrganizationidEqualTo(Oid);
-		criteria.andIsopenEqualTo(0);	
-		List<CourseAdmin> list = courseAdminMapper.selectByExample(example);
-		if (list.size()>0) {
-			return list;
-		}
-		return null;
+		return classRoomMapper.selectByPrimaryKey(classroomid);
 	}
 	
 	
 	
 
 }
+*/

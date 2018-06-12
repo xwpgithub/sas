@@ -7,7 +7,7 @@
     <result column="ClassRoomId" property="classroomid" jdbcType="INTEGER" />
     <result column="TeacherId" property="teacherid" jdbcType="INTEGER" />
     <result column="CourseName" property="coursename" jdbcType="VARCHAR" />
-    <result column="SchoolTime" property="schooltime" jdbcType="TIMESTAMP" />
+    <result column="SchoolTime" property="schooltime" jdbcType="VARCHAR" />
     <result column="StartTime" property="starttime" jdbcType="DATE" />
     <result column="EndTime" property="endtime" jdbcType="DATE" />
     <result column="StudentNum" property="studentnum" jdbcType="INTEGER" />
@@ -17,6 +17,8 @@
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
     <result column="CourseAdminId" property="courseadminid" jdbcType="INTEGER" />
+    <result column="StudentIdList" property="studentidlist" jdbcType="VARCHAR" />
+    <result column="DayOfWeek" property="dayofweek" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -78,7 +80,8 @@
   </sql>
   <sql id="Base_Column_List" >
     CourseId, OrganizationId, ClassRoomId, TeacherId, CourseName, SchoolTime, StartTime, 
-    EndTime, StudentNum, TeacherName, CreateBy, CreateDate, ModifyDate, ModifyBy, CourseAdminId
+    EndTime, StudentNum, TeacherName, CreateBy, CreateDate, ModifyDate, ModifyBy, CourseAdminId, 
+    StudentIdList, DayOfWeek
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.CourseExample" >
     select
@@ -115,14 +118,14 @@
       TeacherId, CourseName, SchoolTime, 
       StartTime, EndTime, StudentNum, 
       TeacherName, CreateBy, CreateDate, 
-      ModifyDate, ModifyBy, CourseAdminId
-      )
+      ModifyDate, ModifyBy, CourseAdminId, 
+      StudentIdList, DayOfWeek)
     values (#{courseid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{classroomid,jdbcType=INTEGER}, 
-      #{teacherid,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{schooltime,jdbcType=TIMESTAMP}, 
+      #{teacherid,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{schooltime,jdbcType=VARCHAR}, 
       #{starttime,jdbcType=DATE}, #{endtime,jdbcType=DATE}, #{studentnum,jdbcType=INTEGER}, 
       #{teachername,jdbcType=VARCHAR}, #{createby,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
-      #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}, #{courseadminid,jdbcType=INTEGER}
-      )
+      #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}, #{courseadminid,jdbcType=INTEGER}, 
+      #{studentidlist,jdbcType=VARCHAR}, #{dayofweek,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Course" >
     insert into course
@@ -172,6 +175,12 @@
       <if test="courseadminid != null" >
         CourseAdminId,
       </if>
+      <if test="studentidlist != null" >
+        StudentIdList,
+      </if>
+      <if test="dayofweek != null" >
+        DayOfWeek,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="courseid != null" >
@@ -190,7 +199,7 @@
         #{coursename,jdbcType=VARCHAR},
       </if>
       <if test="schooltime != null" >
-        #{schooltime,jdbcType=TIMESTAMP},
+        #{schooltime,jdbcType=VARCHAR},
       </if>
       <if test="starttime != null" >
         #{starttime,jdbcType=DATE},
@@ -219,6 +228,12 @@
       <if test="courseadminid != null" >
         #{courseadminid,jdbcType=INTEGER},
       </if>
+      <if test="studentidlist != null" >
+        #{studentidlist,jdbcType=VARCHAR},
+      </if>
+      <if test="dayofweek != null" >
+        #{dayofweek,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.sas.pojo.CourseExample" resultType="java.lang.Integer" >
@@ -246,7 +261,7 @@
         CourseName = #{record.coursename,jdbcType=VARCHAR},
       </if>
       <if test="record.schooltime != null" >
-        SchoolTime = #{record.schooltime,jdbcType=TIMESTAMP},
+        SchoolTime = #{record.schooltime,jdbcType=VARCHAR},
       </if>
       <if test="record.starttime != null" >
         StartTime = #{record.starttime,jdbcType=DATE},
@@ -275,6 +290,12 @@
       <if test="record.courseadminid != null" >
         CourseAdminId = #{record.courseadminid,jdbcType=INTEGER},
       </if>
+      <if test="record.studentidlist != null" >
+        StudentIdList = #{record.studentidlist,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dayofweek != null" >
+        DayOfWeek = #{record.dayofweek,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -287,7 +308,7 @@
       ClassRoomId = #{record.classroomid,jdbcType=INTEGER},
       TeacherId = #{record.teacherid,jdbcType=INTEGER},
       CourseName = #{record.coursename,jdbcType=VARCHAR},
-      SchoolTime = #{record.schooltime,jdbcType=TIMESTAMP},
+      SchoolTime = #{record.schooltime,jdbcType=VARCHAR},
       StartTime = #{record.starttime,jdbcType=DATE},
       EndTime = #{record.endtime,jdbcType=DATE},
       StudentNum = #{record.studentnum,jdbcType=INTEGER},
@@ -296,7 +317,9 @@
       CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
-      CourseAdminId = #{record.courseadminid,jdbcType=INTEGER}
+      CourseAdminId = #{record.courseadminid,jdbcType=INTEGER},
+      StudentIdList = #{record.studentidlist,jdbcType=VARCHAR},
+      DayOfWeek = #{record.dayofweek,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -317,7 +340,7 @@
         CourseName = #{coursename,jdbcType=VARCHAR},
       </if>
       <if test="schooltime != null" >
-        SchoolTime = #{schooltime,jdbcType=TIMESTAMP},
+        SchoolTime = #{schooltime,jdbcType=VARCHAR},
       </if>
       <if test="starttime != null" >
         StartTime = #{starttime,jdbcType=DATE},
@@ -346,6 +369,12 @@
       <if test="courseadminid != null" >
         CourseAdminId = #{courseadminid,jdbcType=INTEGER},
       </if>
+      <if test="studentidlist != null" >
+        StudentIdList = #{studentidlist,jdbcType=VARCHAR},
+      </if>
+      <if test="dayofweek != null" >
+        DayOfWeek = #{dayofweek,jdbcType=VARCHAR},
+      </if>
     </set>
     where CourseId = #{courseid,jdbcType=INTEGER}
   </update>
@@ -355,7 +384,7 @@
       ClassRoomId = #{classroomid,jdbcType=INTEGER},
       TeacherId = #{teacherid,jdbcType=INTEGER},
       CourseName = #{coursename,jdbcType=VARCHAR},
-      SchoolTime = #{schooltime,jdbcType=TIMESTAMP},
+      SchoolTime = #{schooltime,jdbcType=VARCHAR},
       StartTime = #{starttime,jdbcType=DATE},
       EndTime = #{endtime,jdbcType=DATE},
       StudentNum = #{studentnum,jdbcType=INTEGER},
@@ -364,7 +393,9 @@
       CreateDate = #{createdate,jdbcType=TIMESTAMP},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{modifyby,jdbcType=VARCHAR},
-      CourseAdminId = #{courseadminid,jdbcType=INTEGER}
+      CourseAdminId = #{courseadminid,jdbcType=INTEGER},
+      StudentIdList = #{studentidlist,jdbcType=VARCHAR},
+      DayOfWeek = #{dayofweek,jdbcType=VARCHAR}
     where CourseId = #{courseid,jdbcType=INTEGER}
   </update>
 </mapper>

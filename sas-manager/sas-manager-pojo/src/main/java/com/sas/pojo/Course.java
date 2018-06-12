@@ -13,7 +13,7 @@ public class Course {
 
     private String coursename;
 
-    private Date schooltime;
+    private String schooltime;
 
     private Date starttime;
 
@@ -32,6 +32,10 @@ public class Course {
     private String modifyby;
 
     private Integer courseadminid;
+
+    private String studentidlist;
+
+    private String dayofweek;
 
     public Integer getCourseid() {
         return courseid;
@@ -73,12 +77,12 @@ public class Course {
         this.coursename = coursename == null ? null : coursename.trim();
     }
 
-    public Date getSchooltime() {
+    public String getSchooltime() {
         return schooltime;
     }
 
-    public void setSchooltime(Date schooltime) {
-        this.schooltime = schooltime;
+    public void setSchooltime(String schooltime) {
+        this.schooltime = schooltime == null ? null : schooltime.trim();
     }
 
     public Date getStarttime() {
@@ -151,5 +155,21 @@ public class Course {
 
     public void setCourseadminid(Integer courseadminid) {
         this.courseadminid = courseadminid;
+    }
+
+    public String getStudentidlist() {
+        return studentidlist;
+    }
+
+    public void setStudentidlist(String studentidlist) {
+        this.studentidlist = studentidlist == null ? null : studentidlist.trim();
+    }
+
+    public String getDayofweek() {
+        return dayofweek;
+    }
+
+    public void setDayofweek(String dayofweek) {
+        this.dayofweek = dayofweek == null ? null : dayofweek.trim();
     }
 }

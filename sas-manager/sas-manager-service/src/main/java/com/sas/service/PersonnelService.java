@@ -17,4 +17,5 @@ public interface PersonnelService {
 	int update(Personnel teacher);//更新老师
 	int delete(Integer teacherid);//删除老师
 	Personnel selectPersonelById(int personelId);//根据id查找老师
+	List<Personnel> selectAllStudent(ArrayList<Integer> oidList,Integer roleid);
 }

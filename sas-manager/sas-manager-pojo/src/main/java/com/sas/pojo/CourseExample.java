@@ -452,52 +452,62 @@ public class CourseExample {
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeEqualTo(Date value) {
+        public Criteria andSchooltimeEqualTo(String value) {
             addCriterion("SchoolTime =", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeNotEqualTo(Date value) {
+        public Criteria andSchooltimeNotEqualTo(String value) {
             addCriterion("SchoolTime <>", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeGreaterThan(Date value) {
+        public Criteria andSchooltimeGreaterThan(String value) {
             addCriterion("SchoolTime >", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeGreaterThanOrEqualTo(Date value) {
+        public Criteria andSchooltimeGreaterThanOrEqualTo(String value) {
             addCriterion("SchoolTime >=", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeLessThan(Date value) {
+        public Criteria andSchooltimeLessThan(String value) {
             addCriterion("SchoolTime <", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeLessThanOrEqualTo(Date value) {
+        public Criteria andSchooltimeLessThanOrEqualTo(String value) {
             addCriterion("SchoolTime <=", value, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeIn(List<Date> values) {
+        public Criteria andSchooltimeLike(String value) {
+            addCriterion("SchoolTime like", value, "schooltime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchooltimeNotLike(String value) {
+            addCriterion("SchoolTime not like", value, "schooltime");
+            return (Criteria) this;
+        }
+
+        public Criteria andSchooltimeIn(List<String> values) {
             addCriterion("SchoolTime in", values, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeNotIn(List<Date> values) {
+        public Criteria andSchooltimeNotIn(List<String> values) {
             addCriterion("SchoolTime not in", values, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeBetween(Date value1, Date value2) {
+        public Criteria andSchooltimeBetween(String value1, String value2) {
             addCriterion("SchoolTime between", value1, value2, "schooltime");
             return (Criteria) this;
         }
 
-        public Criteria andSchooltimeNotBetween(Date value1, Date value2) {
+        public Criteria andSchooltimeNotBetween(String value1, String value2) {
             addCriterion("SchoolTime not between", value1, value2, "schooltime");
             return (Criteria) this;
         }
@@ -1069,6 +1079,146 @@ public class CourseExample {
 
         public Criteria andCourseadminidNotBetween(Integer value1, Integer value2) {
             addCriterion("CourseAdminId not between", value1, value2, "courseadminid");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistIsNull() {
+            addCriterion("StudentIdList is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistIsNotNull() {
+            addCriterion("StudentIdList is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistEqualTo(String value) {
+            addCriterion("StudentIdList =", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistNotEqualTo(String value) {
+            addCriterion("StudentIdList <>", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistGreaterThan(String value) {
+            addCriterion("StudentIdList >", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistGreaterThanOrEqualTo(String value) {
+            addCriterion("StudentIdList >=", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistLessThan(String value) {
+            addCriterion("StudentIdList <", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistLessThanOrEqualTo(String value) {
+            addCriterion("StudentIdList <=", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistLike(String value) {
+            addCriterion("StudentIdList like", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistNotLike(String value) {
+            addCriterion("StudentIdList not like", value, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistIn(List<String> values) {
+            addCriterion("StudentIdList in", values, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistNotIn(List<String> values) {
+            addCriterion("StudentIdList not in", values, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistBetween(String value1, String value2) {
+            addCriterion("StudentIdList between", value1, value2, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andStudentidlistNotBetween(String value1, String value2) {
+            addCriterion("StudentIdList not between", value1, value2, "studentidlist");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekIsNull() {
+            addCriterion("DayOfWeek is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekIsNotNull() {
+            addCriterion("DayOfWeek is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekEqualTo(String value) {
+            addCriterion("DayOfWeek =", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekNotEqualTo(String value) {
+            addCriterion("DayOfWeek <>", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekGreaterThan(String value) {
+            addCriterion("DayOfWeek >", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekGreaterThanOrEqualTo(String value) {
+            addCriterion("DayOfWeek >=", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekLessThan(String value) {
+            addCriterion("DayOfWeek <", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekLessThanOrEqualTo(String value) {
+            addCriterion("DayOfWeek <=", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekLike(String value) {
+            addCriterion("DayOfWeek like", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekNotLike(String value) {
+            addCriterion("DayOfWeek not like", value, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekIn(List<String> values) {
+            addCriterion("DayOfWeek in", values, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekNotIn(List<String> values) {
+            addCriterion("DayOfWeek not in", values, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekBetween(String value1, String value2) {
+            addCriterion("DayOfWeek between", value1, value2, "dayofweek");
+            return (Criteria) this;
+        }
+
+        public Criteria andDayofweekNotBetween(String value1, String value2) {
+            addCriterion("DayOfWeek not between", value1, value2, "dayofweek");
             return (Criteria) this;
         }
     }

@@ -1,4 +1,4 @@
-package com.sas.controller;
+package com.sas.proscenium.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,14 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.sas.mapper.UserInfoMapper;
-import com.sas.pojo.ClassRoom;
 import com.sas.pojo.OrganizationDictionary;
 import com.sas.pojo.Personnel;
 import com.sas.pojo.Teacher;
 import com.sas.pojo.UserInfo;
 import com.sas.pojo.UserLoginInfo;
 import com.sas.pojo.UserRole;
-import com.sas.service.ClassRoomService;
 import com.sas.service.OrganizationService;
 import com.sas.service.PersonnelService;
 import com.sas.service.TeacherService;
@@ -38,17 +36,23 @@ import com.sas.service.UserRoleService;
 import com.sas.util.CommonMethod;
 
 @Controller
-@RequestMapping("/classRoomController")
-public class ClassRoomController  {
+@RequestMapping("/prosceniumPersonnelController")
+public class ProsceniumPersonnelController  {
 
 	@Resource
 	private OrganizationService organizationService;
 	@Resource
-	private ClassRoomService classRoomService;
+	private PersonnelService personnelService;
+	@Resource
+	private UserRoleService userRoleService;
+	@Resource
+	private UserLoginInfoService userLoginInfoService;
+	@Resource
+	private UserInfoService userInfoService;
 	/** 员工管理 **/
-	@RequestMapping("/selectClassRoom")
+	@RequestMapping("/selectStaff")
 	public String redirect() {
-		return "/renshiguanli/classroom/classroom";
+		return "/renshiguanli/renyuanluru/staff";
 	}
 	 /**
 	  * list转json
@@ -90,13 +94,13 @@ public class ClassRoomController  {
 		* @return String    返回类型
 		* @author xieweipeng
 		* @throws
-		* @date 2018年6月11日  下午8:48:45 
+		* @date 2018年5月14日 下午8:48:45 
 		* @version V1.0
 		 */
 		@ResponseBody
-		@RequestMapping(value = "/selectAllClassRoom", produces = "text/html;charset=UTF-8")
+		@RequestMapping(value = "/selectAllTeacher", produces = "text/html;charset=UTF-8")
 		public String selectAllStaff(Integer departmentid,@RequestParam(defaultValue = "1") Integer pageNum,
-				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,Integer galleryful,String classroomaddress,String classroomname) {
+				@RequestParam(defaultValue = "5") Integer pageSize,HttpServletRequest request,Integer jobnum,String peoplenum,String teachername,Integer roleid) {
 			System.out.println("进入方法"+departmentid);
 			ArrayList<Integer> oidList = new ArrayList<Integer>();
 			if (departmentid==null) {
@@ -117,8 +121,8 @@ public class ClassRoomController  {
 				}
 			}			
 			
-			PageInfo<ClassRoom> pageInfo = classRoomService.selectAllClassRoom(pageNum, pageSize,oidList,galleryful,classroomaddress,classroomname);
-			List<ClassRoom> list = pageInfo.getList();
+			PageInfo<Personnel> pageInfo = personnelService.selectAllPersonnel(pageNum, pageSize,oidList,jobnum,peoplenum,teachername,roleid);
+			List<Personnel> list = pageInfo.getList();
 			//String teachers = JSON.toJSONStringWithDateFormat(list, "yyyy-MM-dd");
 			List list2 = new ArrayList<>();
 			list2.add(list);
@@ -146,30 +150,51 @@ public class ClassRoomController  {
 		* @return String    返回类型
 		* @author xieweipeng
 		* @throws
-		* @date 2018年6月11日  下午8:48:31 
+		* @date 2018年5月14日 下午8:48:31 
 		* @version V1.0
 		 */
 		
 			@ResponseBody
-			@RequestMapping(value = "/insertClassRoom", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String insertTeacher(ClassRoom classRoom,String createdate2)
+			@RequestMapping(value = "/insertTeacher", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+			public String insertTeacher(Personnel personnel,String entrytimes, MultipartFile file_img,String username,String password)
 					throws Exception {	
-				System.out.println("权限id为"+classRoom.getOrganizationid());
-				classRoom.setClassroomid(null);
+				System.out.println("权限id为"+personnel.getRoleid());
+				personnel.setId(null);
 		        //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
 		        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
 		        try {  
 		            //使用SimpleDateFormat的parse()方法生成Date  
-		            Date date = sf.parse(createdate2);  
-		            classRoom.setCreatedate(date);
+		            Date date = sf.parse(entrytimes);  
+		            personnel.setEntrytime(date);
 		             
 		        } catch (ParseException e) {  
 		            e.printStackTrace();  
 		        }  
+				if (file_img.getSize() > 0) {
+					personnel.setImage(CommonMethod.saveFile(file_img, "headImg/"));
+				}
 				
-				int i= classRoomService.insert(classRoom);
-			
-				String result =  Integer.toString(i);
+				System.out.println("进入老师控制器方法"+personnel.getName());
+				System.out.println(personnel.getOrganizationid());
+				System.out.println(entrytimes);
+				int uid= personnelService.insert(personnel);
+				//添加登录信息
+				UserLoginInfo userLoginInfo = new UserLoginInfo();
+				userLoginInfo.setLoginname(username);
+				userLoginInfo.setOrganizationid(personnel.getOrganizationid());
+				userLoginInfo.setLoginpassword(password);
+				userLoginInfo.setUserid(uid);
+				//添加账户信息
+				UserInfo userInfo = new UserInfo();
+				userInfo.setAccountname(username);
+				userInfo.setId(uid);
+				//添加用户角色对应关系
+				UserRole userRole = new UserRole();
+				userRole.setRolId(personnel.getRoleid());
+				userRole.setUserid(uid);				
+				int flag1 = userInfoService.insert(userInfo);
+				int flag2 = userLoginInfoService.insert(userLoginInfo);
+				String result =  Integer.toString(userRoleService.insert(userRole)*flag1*flag2);
 				
 				return result;
 			}
@@ -185,28 +210,47 @@ public class ClassRoomController  {
 			* @return String    返回类型
 			* @author xieweipeng
 			* @throws
-			* @date 2018年6月11日  下午8:48:12 
+			* @date 2018年5月14日 下午8:48:12 
 			* @version V1.0
 			 */
 			
 		    
 			@ResponseBody
-			@RequestMapping(value = "/updateClassRoom", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String updateStaff(ClassRoom classRoom,String createdate2,Integer id)
+			@RequestMapping(value = "/updateTeacher", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+			public String updateStaff(Personnel personnel,String entrytimes,Integer id,String username,String password, MultipartFile file_img)
 					throws Exception {
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id);
 				 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
 			        try {  
 			            //使用SimpleDateFormat的parse()方法生成Date  
-			            Date date = sf.parse(createdate2);  
-			            classRoom.setCreatedate(date);
-			            classRoom.setClassroomid(id);
+			            Date date = sf.parse(entrytimes);  
+			            personnel.setEntrytime(date);
 			             
 			        } catch (ParseException e) {  
 			            e.printStackTrace();  
-			        }						
+			        }
+				if (file_img.getSize() > 0) {
+					CommonMethod.deleteFile("D:\\Project\\upload\\pic\\"
+							+ personnel.getImage());
+					personnel.setImage(CommonMethod.saveFile(file_img, "headImg/"));
+				}
+				
+				//更新登录信息
+				UserLoginInfo userLoginInfo = new  UserLoginInfo();
+				//userLoginInfo.setLoginname(username);
+				//userLoginInfo.setLoginpassword(password);
+				userLoginInfo.setOrganizationid(personnel.getOrganizationid());
+				userLoginInfo.setUserid(personnel.getId());			
+				userLoginInfoService.updateByUserid(userLoginInfo);
+				//更新用户角色信息
+				UserRole userRole = new UserRole();
+				userRole.setUserid(id);
+				userRole.setRolId(personnel.getRoleid());
+				userRoleService.updateByUserid(userRole);
 				
 				
-				String i = Integer.toString(classRoomService.update(classRoom));
+				
+				String i = Integer.toString(personnelService.update(personnel));
 				return i;
 			}
 
@@ -219,15 +263,15 @@ public class ClassRoomController  {
 			* @return String    返回类型
 			* @author xieweipeng
 			* @throws
-			* @date 2018年6月11日  下午8:47:34 
+			* @date 2018年5月14日 下午8:47:34 
 			* @version V1.0
 			 */
 			 
 			@ResponseBody
-			@RequestMapping(value = "/selectByClassId", produces = "text/html;charset=UTF-8")
-			public String selectById(Integer classId) {
-				ClassRoom classRoom =  classRoomService.selectClassRoomById(classId);
-				String data = JSON.toJSONStringWithDateFormat(classRoom, "yyyy-MM-dd");
+			@RequestMapping(value = "/selectByTeacherid", produces = "text/html;charset=UTF-8")
+			public String selectById(Integer teacherid) {
+				Personnel personnel =  personnelService.selectPersonelById(teacherid);
+				String data = JSON.toJSONStringWithDateFormat(personnel, "yyyy-MM-dd");
 				return data;
 			}
 			/**
@@ -239,30 +283,23 @@ public class ClassRoomController  {
 			* @return String    返回类型
 			* @author xieweipeng
 			* @throws
-			* @date 2018年6月11日 下午8:47:19 
+			* @date 2018年5月14日 下午8:47:19 
 			* @version V1.0
 			 */
 			@ResponseBody
-			@RequestMapping(value = "/deleteClassRoom", produces = "text/html;charset=UTF-8")
-			public String delete(int classroomid) {	
-				int flag = classRoomService.delete(classroomid);
-				return Integer.toString(flag);
+			@RequestMapping(value = "/deleteTeacher", produces = "text/html;charset=UTF-8")
+			public String delete(int teacherid) {	
+				int flag1 = userInfoService.deleteByUserid(teacherid);
+				int flag2 = userLoginInfoService.deleteByUserid(teacherid);
+				int flag3 = userRoleService.deleteByUserid(teacherid);
+				int flag4 = personnelService.delete(teacherid);
+				System.out.println(flag4+"---"+flag1+"---"+flag2+"---"+flag3);
+				return Integer.toString(flag4*flag1);
 			}
-			/**
-			 * 
-			* @Title: selectClassRoomByOpen 
-			* @Description: TODO(老师查找课程) 
-			* @param @param organizationid
-			* @param @return    入参
-			* @return String    返回类型
-			* @author xieweipeng
-			* @throws
-			* @date 2018年6月12日 下午9:20:28 
-			* @version V1.0
-			 */
 			@ResponseBody
-			@RequestMapping(value = "/selectClassRoomByOpen", produces = "text/html;charset=UTF-8")
-			public String selectClassRoomByOpen(Integer organizationid) {	
+			@RequestMapping(value = "/selectAllStudent", produces = "text/html;charset=UTF-8")
+			public String selectAllstudent(Integer organizationid,Integer roleid) {
+				System.out.println("进入方法"+organizationid);
 				ArrayList<Integer> oidList = new ArrayList<Integer>();
 				if (organizationid==null) {
 					System.out.println("查询的时候没有选oid默认为最大机构");
@@ -280,8 +317,9 @@ public class ClassRoomController  {
 					for (int i = 0; i < departments.size(); i++) {
 						oidList.add(departments.get(i).getOrganizationid());
 					}
-				}
-				List<ClassRoom> list = classRoomService.selectClassRoomByOpen(oidList);
+				}			
+				
+				List<Personnel> list = personnelService.selectAllStudent(oidList, roleid);
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				String data  = null;
 				if (list==null) {
@@ -294,9 +332,7 @@ public class ClassRoomController  {
 					map.put("data", list);
 					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
 				}
-				
-				return data;			
+			
+			return data;
 			}
-
-	
 }

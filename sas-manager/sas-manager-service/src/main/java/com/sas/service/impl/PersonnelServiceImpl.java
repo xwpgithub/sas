@@ -141,6 +141,25 @@ public class PersonnelServiceImpl implements PersonnelService {
 		
 		return personnelMapper.selectByPrimaryKey(personelId);
 	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAllStudent</p> 
+	* <p>Description: </p> 
+	* @param oidList
+	* @param roleid
+	* @return 
+	* @see com.sas.service.PersonnelService#selectAllStudent(java.util.ArrayList, java.lang.Integer) 
+	*/
+	@Override
+	public List<Personnel> selectAllStudent(ArrayList<Integer> oidList,
+			Integer roleid) {
+		PersonnelExample example = new PersonnelExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andOrganizationidIn(oidList);
+		criteria.andRoleidEqualTo(roleid);	
+		List<Personnel> list = personnelMapper.selectByExample(example);
+		return list;
+	}
 	
 	
 	

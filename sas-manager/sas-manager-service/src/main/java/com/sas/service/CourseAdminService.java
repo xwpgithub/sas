@@ -19,4 +19,5 @@ public interface CourseAdminService {
 	int update(CourseAdmin courseAdmin);//更新
 	int delete(Integer courseAdminid);//删除
 	CourseAdmin selectCourseAdminById(int courseAdminid);//根据id查找
+	List<CourseAdmin> selectAllCourseAdminByOid(Integer Oid);//根据用户机构查找可开课程
 }
