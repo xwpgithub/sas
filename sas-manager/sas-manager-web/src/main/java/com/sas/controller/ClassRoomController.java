@@ -50,6 +50,11 @@ public class ClassRoomController  {
 	public String redirect() {
 		return "/renshiguanli/classroom/classroom";
 	}
+	/** 地图管理 **/
+	@RequestMapping("/gomap")
+	public String redirectmap() {
+		return "/renshiguanli/classroom/map";
+	}
 	 /**
 	  * list转json
 	  * */

@@ -37,6 +37,8 @@ public class Course {
 
     private String dayofweek;
 
+    private Integer isattendance;
+
     public Integer getCourseid() {
         return courseid;
     }
@@ -171,5 +173,13 @@ public class Course {
 
     public void setDayofweek(String dayofweek) {
         this.dayofweek = dayofweek == null ? null : dayofweek.trim();
+    }
+
+    public Integer getIsattendance() {
+        return isattendance;
+    }
+
+    public void setIsattendance(Integer isattendance) {
+        this.isattendance = isattendance;
     }
 }

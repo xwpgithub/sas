@@ -27,6 +27,10 @@ public class ClassRoom {
 
     private String modifyby;
 
+    private String longitude;
+
+    private String latitude;
+
     public Integer getClassroomid() {
         return classroomid;
     }
@@ -121,5 +125,21 @@ public class ClassRoom {
 
     public void setModifyby(String modifyby) {
         this.modifyby = modifyby == null ? null : modifyby.trim();
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude == null ? null : longitude.trim();
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude == null ? null : latitude.trim();
     }
 }

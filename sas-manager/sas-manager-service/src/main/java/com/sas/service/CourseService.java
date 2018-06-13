@@ -7,6 +7,7 @@ import org.apache.http.HttpRequest;
 
 import com.github.pagehelper.PageInfo;
 import com.sas.pojo.ClassRoom;
+import com.sas.pojo.Course;
 import com.sas.pojo.CourseAdmin;
 import com.sas.pojo.Personnel;
 import com.sas.pojo.Teacher;
@@ -14,9 +15,10 @@ import com.sun.tools.internal.ws.processor.model.Request;
 
 
 public interface CourseService {
-	PageInfo<CourseAdmin> selectAllClassRoom(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer galleryful,String classroomaddress,String classroomname);//所有老师名称遍历
-	int insert(ClassRoom classRoom);//添加
-	int update(ClassRoom classRoom);//更新
-	int delete(Integer classRoomid);//删除
-	ClassRoom selectClassRoomById(int classRoomid);//根据id查找
+	List<Course> selectAllCourseByTeacherId(Integer teacherid);//根据老师id遍历课程
+	int insert(Course course);//添加
+	int update(Course Course);//更新
+	int delete(Integer courseid);//删除
+	Course selectCourseById(int courseid);//根据id查找
+	int updateSelect(Course Course);//更新部分
 }

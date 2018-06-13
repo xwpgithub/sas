@@ -1221,6 +1221,66 @@ public class CourseExample {
             addCriterion("DayOfWeek not between", value1, value2, "dayofweek");
             return (Criteria) this;
         }
+
+        public Criteria andIsattendanceIsNull() {
+            addCriterion("IsAttendance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceIsNotNull() {
+            addCriterion("IsAttendance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceEqualTo(Integer value) {
+            addCriterion("IsAttendance =", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceNotEqualTo(Integer value) {
+            addCriterion("IsAttendance <>", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceGreaterThan(Integer value) {
+            addCriterion("IsAttendance >", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceGreaterThanOrEqualTo(Integer value) {
+            addCriterion("IsAttendance >=", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceLessThan(Integer value) {
+            addCriterion("IsAttendance <", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceLessThanOrEqualTo(Integer value) {
+            addCriterion("IsAttendance <=", value, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceIn(List<Integer> values) {
+            addCriterion("IsAttendance in", values, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceNotIn(List<Integer> values) {
+            addCriterion("IsAttendance not in", values, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceBetween(Integer value1, Integer value2) {
+            addCriterion("IsAttendance between", value1, value2, "isattendance");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsattendanceNotBetween(Integer value1, Integer value2) {
+            addCriterion("IsAttendance not between", value1, value2, "isattendance");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

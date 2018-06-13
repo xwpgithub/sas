@@ -218,7 +218,7 @@
 		$("#thistr").show();
 		$("#lizhi").hide();
 		$("#myModal").modal("show");
-		$("#tladd_edit")[0].innerHTML = "新增教师";
+		$("#tladd_edit")[0].innerHTML = "新增人员";
 	}
 	/** 表单提交验证**/
 	function fromYanZhen() {
@@ -317,7 +317,7 @@
 	//新增员工
 	function submitForm() {
 		var formData = new FormData($("#form")[0]);
-		if ($("#tladd_edit")[0].innerText.trim() == "新增教师") {
+		if ($("#tladd_edit")[0].innerText.trim() == "新增人员") {
 			if ($("#form").valid()) {
 				$.ajax({
 					url : "${ctx}/personnelController/insertTeacher",

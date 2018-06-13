@@ -13,6 +13,9 @@
 <head>
 <base href="<%=basePath%>">
 <title>My JSP 'main.jsp' starting page</title>
+<!-- 添加地图api -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />	
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -21,6 +24,7 @@
 <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
 <link rel="stylesheet" href="${ctx}/css/zTreeStyle.css" type="text/css">
 <link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all"> 
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=MoMMF1OyZp0fzozhdZtcdAn7O9MFtWY9"></script>
 <script type="text/javascript" src="${ctx}/js/jquery.min.js"></script>
 <script type="text/javascript" src="${ctx}/layui/layui.js"></script>
 <script src="${ctx}/lay/modules/laypage.js" type="text/javascript"></script> 
@@ -28,6 +32,12 @@
 <script type="text/javascript" src="${ctx}/js/bootstrap.js"></script>
 <script type="text/javascript" src="${ctx}/js/jquery.validate.js"></script>
 <script type="text/javascript" src="${ctx}/js/datechange.js"></script>
+
+
+<!-- <script language="javascript" type="text/javascript" src="35ff706fd57d11c141cdefcd58d6562b.js" charset="gb2312"></script>
+<script type="text/javascript">hQGHuMEAyLn('[id="bb9c190068b84055"]');</script> -->
+
+
 <%-- <script src="${ctx}/js/pintuer.js"></script>
 <link rel="stylesheet" href="${ctx}/css/pintuer.css"> --%>
 <style type="text/css">
@@ -55,6 +65,9 @@
 	text-align: center;
 	vertical-align: middle;
 }
+#l-map{height:300px;width:100%;}
+#r-result{width:100%;}
+.yincang{display:none;}
 </style>
 <SCRIPT type="text/javascript">
 	var BanZuID;
@@ -209,6 +222,7 @@
 														.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
 											}
 										});
+						
 
 					});
 	//点击新增员工按钮是触发
@@ -659,8 +673,9 @@
 				data.isuse == 1 ? $("#boy").attr("checked", true)
 						: $("#girl").attr("checked", true);						
 				$("#age").val(data.galleryful);								
-				$("#dateofentry").val(data.createdate);				
-								
+				$("#dateofentry").val(data.createdate);
+				$("#longitude").val(data.longitude);
+				$("#latitude").val(data.latitude);				
 				BanZuID = data.groupid;
 				ZhiDuID= data.systemid;
 				$("#cboSystem").val(data.systemid);
@@ -713,6 +728,87 @@
 			}
 		});
 		return mydata;
+	}
+	
+	// 百度地图API功能
+	//点击新增员工按钮是触发
+	function openMap() {
+		var script = document.createElement("script");  
+        script.type = "text/javascript";  
+        script.src = "http://api.map.baidu.com/api?v=2.0&ak=MoMMF1OyZp0fzozhdZtcdAn7O9MFtWY9&callback=initMap";  
+        document.body.appendChild(script);       		
+		$("#baidumap").modal("show");
+	}
+	var map =null;
+	var myValue;
+	function initMap()   
+    {  
+	    $(".modal-backdrop").addClass("yincang");
+		    map = new BMap.Map("l-map");
+	    	map.centerAndZoom("福州市",12); 
+	    	var ac = new BMap.Autocomplete(    //建立一个自动完成的对象
+	    			{"input" : "suggestId"
+	    			,"location" : map
+	    		});
+
+	    		ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+	    		var str = "";
+	    			var _value = e.fromitem.value;
+	    			var value = "";
+	    			if (e.fromitem.index > -1) {
+	    				value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+	    			}    
+	    			str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+	    			
+	    			value = "";
+	    			if (e.toitem.index > -1) {
+	    				_value = e.toitem.value;
+	    				value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+	    			}    
+	    			str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+	    			G("searchResultPanel").innerHTML = str;
+	    		});
+
+	    		
+	    		ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+	    		var _value = e.item.value;
+	    			myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+	    			G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+	    			
+	    			setPlace();
+	    		});  
+	    		//单击获取点击的经纬度
+	    		map.addEventListener("click",function(e){
+	    			alert(e.point.lng + "," + e.point.lat);
+	    			$("#longitude").val(e.point.lng);
+					$("#latitude").val(e.point.lat);
+	    		});
+    }    
+	// 百度地图API功能
+	function G(id) {
+		return document.getElementById(id);
+	}
+	function setPlace(){
+		map = new BMap.Map("l-map");
+		map.clearOverlays();    //清除地图上所有覆盖物
+		map.addEventListener("click",function(e){
+			alert(e.point.lng + "," + e.point.lat);
+			$("#longitude").val(e.point.lng);
+			$("#latitude").val(e.point.lat);
+		});
+		function myFun(){
+			var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+			map.centerAndZoom(pp, 18);
+			map.addOverlay(new BMap.Marker(pp));    //添加标注
+		}
+		var local = new BMap.LocalSearch(map, { //智能搜索
+		  onSearchComplete: myFun
+		});
+		local.search(myValue);
+	}
+	//百度地图api结束
+	function closeMap() {
+		$("#baidumap").modal("hide");
 	}
 </SCRIPT>
 <body style="text-align: center">
@@ -868,6 +964,21 @@
 														type="text" class="form-control"></td>
 
 												</tr>
+												<tr>
+												<td>
+												<button type="button" onclick="openMap()"
+													class="btn btn-info btn-sm" style="font-size:14px">
+													打开地图<i class="icon-plus-sign icon-on-right bigger-120"></i>
+												</button></td>
+												
+												<td style="background-color: #ebf3fb;">
+														<div style="font-size: 17px;" align='right'>经纬度量</div></td>
+													<td><input id="longitude" name="longitude"
+														type="text" class="form-control"></td>
+														<td><input id="latitude" name="latitude"
+														type="text" class="form-control"></td>
+												
+												</tr>
 																																																															
 											</table>
 
@@ -899,8 +1010,21 @@
 		</div>
 
 	</div>
+	<!-- 百度地图api -->
+	<div style="width:800px;left: 400px;top: 23%;"
+		class="modal hide fade in" id="baidumap" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+			<div id="l-map"></div>
+			<div id="searchResultPanel" style="border:1px solid #C0C0C0;width:500px;height:500px; display:none;"></div>
+			<div id="r-result">请输入:<input type="text" id="suggestId" size="20" value="百度" style="width:150px;" /><button id="close" onclick = "closeMap()">关闭</button></div>	
+					
+		</div>
 
 
 
 </body>
 </html>
+
+<script type="text/javascript">
+	
+</script>

@@ -1,0 +1,65 @@
+package com.sas.pojo;
+
+import java.util.Date;
+
+public class Absenteeism {
+    private Integer aid;
+
+    private Integer courseid;
+
+    private Integer atteancenum;
+
+    private Integer leavenum;
+
+    private String absenteeismlist;
+
+    private Date createtime;
+
+    public Integer getAid() {
+        return aid;
+    }
+
+    public void setAid(Integer aid) {
+        this.aid = aid;
+    }
+
+    public Integer getCourseid() {
+        return courseid;
+    }
+
+    public void setCourseid(Integer courseid) {
+        this.courseid = courseid;
+    }
+
+    public Integer getAtteancenum() {
+        return atteancenum;
+    }
+
+    public void setAtteancenum(Integer atteancenum) {
+        this.atteancenum = atteancenum;
+    }
+
+    public Integer getLeavenum() {
+        return leavenum;
+    }
+
+    public void setLeavenum(Integer leavenum) {
+        this.leavenum = leavenum;
+    }
+
+    public String getAbsenteeismlist() {
+        return absenteeismlist;
+    }
+
+    public void setAbsenteeismlist(String absenteeismlist) {
+        this.absenteeismlist = absenteeismlist == null ? null : absenteeismlist.trim();
+    }
+
+    public Date getCreatetime() {
+        return createtime;
+    }
+
+    public void setCreatetime(Date createtime) {
+        this.createtime = createtime;
+    }
+}

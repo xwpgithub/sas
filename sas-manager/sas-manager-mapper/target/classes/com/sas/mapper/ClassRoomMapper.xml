@@ -14,6 +14,8 @@
     <result column="CreateDate" property="createdate" jdbcType="DATE" />
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
+    <result column="Longitude" property="longitude" jdbcType="VARCHAR" />
+    <result column="Latitude" property="latitude" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -75,7 +77,8 @@
   </sql>
   <sql id="Base_Column_List" >
     ClassRoomId, OrganizationId, ClassRoomName, ClassRoomAddress, Galleryful, IsUse, 
-    UseStratTime, UseEndTime, CreateBy, CreateDate, ModifyDate, ModifyBy
+    UseStratTime, UseEndTime, CreateBy, CreateDate, ModifyDate, ModifyBy, Longitude, 
+    Latitude
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.ClassRoomExample" >
     select
@@ -111,13 +114,13 @@
     insert into class_room (ClassRoomId, OrganizationId, ClassRoomName, 
       ClassRoomAddress, Galleryful, IsUse, 
       UseStratTime, UseEndTime, CreateBy, 
-      CreateDate, ModifyDate, ModifyBy
-      )
+      CreateDate, ModifyDate, ModifyBy, 
+      Longitude, Latitude)
     values (#{classroomid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{classroomname,jdbcType=VARCHAR}, 
       #{classroomaddress,jdbcType=VARCHAR}, #{galleryful,jdbcType=INTEGER}, #{isuse,jdbcType=INTEGER}, 
       #{usestrattime,jdbcType=DATE}, #{useendtime,jdbcType=DATE}, #{createby,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
-      )
+      #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}, 
+      #{longitude,jdbcType=VARCHAR}, #{latitude,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.ClassRoom" >
     insert into class_room
@@ -158,6 +161,12 @@
       <if test="modifyby != null" >
         ModifyBy,
       </if>
+      <if test="longitude != null" >
+        Longitude,
+      </if>
+      <if test="latitude != null" >
+        Latitude,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="classroomid != null" >
@@ -195,6 +204,12 @@
       </if>
       <if test="modifyby != null" >
         #{modifyby,jdbcType=VARCHAR},
+      </if>
+      <if test="longitude != null" >
+        #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        #{latitude,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -243,6 +258,12 @@
       <if test="record.modifyby != null" >
         ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
       </if>
+      <if test="record.longitude != null" >
+        Longitude = #{record.longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.latitude != null" >
+        Latitude = #{record.latitude,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -261,7 +282,9 @@
       CreateBy = #{record.createby,jdbcType=VARCHAR},
       CreateDate = #{record.createdate,jdbcType=DATE},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
-      ModifyBy = #{record.modifyby,jdbcType=VARCHAR}
+      ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
+      Longitude = #{record.longitude,jdbcType=VARCHAR},
+      Latitude = #{record.latitude,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -302,6 +325,12 @@
       <if test="modifyby != null" >
         ModifyBy = #{modifyby,jdbcType=VARCHAR},
       </if>
+      <if test="longitude != null" >
+        Longitude = #{longitude,jdbcType=VARCHAR},
+      </if>
+      <if test="latitude != null" >
+        Latitude = #{latitude,jdbcType=VARCHAR},
+      </if>
     </set>
     where ClassRoomId = #{classroomid,jdbcType=INTEGER}
   </update>
@@ -317,7 +346,9 @@
       CreateBy = #{createby,jdbcType=VARCHAR},
       CreateDate = #{createdate,jdbcType=DATE},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
-      ModifyBy = #{modifyby,jdbcType=VARCHAR}
+      ModifyBy = #{modifyby,jdbcType=VARCHAR},
+      Longitude = #{longitude,jdbcType=VARCHAR},
+      Latitude = #{latitude,jdbcType=VARCHAR}
     where ClassRoomId = #{classroomid,jdbcType=INTEGER}
   </update>
 </mapper>

@@ -5,7 +5,8 @@
 	id="sas" version="2.5">
 	<display-name>sas-manager</display-name>
 	<welcome-file-list>
-		<welcome-file>/WEB-INF/jsp/login_main/login.jsp</welcome-file>
+		<welcome-file>/WEB-INF/jsp/login_main/login.jsp</welcome-file> 
+		<!-- <welcome-file>/WEB-INF/jsp/login_main/login2.jsp</welcome-file> -->
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.htm</welcome-file>
 		<welcome-file>index.jsp</welcome-file>

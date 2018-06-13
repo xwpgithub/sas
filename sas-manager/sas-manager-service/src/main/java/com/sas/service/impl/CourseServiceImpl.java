@@ -5,27 +5,20 @@
 * @author tangliang 
 * @date 2017年4月14日 下午3:57:10 
 * @version V1.0   
-*//*
+*/
 
-*//**
 package com.sas.service.impl;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.sas.mapper.CourseAdminMapper;
-import com.sas.pojo.ClassRoom;
-import com.sas.pojo.ClassRoomExample;
-import com.sas.pojo.CourseAdmin;
-import com.sas.pojo.CourseAdminExample;
-import com.sas.pojo.CourseAdminExample.Criteria;
-import com.sas.service.CourseAdminService;
+import com.sas.mapper.CourseMapper;
+import com.sas.pojo.Course;
+import com.sas.pojo.CourseExample;
+import com.sas.pojo.CourseExample.Criteria;
+import com.sas.service.CourseService;
 
 
 /** 
@@ -34,114 +27,95 @@ import com.sas.service.CourseAdminService;
  * @author xieweipeng
  * @date 2018年4月24日 下午3:57:10 
  * @version V1.0 
- *//*
+ */
 @Service
-public class CourseServiceImpl implements CourseAdminService {
+public class CourseServiceImpl implements CourseService {
 	
-	@Resource private CourseAdminMapper courseAdminMapper;
+	@Resource private CourseMapper courseMapper;
 
-
-	
-
-	 (非 Javadoc) 
-	* <p>Title: selectAllTeacher</p> 
+	/* (非 Javadoc) 
+	* <p>Title: selectAllCourseByTeacherId</p> 
 	* <p>Description: </p> 
+	* @param teacherid
 	* @return 
-	* 
-	
+	* @see com.sas.service.CourseService#selectAllCourseByTeacherId(java.lang.Integer) 
+	*/
 	@Override
-	public PageInfo<CourseAdmin> selectAllClassRoom(Integer pageNum,Integer pageSize,ArrayList<Integer> oidList,Integer galleryful,String classroomaddress,String classroomname ) {
-						
-		pageNum = pageNum == null ? 1 : pageNum;
-		pageSize = pageSize == null ? 5 : pageSize;
-		PageHelper.startPage(pageNum, pageSize);
-		CourseAdminExample example = new CourseAdminExample();
+	public List<Course> selectAllCourseByTeacherId(Integer teacherid) {
+		CourseExample example = new CourseExample();
 		Criteria criteria = example.createCriteria();
-		criteria.andOrganizationidIn(oidList);
-		for (int i = 0; i < oidList.size(); i++) {
-			System.out.println("查询personen的oid有"+oidList);
-		}
-		if (galleryful!=null) {
-			criteria.andGalleryfulEqualTo(galleryful);
-		}
-		if (classroomaddress ==null || classroomaddress.isEmpty()) {
-			
-		}
-		else{
-			criteria.andClassroomaddressLike("%"+classroomaddress+"%");
-		}
-		if (classroomname ==null || classroomname.isEmpty()) {
-			
-		}
-		else {
-			criteria.andClassroomnameLike("%"+classroomname+"%");
-		}
-		
-		
-		List<CourseAdmin> list = courseAdminMapper.selectByExample(example);
-		PageInfo<CourseAdmin> pageInfo = new PageInfo<>(list, 5);
-		if (list==null||list.size()==0) {
-			System.out.println("空值返回");
-			return pageInfo;
-		}
-		System.out.println("pageinfo返回");
-		return pageInfo;
+		criteria.andTeacheridEqualTo(teacherid);
+		return courseMapper.selectByExample(example);
 	}
 
-	 (非 Javadoc) 
+	/* (非 Javadoc) 
 	* <p>Title: insert</p> 
 	* <p>Description: </p> 
-	* @param teacher
+	* @param course
 	* @return 
-	* @see com.sas.service.TeacherService#insert(com.sas.pojo.Teacher) 
-	
+	* @see com.sas.service.CourseService#insert(com.sas.pojo.Course) 
+	*/
 	@Override
-	public int insert(ClassRoom classRoom) {
-			
-		
-		return classRoomMapper.insert(classRoom);
+	public int insert(Course course) {
+		return courseMapper.insert(course);
 	}
 
-	 (非 Javadoc) 
+	/* (非 Javadoc) 
 	* <p>Title: update</p> 
 	* <p>Description: </p> 
-	* @param teacher
+	* @param Course
 	* @return 
-	* @see com.sas.service.TeacherService#update(com.sas.pojo.Teacher) 
-	
+	* @see com.sas.service.CourseService#update(com.sas.pojo.Course) 
+	*/
 	@Override
-	public int update(ClassRoom classRoom) {
-		int result = classRoomMapper.updateByPrimaryKeySelective(classRoom);
-		return result;
+	public int update(Course Course) {
+		return courseMapper.updateByPrimaryKey(Course);
 	}
 
-	 (非 Javadoc) 
+	/* (非 Javadoc) 
 	* <p>Title: delete</p> 
 	* <p>Description: </p> 
-	* @param teacher
+	* @param courseid
 	* @return 
-	* @see com.sas.service.TeacherService#delete(com.sas.pojo.Teacher) 
-	
+	* @see com.sas.service.CourseService#delete(java.lang.Integer) 
+	*/
 	@Override
-	public int delete(Integer classroomid) {		
-		return classRoomMapper.deleteByPrimaryKey(classroomid);
+	public int delete(Integer courseid) {
+		// TODO Auto-generated method stub
+		return courseMapper.deleteByPrimaryKey(courseid);
 	}
 
-	 (非 Javadoc) 
-	* <p>Title: selectTeacherById</p> 
+	/* (非 Javadoc) 
+	* <p>Title: selectClassRoomById</p> 
 	* <p>Description: </p> 
-	* @param teacherId
+	* @param courseid
 	* @return 
-	* @see com.sas.service.TeacherService#selectTeacherById(int) 
-	
+	* @see com.sas.service.CourseService#selectClassRoomById(int) 
+	*/
 	@Override
-	public ClassRoom selectClassRoomById(int classroomid) {
-		
-		return classRoomMapper.selectByPrimaryKey(classroomid);
+	public Course selectCourseById(int courseid) {
+		// TODO Auto-generated method stub
+		return courseMapper.selectByPrimaryKey(courseid);
 	}
+
+	/* (非 Javadoc) 
+	* <p>Title: updateSelect</p> 
+	* <p>Description: </p> 
+	* @param Course
+	* @return 
+	* @see com.sas.service.CourseService#updateSelect(com.sas.pojo.Course) 
+	*/
+	@Override
+	public int updateSelect(Course course) {
+		// TODO Auto-generated method stub
+		return courseMapper.updateByPrimaryKeySelective(course);
+	}
+
+
+	
+
 	
 	
 	
 
 }
-*/
