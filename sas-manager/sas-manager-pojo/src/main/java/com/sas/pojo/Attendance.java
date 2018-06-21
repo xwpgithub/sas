@@ -7,6 +7,8 @@ public class Attendance {
 
     private Integer courseid;
 
+    private String studentname;
+
     private Integer studentid;
 
     private Integer state;
@@ -39,6 +41,14 @@ public class Attendance {
 
     public void setCourseid(Integer courseid) {
         this.courseid = courseid;
+    }
+
+    public String getStudentname() {
+        return studentname;
+    }
+
+    public void setStudentname(String studentname) {
+        this.studentname = studentname == null ? null : studentname.trim();
     }
 
     public Integer getStudentid() {

@@ -23,6 +23,7 @@ import com.sas.mapper.AbsenteeismMapper;
 import com.sas.mapper.ClassRoomMapper;
 import com.sas.mapper.CourseMapper;
 import com.sas.pojo.Absenteeism;
+import com.sas.pojo.AbsenteeismExample;
 import com.sas.pojo.ClassRoom;
 import com.sas.pojo.ClassRoomExample;
 import com.sas.pojo.ClassRoomExample.Criteria;
@@ -56,6 +57,40 @@ public class AbsenteeismServiceImpl implements AbsenteeismService {
 	public int insert(Absenteeism absenteeism) {
 		// TODO Auto-generated method stub
 		return absenteeismMapper.insert(absenteeism);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectallByCourseId</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @return 
+	* @see com.sas.service.AbsenteeismService#selectallByCourseId(java.lang.Integer) 
+	*/
+	@Override
+	public List<Absenteeism> selectallByCourseId(Integer courseid) {
+		// TODO Auto-generated method stub
+		AbsenteeismExample example = new AbsenteeismExample();
+		com.sas.pojo.AbsenteeismExample.Criteria criteria = example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		return absenteeismMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectallByCourseIdAndTime</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @param time
+	* @return 
+	* @see com.sas.service.AbsenteeismService#selectallByCourseIdAndTime(java.lang.Integer, java.util.Date) 
+	*/
+	@Override
+	public List<Absenteeism> selectallByCourseIdAndTime(Integer courseid,
+			Date time) {
+		AbsenteeismExample example = new AbsenteeismExample();
+		com.sas.pojo.AbsenteeismExample.Criteria criteria = example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andCreatetimeEqualTo(time);
+		return absenteeismMapper.selectByExample(example);
 	}
 	
 

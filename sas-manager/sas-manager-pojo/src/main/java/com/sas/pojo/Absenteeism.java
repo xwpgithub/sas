@@ -11,6 +11,8 @@ public class Absenteeism {
 
     private Integer leavenum;
 
+    private Integer absenteeismnum;
+
     private String absenteeismlist;
 
     private Date createtime;
@@ -45,6 +47,14 @@ public class Absenteeism {
 
     public void setLeavenum(Integer leavenum) {
         this.leavenum = leavenum;
+    }
+
+    public Integer getAbsenteeismnum() {
+        return absenteeismnum;
+    }
+
+    public void setAbsenteeismnum(Integer absenteeismnum) {
+        this.absenteeismnum = absenteeismnum;
     }
 
     public String getAbsenteeismlist() {

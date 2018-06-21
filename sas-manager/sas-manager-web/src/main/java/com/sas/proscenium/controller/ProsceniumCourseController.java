@@ -164,8 +164,29 @@ public class ProsceniumCourseController  {
 		}
 		@ResponseBody
 		@RequestMapping(value = "/updateById", produces = "text/html;charset=UTF-8")
-		public String updateCourseById(Course course,HttpServletRequest request ) {
-					
+		public String updateCourseById(Integer courseid ,Integer organizationid ,Integer classroomid,Integer teacherid,String coursename,
+				String schooltime,String starttime,String endtime,Integer studentnum,String teachername,
+				Integer courseadminid,String studentidlist,String dayofweek,HttpServletRequest request ) throws java.text.ParseException {
+			Course course = new Course();
+			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
+	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
+	        //使用SimpleDateFormat的parse()方法生成Date  
+	        Date datestart = sf.parse(starttime); 
+	        Date dateend = sf.parse(endtime);
+	        course.setCourseid(courseid);
+	        course.setClassroomid(classroomid);
+	        course.setCourseadminid(courseadminid);
+	        course.setCoursename(coursename);
+	        course.setDayofweek(dayofweek);
+	        course.setEndtime(dateend);
+	        course.setIsattendance(0);
+	        course.setSchooltime(schooltime);
+	        course.setOrganizationid(organizationid);
+	        course.setStarttime(datestart);
+	        course.setStudentidlist(studentidlist);
+	        course.setStudentnum(studentnum);
+	        course.setTeacherid(teacherid);
+	        course.setCreatedate(new Date());		
 			int result = courseService.update(course);							
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
@@ -181,10 +202,32 @@ public class ProsceniumCourseController  {
 			
 			return data;
 		}
+		//插入一条课程信息
 		@ResponseBody
 		@RequestMapping(value = "/insert", produces = "text/html;charset=UTF-8")
-		public String insert(Course course,HttpServletRequest request ) {
-					
+		public String insert(Integer organizationid ,Integer classroomid,Integer teacherid,String coursename,
+				String schooltime,String starttime,String endtime,Integer studentnum,String teachername,
+				Integer courseadminid,String studentidlist,String dayofweek,
+				HttpServletRequest request ) throws java.text.ParseException {
+			Course course = new Course();
+			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
+	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
+	        //使用SimpleDateFormat的parse()方法生成Date  
+	        Date datestart = sf.parse(starttime); 
+	        Date dateend = sf.parse(endtime);
+	        course.setClassroomid(classroomid);
+	        course.setCourseadminid(courseadminid);
+	        course.setCoursename(coursename);
+	        course.setDayofweek(dayofweek);
+	        course.setEndtime(dateend);
+	        course.setIsattendance(0);
+	        course.setSchooltime(schooltime);
+	        course.setOrganizationid(organizationid);
+	        course.setStarttime(datestart);
+	        course.setStudentidlist(studentidlist);
+	        course.setStudentnum(studentnum);
+	        course.setTeacherid(teacherid);
+	        course.setCreatedate(new Date());
 			int result = courseService.insert(course);							
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
@@ -241,36 +284,46 @@ public class ProsceniumCourseController  {
 			//初始化签到人数，请假人数...；
 			Integer AtteanceNum = 0;//签到
 			Integer LeaveNum = 0;//请假
-			Integer AbsenteeismNum = 0;//旷课人数
-			//String AbsenteeismList =",";//旷课名单
+			Integer absenteeismnum = 0;//旷课
+			String AbsenteeismList =",";//旷课名单
 			ArrayList<Integer> studentList1 = new ArrayList<Integer>();//初始化学生列表
 			ArrayList<Integer> studentList2 = new ArrayList<Integer>();//初始化学生列表
-			ArrayList<Integer> queke = new ArrayList<Integer>();//初始化学生列表
+			ArrayList<Integer> studentList3 = new ArrayList<Integer>();//初始化学生列表
 			//将学生id int化
 			for (int i = 0; i < str.length-1; i++) {
 				System.out.println("for--找到学生id信息--："+str[i+1]);
-				studentList1.add( Integer.parseInt(str[i+1]));
-				studentList2.add(Integer.parseInt(str[i+1]));
+				studentList1.add( Integer.parseInt(str[i+1]));//根据课程拿到这门课的学生id
+				studentList2.add(Integer.parseInt(str[i+1]));//根据课程拿到这门课的学生id
 			}
 			//得到缺课名单
 			List<Attendance> attendances = attendanceService.selectAttendanceList(studentList1, nowDate, courseid);//所有进行签到、请假操作的
-			for (int i = 0; i < studentList1.size(); i++) {
-				for (int j = 0; j < attendances.size(); j++) {
-					if (attendances.get(j).getStudentid()==studentList1.get(i)) {
+			
+			System.out.println("签到和请假总人数"+attendances.size());
+			
+			for (int i = 0; i < attendances.size(); i++) {
+				for (int j = 0; j < studentList1.size(); j++) {
+					if (attendances.get(i).getStudentid()==studentList1.get(j)) {
 						//如果签到名单里面有在学生名单里，则在学生名单删除这个学生
-						studentList1.remove(i);
+						studentList1.remove(j);
+						break;
 					}
 				}
 			}//最终就得到缺课名单
+			absenteeismnum = studentList1.size();//得到缺课人数
+			for (int i = 0; i < studentList1.size(); i++) {
+				AbsenteeismList = AbsenteeismList+studentList1.get(i).toString()+",";
+			}
 			//得到正常签到人数
 			AtteanceNum = attendanceService.deleteList(studentList2, nowDate, courseid);
 			//得到请假人数
 			LeaveNum = attendanceService.selectLeaveAttendance(studentList2, nowDate, courseid).size();
 			
 			//上需信息准备完毕，封装实体
-			//absenteeism.setAbsenteeismlist(absenteeismlist);
+			absenteeism.setAbsenteeismlist(AbsenteeismList);
 			absenteeism.setAtteancenum(AtteanceNum);
 			absenteeism.setLeavenum(LeaveNum);
+			absenteeism.setCourseid(courseid);
+			absenteeism.setAbsenteeismnum(absenteeismnum);
 			//插入数据
 			int result = absenteeismService.insert(absenteeism);
 			
@@ -278,15 +331,59 @@ public class ProsceniumCourseController  {
 			String data  = null;
 			if (result==0) {
 				map.put("code", 404);
-				map.put("msg", "更新失败");
+				map.put("msg", "添加失败");
 				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
 			}else {
 				map.put("code", 200);
-				map.put("msg", "更新成功");
+				map.put("msg", "添加成功");
 				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
 			}
 			
 			return data;
 		}
+		//查看座位号被签到了
+		@ResponseBody
+		@RequestMapping(value = "/selectAttendanceByState", produces = "text/html;charset=UTF-8")
+		public String selectAttendanceByState(Integer courseid,Integer state,String date,HttpServletRequest request ) throws java.text.ParseException {
+			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
+	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
+	        //使用SimpleDateFormat的parse()方法生成Date  
+	        Date date2 = sf.parse(date); 			
+			List<Attendance> attendances = attendanceService.selectAttendanceByCourseIdAndTimeAndState(courseid, state, date2);					
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			String data  = null;
+			if (attendances==null) {
+				map.put("code", 404);
+				map.put("msg", "获取失败");
+				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+			}else {
+				map.put("code", 200);
+				map.put("msg", "获取成功");
+				map.put("data", attendances);
+				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+			}
+			
+			return data;
+		}
+		//老师删除座位号被假冒签到
+				@ResponseBody
+				@RequestMapping(value = "/deleteAttendance", produces = "text/html;charset=UTF-8")
+				public String deleteAttendance(Integer aid) throws java.text.ParseException {
+					int result = attendanceService.delete(aid);
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					String data  = null;
+					if (result==0) {
+						map.put("code", 404);
+						map.put("msg", "删除失败");
+						data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+					}else {
+						map.put("code", 200);
+						map.put("msg", "删除成功");
+						data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+					}
+					
+					return data;
+				}
+		
 
 }

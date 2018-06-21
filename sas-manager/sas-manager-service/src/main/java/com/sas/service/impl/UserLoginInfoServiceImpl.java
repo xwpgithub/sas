@@ -79,6 +79,22 @@ public class UserLoginInfoServiceImpl implements UserLoginInfoService {
 		criteria.andUseridEqualTo(id);
 		return userLoginInfoMapper.deleteByExample(example);
 	}
+	/* (非 Javadoc) 
+	* <p>Title: selectByUidAndPassword</p> 
+	* <p>Description: </p> 
+	* @param uid
+	* @param password
+	* @return 
+	* @see com.sas.service.UserInfoService#selectByUidAndPassword(java.lang.Integer, java.lang.String) 
+	*/
+	@Override
+	public List<UserLoginInfo> selectByUidAndPassword(Integer uid, String password) {
+		UserLoginInfoExample example =  new UserLoginInfoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andUseridEqualTo(uid);
+		criteria.andLoginpasswordEqualTo(password);
+		return userLoginInfoMapper.selectByExample(example);
+	}
 
 	
 	

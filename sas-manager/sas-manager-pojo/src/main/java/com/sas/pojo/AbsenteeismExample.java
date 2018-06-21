@@ -372,6 +372,66 @@ public class AbsenteeismExample {
             return (Criteria) this;
         }
 
+        public Criteria andAbsenteeismnumIsNull() {
+            addCriterion("AbsenteeismNum is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumIsNotNull() {
+            addCriterion("AbsenteeismNum is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumEqualTo(Integer value) {
+            addCriterion("AbsenteeismNum =", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumNotEqualTo(Integer value) {
+            addCriterion("AbsenteeismNum <>", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumGreaterThan(Integer value) {
+            addCriterion("AbsenteeismNum >", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumGreaterThanOrEqualTo(Integer value) {
+            addCriterion("AbsenteeismNum >=", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumLessThan(Integer value) {
+            addCriterion("AbsenteeismNum <", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumLessThanOrEqualTo(Integer value) {
+            addCriterion("AbsenteeismNum <=", value, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumIn(List<Integer> values) {
+            addCriterion("AbsenteeismNum in", values, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumNotIn(List<Integer> values) {
+            addCriterion("AbsenteeismNum not in", values, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumBetween(Integer value1, Integer value2) {
+            addCriterion("AbsenteeismNum between", value1, value2, "absenteeismnum");
+            return (Criteria) this;
+        }
+
+        public Criteria andAbsenteeismnumNotBetween(Integer value1, Integer value2) {
+            addCriterion("AbsenteeismNum not between", value1, value2, "absenteeismnum");
+            return (Criteria) this;
+        }
+
         public Criteria andAbsenteeismlistIsNull() {
             addCriterion("AbsenteeismList is null");
             return (Criteria) this;

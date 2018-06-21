@@ -4,13 +4,14 @@
   <resultMap id="BaseResultMap" type="com.sas.pojo.Attendance" >
     <id column="Aid" property="aid" jdbcType="INTEGER" />
     <result column="CourseId" property="courseid" jdbcType="INTEGER" />
+    <result column="StudentName" property="studentname" jdbcType="VARCHAR" />
     <result column="StudentId" property="studentid" jdbcType="INTEGER" />
     <result column="State" property="state" jdbcType="INTEGER" />
     <result column="SignDeskTime" property="signdesktime" jdbcType="TIMESTAMP" />
     <result column="SignDeskAddress" property="signdeskaddress" jdbcType="VARCHAR" />
     <result column="SeatNumber" property="seatnumber" jdbcType="INTEGER" />
     <result column="CreateBy" property="createby" jdbcType="VARCHAR" />
-    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createdate" jdbcType="DATE" />
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
   </resultMap>
@@ -73,8 +74,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Aid, CourseId, StudentId, State, SignDeskTime, SignDeskAddress, SeatNumber, CreateBy, 
-    CreateDate, ModifyDate, ModifyBy
+    Aid, CourseId, StudentName, StudentId, State, SignDeskTime, SignDeskAddress, SeatNumber, 
+    CreateBy, CreateDate, ModifyDate, ModifyBy
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.AttendanceExample" >
     select
@@ -107,14 +108,16 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sas.pojo.Attendance" >
-    insert into attendance (Aid, CourseId, StudentId, 
-      State, SignDeskTime, SignDeskAddress, 
-      SeatNumber, CreateBy, CreateDate, 
-      ModifyDate, ModifyBy)
-    values (#{aid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{studentid,jdbcType=INTEGER}, 
-      #{state,jdbcType=INTEGER}, #{signdesktime,jdbcType=TIMESTAMP}, #{signdeskaddress,jdbcType=VARCHAR}, 
-      #{seatnumber,jdbcType=INTEGER}, #{createby,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
-      #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR})
+    insert into attendance (Aid, CourseId, StudentName, 
+      StudentId, State, SignDeskTime, 
+      SignDeskAddress, SeatNumber, CreateBy, 
+      CreateDate, ModifyDate, ModifyBy
+      )
+    values (#{aid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{studentname,jdbcType=VARCHAR}, 
+      #{studentid,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{signdesktime,jdbcType=TIMESTAMP}, 
+      #{signdeskaddress,jdbcType=VARCHAR}, #{seatnumber,jdbcType=INTEGER}, #{createby,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Attendance" >
     insert into attendance
@@ -124,6 +127,9 @@
       </if>
       <if test="courseid != null" >
         CourseId,
+      </if>
+      <if test="studentname != null" >
+        StudentName,
       </if>
       <if test="studentid != null" >
         StudentId,
@@ -160,6 +166,9 @@
       <if test="courseid != null" >
         #{courseid,jdbcType=INTEGER},
       </if>
+      <if test="studentname != null" >
+        #{studentname,jdbcType=VARCHAR},
+      </if>
       <if test="studentid != null" >
         #{studentid,jdbcType=INTEGER},
       </if>
@@ -179,7 +188,7 @@
         #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        #{createdate,jdbcType=TIMESTAMP},
+        #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         #{modifydate,jdbcType=TIMESTAMP},
@@ -204,6 +213,9 @@
       <if test="record.courseid != null" >
         CourseId = #{record.courseid,jdbcType=INTEGER},
       </if>
+      <if test="record.studentname != null" >
+        StudentName = #{record.studentname,jdbcType=VARCHAR},
+      </if>
       <if test="record.studentid != null" >
         StudentId = #{record.studentid,jdbcType=INTEGER},
       </if>
@@ -223,7 +235,7 @@
         CreateBy = #{record.createby,jdbcType=VARCHAR},
       </if>
       <if test="record.createdate != null" >
-        CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{record.createdate,jdbcType=DATE},
       </if>
       <if test="record.modifydate != null" >
         ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
@@ -240,13 +252,14 @@
     update attendance
     set Aid = #{record.aid,jdbcType=INTEGER},
       CourseId = #{record.courseid,jdbcType=INTEGER},
+      StudentName = #{record.studentname,jdbcType=VARCHAR},
       StudentId = #{record.studentid,jdbcType=INTEGER},
       State = #{record.state,jdbcType=INTEGER},
       SignDeskTime = #{record.signdesktime,jdbcType=TIMESTAMP},
       SignDeskAddress = #{record.signdeskaddress,jdbcType=VARCHAR},
       SeatNumber = #{record.seatnumber,jdbcType=INTEGER},
       CreateBy = #{record.createby,jdbcType=VARCHAR},
-      CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{record.createdate,jdbcType=DATE},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{record.modifyby,jdbcType=VARCHAR}
     <if test="_parameter != null" >
@@ -258,6 +271,9 @@
     <set >
       <if test="courseid != null" >
         CourseId = #{courseid,jdbcType=INTEGER},
+      </if>
+      <if test="studentname != null" >
+        StudentName = #{studentname,jdbcType=VARCHAR},
       </if>
       <if test="studentid != null" >
         StudentId = #{studentid,jdbcType=INTEGER},
@@ -278,7 +294,7 @@
         CreateBy = #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
@@ -292,13 +308,14 @@
   <update id="updateByPrimaryKey" parameterType="com.sas.pojo.Attendance" >
     update attendance
     set CourseId = #{courseid,jdbcType=INTEGER},
+      StudentName = #{studentname,jdbcType=VARCHAR},
       StudentId = #{studentid,jdbcType=INTEGER},
       State = #{state,jdbcType=INTEGER},
       SignDeskTime = #{signdesktime,jdbcType=TIMESTAMP},
       SignDeskAddress = #{signdeskaddress,jdbcType=VARCHAR},
       SeatNumber = #{seatnumber,jdbcType=INTEGER},
       CreateBy = #{createby,jdbcType=VARCHAR},
-      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{createdate,jdbcType=DATE},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{modifyby,jdbcType=VARCHAR}
     where Aid = #{aid,jdbcType=INTEGER}

@@ -18,4 +18,6 @@ import com.sun.tools.internal.ws.processor.model.Request;
 
 public interface AbsenteeismService {
 	int insert(Absenteeism absenteeism);//添加
+	List<Absenteeism> selectallByCourseId(Integer courseid);
+	List<Absenteeism> selectallByCourseIdAndTime(Integer courseid,Date time);
 }

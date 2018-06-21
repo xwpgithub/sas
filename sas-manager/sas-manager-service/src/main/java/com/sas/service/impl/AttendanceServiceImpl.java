@@ -137,6 +137,54 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceMapper.selectByExample(example);
 	}
 
+	/* (非 Javadoc) 
+	* <p>Title: selectAttendanceByCourseId</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @return 
+	* @see com.sas.service.AttendanceService#selectAttendanceByCourseId(java.lang.Integer) 
+	*/
+	@Override
+	public List<Attendance> selectAttendanceByCourseId(Integer courseid,Integer state) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andStateEqualTo(state);
+		return attendanceMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAttendanceByCourseIdAndTimeAndState</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @param state
+	* @param date
+	* @return 
+	* @see com.sas.service.AttendanceService#selectAttendanceByCourseIdAndTimeAndState(java.lang.Integer, java.lang.Integer, java.util.Date) 
+	*/
+	@Override
+	public List<Attendance> selectAttendanceByCourseIdAndTimeAndState(
+			Integer courseid, Integer state, Date date) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andStateEqualTo(state);
+		criteria.andCreatedateEqualTo(date);
+		return attendanceMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: delete</p> 
+	* <p>Description: </p> 
+	* @param aid
+	* @return 
+	* @see com.sas.service.AttendanceService#delete(java.lang.Integer) 
+	*/
+	@Override
+	public int delete(Integer aid) {		
+		return attendanceMapper.deleteByPrimaryKey(aid);
+	}
+
 	
 
 

@@ -160,6 +160,23 @@ public class PersonnelServiceImpl implements PersonnelService {
 		List<Personnel> list = personnelMapper.selectByExample(example);
 		return list;
 	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAllStudentByListIds</p> 
+	* <p>Description: </p> 
+	* @param studentlist
+	* @return 
+	* @see com.sas.service.PersonnelService#selectAllStudentByListIds(java.util.ArrayList) 
+	*/
+	@Override
+	public List<Personnel> selectAllStudentByListIds(
+			ArrayList<Integer> studentlist) {
+		PersonnelExample example = new PersonnelExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andIdIn(studentlist);
+		List<Personnel> list = personnelMapper.selectByExample(example);
+		return list;
+	}
 	
 	
 	
