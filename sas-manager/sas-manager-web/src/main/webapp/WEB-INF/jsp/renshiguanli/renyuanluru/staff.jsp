@@ -973,8 +973,7 @@
 												onclick="qingkongbiaodan()">
 												重置 <i class="icon-undo icon-on-right bigger-110"></i>
 											</button>
-											<button
-												onclick="containerChange('<%=path%>/employeeController/listPage.do')"
+											<button aria-hidden="true" data-dismiss="modal"aria-hidden="true"
 												type="button" class="btn btn-sm btn-info">
 												返 回 <i class="icon-reply icon-on-right bigger-110"></i>
 											</button>

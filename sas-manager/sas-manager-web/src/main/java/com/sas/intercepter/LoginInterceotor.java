@@ -101,11 +101,7 @@ public class LoginInterceotor implements HandlerInterceptor {
 			HttpServletResponse response, Object arg2) throws Exception {
 		HttpSession session = request.getSession();
 		String uri = request.getRequestURI();
-		if (uri.contains("login") || uri.contains("index")|| uri.contains("doctordetails")
-				|| uri.contains("register")||uri.contains("registersend")
-				||uri.contains("doctorpage")||uri.contains("searchbydepartmentbyid")
-				||uri.contains("searchbycondition")||uri.contains("departmentpage")||uri.contains("hospitalpage")
-				||uri.contains("hospitaldetails")||uri.contains("foreground/noticedetails")||uri.contains("setDeparment")||uri.contains("map")) {
+		if (uri.contains("login") || uri.contains("index")|| uri.contains("setDeparment")||uri.contains("map")||uri.contains("Proscenium")) {
 			return true;
 		}
 		if (session.getAttribute("user") != null) {

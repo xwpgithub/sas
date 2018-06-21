@@ -72,6 +72,7 @@ public class TestController {
 		UserLoginInfo userLoginInfo = testService.findByloginname(username,password);
 		if (userLoginInfo!=null) {
 			int userid =  userLoginInfo.getUserid();
+			request.getSession().setAttribute("user", userLoginInfo);
 			//得到个人信息
 			System.out.println("登录者id---------"+userid);
 			Personnel personnel = personnelService.selectPersonelById(userid);

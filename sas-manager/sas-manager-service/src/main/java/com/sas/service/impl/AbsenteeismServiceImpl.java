@@ -1,0 +1,65 @@
+/**   
+* @Title: AdminServiceImpl.java 
+* @Package com.appointment.service.impl 
+* @Description: TODO(用一句话描述该文件做什么) 
+* @author tangliang 
+* @date 2017年4月14日 下午3:57:10 
+* @version V1.0   
+*/
+package com.sas.service.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.mysql.fabric.xmlrpc.base.Data;
+import com.sas.mapper.AbsenteeismMapper;
+import com.sas.mapper.ClassRoomMapper;
+import com.sas.mapper.CourseMapper;
+import com.sas.pojo.Absenteeism;
+import com.sas.pojo.ClassRoom;
+import com.sas.pojo.ClassRoomExample;
+import com.sas.pojo.ClassRoomExample.Criteria;
+import com.sas.pojo.Course;
+import com.sas.pojo.CourseExample;
+import com.sas.service.AbsenteeismService;
+import com.sas.service.ClassRoomService;
+import com.sas.service.PersonnelService;
+
+
+/** 
+ * @ClassName: AdminServiceImpl 
+ * @Description: TODO(这里用一句话描述这个类的作用) 
+ * @author xieweipeng
+ * @date 2018年4月24日 下午3:57:10 
+ * @version V1.0 
+ */
+@Service
+public class AbsenteeismServiceImpl implements AbsenteeismService {
+	
+	@Resource private AbsenteeismMapper absenteeismMapper;
+
+	/* (非 Javadoc) 
+	* <p>Title: insert</p> 
+	* <p>Description: </p> 
+	* @param absenteeismService
+	* @return 
+	* @see com.sas.service.AbsenteeismService#insert(com.sas.service.AbsenteeismService) 
+	*/
+	@Override
+	public int insert(Absenteeism absenteeism) {
+		// TODO Auto-generated method stub
+		return absenteeismMapper.insert(absenteeism);
+	}
+	
+
+	
+	
+
+}

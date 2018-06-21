@@ -230,7 +230,7 @@ public class PersonnelController  {
 			            e.printStackTrace();  
 			        }
 				if (file_img.getSize() > 0) {
-					CommonMethod.deleteFile("D:\\Project\\upload\\pic\\"
+					CommonMethod.deleteFile("C:\\xwp\\upload\\pic\\"
 							+ personnel.getImage());
 					personnel.setImage(CommonMethod.saveFile(file_img, "headImg/"));
 				}

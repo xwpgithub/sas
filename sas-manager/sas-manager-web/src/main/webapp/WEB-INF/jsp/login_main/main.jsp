@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<title>后台管理系统模版</title>
+		<title>考勤后台管理系统</title>
 	    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     	<link href="${ctx}/css/bootstrap.min.css" rel="stylesheet" />
 		<link rel="stylesheet" href="${ctx}/css/font-awesome.min.css" />
@@ -113,55 +113,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								<span class="menu-text"> 功能导航 </span>
 							</a>
 						</li>
-						<li id="myattendance">
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-desktop"></i>
-								<span class="menu-text"> 我的考勤  </span>
-
-								<b class="arrow icon-angle-down"></b>
-							</a>
-
-							<ul class="submenu">
-								<li id="MyAttendanceRecord"
-								 onclick="activechange(document.getElementById('myattendance'),document.getElementById('MyAttendanceRecord'),'menuController/selectMyAttendance')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										我的考勤记录
-									</a>
-								</li>
-
-								<li id="myclass" 
-								onclick="activechange(document.getElementById('myattendance'),document.getElementById('myclass'),'menuController/selectMyClass')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										我的班次安排
-									</a>
-									
-								</li>
-                               	 <li id="myRetroactive" 
-								 onclick="activechange(document.getElementById('myattendance'),document.getElementById('myRetroactive'),'menuController/selectMyRetroactive')">
-								
-									<a >
-										<i class="icon-double-angle-right"></i>
-										我的补签申请
-									</a>
-								</li>
-									 <li id="myAskForLeave" 
-							        onclick="activechange(document.getElementById('myattendance'),document.getElementById('myAskForLeave'),'menuController/selectMyAskForLeave')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										我要请假、加班、出差
-									</a>
-								</li>
-							    <li id="punchCard" 
-							    onclick="activechange(document.getElementById('myattendance'),document.getElementById('punchCard'),'menuController/punchCard')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										 考勤打卡
-									</a>
-								</li>
-							</ul>
-						</li>
 
 						<li id="renshiguanli">
 							<a href="#" class="dropdown-toggle">
@@ -231,81 +182,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								</li> -->
 							</ul>
 						</li>
- 
 
-						<li id="kaoqinguangli" >
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-tag"></i>
-								<span class="menu-text"> 考勤管理 </span>
-								<b class="arrow icon-angle-down"></b>
-							</a>
-
-							<ul class="submenu">
-								<li  id="kaoqinzhidushezhi" onclick="activechange(document.getElementById('kaoqinguangli'),document.getElementById('kaoqinzhidushezhi'),'menuController/selectSystem')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										考勤制度设置
-									</a>
-								</li>
-							 
-								<li  id="kaoqinleibieshezhi" onclick="activechange(document.getElementById('kaoqinguangli'),document.getElementById('kaoqinleibieshezhi'),'menuController/selectByAttendanceType')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										考勤类别设置
-									</a>
-								</li>
-							</ul>
-						</li>
-						<li id="kaoqinchuli">
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-file-alt"></i>
-
-								<span class="menu-text">
-									课程审核
-								</span>
-
-								<b class="arrow icon-angle-down"></b>
-							</a>
-
-							<ul class="submenu">
-								<li
-							 id="qingjiajiabanchuli" onclick="activechange(document.getElementById('kaoqinchuli'),document.getElementById('qingjiajiabanchuli'),'menuController/selectAllAskForLeave')">
-									<a>
-										<i class="icon-double-angle-right"></i>
-										请假、加班申请处理
-									</a>
-								</li>
-
-								<li 
-								 id="buqianyichang" onclick="activechange(document.getElementById('kaoqinchuli'),document.getElementById('buqianyichang'),'menuController/selectDealwihthRetroative')">
-									<a >
-										<i class="icon-double-angle-right"></i>
-										补签、异常信息处理
-									</a>
-								</li>
-							</ul>
-						</li>
-							<li id="kaoqingtongji">
-							<a href="#" class="dropdown-toggle">
-								<i class="icon-file-alt"></i>
-
-								<span class="menu-text">
-									考勤统计
-								</span>
-
-								<b class="arrow icon-angle-down"></b>
-							</a>
-
-							<ul class="submenu">
-								<li 
-								 id="bumentongji" onclick="activechange(document.getElementById('kaoqingtongji'),document.getElementById('bumentongji'),'menuController/attendanceStatistics')">
-									<a >
-										<i class="icon-double-angle-right"></i>
-										部门考勤统计
-									</a>
-								</li>
-							</ul>
-						</li>
 					</ul><!-- /.nav-list -->
 
 					<div class="sidebar-collapse" id="sidebar-collapse">

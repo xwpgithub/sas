@@ -321,21 +321,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					tree.checkAllNodes(false);
 					for ( var i = 0; i < data[1].length; i++) {
 						var node = tree.getNodeByParam("id",data[1][i].permissionid);
-						alert(node.id);
 						tree.checkNode(node, true, true);
 					}										
 					$("#txthidden").val(data[0].rolename);
-					$("#idhidden").val(data[0].roleid);
-					alert(data[0].rolename);					
+					$("#idhidden").val(data[0].roleid);				
 				},
 			});
 
 		}
 	else{
-			alert("进入新增页面");
 	 		$("#tladd_edit").empty();
 			$("#tladd_edit").append("新增角色");
-			$("#txthidden").val("add");
+			var tree = $.fn.zTree.getZTreeObj("treeDemo2");
+			tree.checkAllNodes(false);
+			 $("#txthidden").val("");
+			 $("#idhidden").val("");
 		 
 		}
 		$("#myModal").modal("show");
@@ -348,16 +348,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	var nodes = $.fn.zTree.getZTreeObj("treeDemo2").getCheckedNodes(true);
 	for(var i=0;i<nodes.length;i++){  
 		arraylistnumber.push(nodes[i].id); 
-		alert(arraylistnumber[i]+"---");
         }  
 	var name = $("#txthidden").val();
 	if($("#idhidden").val()==""){
-		alert("进行新增操作");
 	 ajax("/roleController/addRole?list="+arraylistnumber+"&name="+name+"&add_edit=add","新增",1); 
 	 $("#myModal").modal("hide");
 	}
 	 else{
-		 alert("进行修改操作id为："+$("#idhidden").val());
 		 var rid = $("#idhidden").val();
       ajax("/roleController/updateRole?list="+arraylistnumber+"&name="+name+"&rid="+rid+"&add_edit=edit","修改",1);
       $("#txthidden").val("");
@@ -492,7 +489,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 							<table id="sample-table-2" style="border: 2px solid #dddddd;"
 								class="table table-striped table-bordered table-hover">
-								<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">添加角色</button>
+								<button class="btn btn-primary btn-lg"  onclick = "insertPosition(1,0,0)">添加角色</button>
 								<thead>
 									<tr>
 										<th style="text-align: center;">操作</th>

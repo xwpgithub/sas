@@ -16,7 +16,7 @@ public class CommonMethod {
 		// 声明新的图片名称
 		String newImgName = "";
 		// 图片保存的路径
-		String img_path = "D:\\Project\\upload\\pic\\";
+		String img_path = "C:\\xwp\\upload\\pic\\";
 
 		File fileDir = new File(img_path + headPath);
 		// 如果文件夹不存在则创建

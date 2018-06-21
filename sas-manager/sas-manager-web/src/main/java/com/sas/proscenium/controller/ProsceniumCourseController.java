@@ -23,6 +23,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.sas.mapper.UserInfoMapper;
 import com.sas.pojo.Absenteeism;
+import com.sas.pojo.Attendance;
 import com.sas.pojo.ClassRoom;
 import com.sas.pojo.Course;
 import com.sas.pojo.CourseAdmin;
@@ -32,6 +33,7 @@ import com.sas.pojo.Teacher;
 import com.sas.pojo.UserInfo;
 import com.sas.pojo.UserLoginInfo;
 import com.sas.pojo.UserRole;
+import com.sas.service.AbsenteeismService;
 import com.sas.service.AttendanceService;
 import com.sas.service.ClassRoomService;
 import com.sas.service.CourseAdminService;
@@ -55,6 +57,8 @@ public class ProsceniumCourseController  {
 	private CourseService courseService;
 	@Resource
 	private AttendanceService attendanceService;
+	@Resource
+	private AbsenteeismService absenteeismService;
 	 /**
 	  * list转json
 	  * */
@@ -238,18 +242,38 @@ public class ProsceniumCourseController  {
 			Integer AtteanceNum = 0;//签到
 			Integer LeaveNum = 0;//请假
 			Integer AbsenteeismNum = 0;//旷课人数
-			String AbsenteeismList =",";//旷课名单
-			ArrayList<Integer> studentList = new ArrayList<Integer>();//初始化学生列表
+			//String AbsenteeismList =",";//旷课名单
+			ArrayList<Integer> studentList1 = new ArrayList<Integer>();//初始化学生列表
+			ArrayList<Integer> studentList2 = new ArrayList<Integer>();//初始化学生列表
+			ArrayList<Integer> queke = new ArrayList<Integer>();//初始化学生列表
 			//将学生id int化
 			for (int i = 0; i < str.length-1; i++) {
 				System.out.println("for--找到学生id信息--："+str[i+1]);
-				studentList.add( Integer.parseInt(str[i+1]));
+				studentList1.add( Integer.parseInt(str[i+1]));
+				studentList2.add(Integer.parseInt(str[i+1]));
 			}
-			//未写完。。。。。。
-			int num = attendanceService.selectAttendanceList(studentList, nowDate, courseid).size();//所有进行签到、请假操作的
-			AtteanceNum = attendanceService.deleteList(studentList, nowDate, courseid);
-			LeaveNum = attendanceService.selectLeaveAttendance(studentList, nowDate, courseid).size();
-			int result = courseService.updateSelect(course);							
+			//得到缺课名单
+			List<Attendance> attendances = attendanceService.selectAttendanceList(studentList1, nowDate, courseid);//所有进行签到、请假操作的
+			for (int i = 0; i < studentList1.size(); i++) {
+				for (int j = 0; j < attendances.size(); j++) {
+					if (attendances.get(j).getStudentid()==studentList1.get(i)) {
+						//如果签到名单里面有在学生名单里，则在学生名单删除这个学生
+						studentList1.remove(i);
+					}
+				}
+			}//最终就得到缺课名单
+			//得到正常签到人数
+			AtteanceNum = attendanceService.deleteList(studentList2, nowDate, courseid);
+			//得到请假人数
+			LeaveNum = attendanceService.selectLeaveAttendance(studentList2, nowDate, courseid).size();
+			
+			//上需信息准备完毕，封装实体
+			//absenteeism.setAbsenteeismlist(absenteeismlist);
+			absenteeism.setAtteancenum(AtteanceNum);
+			absenteeism.setLeavenum(LeaveNum);
+			//插入数据
+			int result = absenteeismService.insert(absenteeism);
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
 			if (result==0) {
