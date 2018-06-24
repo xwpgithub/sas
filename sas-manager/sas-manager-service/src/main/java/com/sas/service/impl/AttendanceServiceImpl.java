@@ -185,6 +185,73 @@ public class AttendanceServiceImpl implements AttendanceService {
 		return attendanceMapper.deleteByPrimaryKey(aid);
 	}
 
+	/* (非 Javadoc) 
+	* <p>Title: selectIsAttendance</p> 
+	* <p>Description: </p> 
+	* @param date
+	* @param courseid
+	* @param studentid
+	* @return 
+	* @see com.sas.service.AttendanceService#selectIsAttendance(java.util.Date, java.lang.Integer, java.lang.Integer) 
+	*/
+	@Override
+	public int selectIsAttendance(Date date, Integer courseid, Integer studentid) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andStateEqualTo(0);
+		criteria.andCreatedateEqualTo(date);
+		criteria.andStudentidEqualTo(studentid);
+		return attendanceMapper.selectByExample(example).size();
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAllLeave</p> 
+	* <p>Description: </p> 
+	* @param studentid
+	* @return 
+	* @see com.sas.service.AttendanceService#selectAllLeave(java.lang.Integer) 
+	*/
+	@Override
+	public List<Attendance> selectAllLeave(Integer studentid) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andStateEqualTo(1);
+		criteria.andStudentidEqualTo(studentid);
+		return attendanceMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectOkToSeatNum</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @return 
+	* @see com.sas.service.AttendanceService#selectOkToSeatNum(java.lang.Integer) 
+	*/
+	@Override
+	public List<Attendance> selectOkToSeatNum(Integer courseid) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andCreatedateEqualTo(new Date());
+		return attendanceMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: deleteByCourseId</p> 
+	* <p>Description: </p> 
+	* @param aid
+	* @return 
+	* @see com.sas.service.AttendanceService#deleteByCourseId(java.lang.Integer) 
+	*/
+	@Override
+	public int deleteByCourseId(Integer courseid) {
+		AttendanceExample example = new AttendanceExample();
+		Criteria criteria =example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		return attendanceMapper.deleteByExample(example);
+	}
+
 	
 
 

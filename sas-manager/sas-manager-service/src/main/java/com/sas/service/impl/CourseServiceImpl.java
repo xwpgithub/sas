@@ -8,6 +8,7 @@
 */
 
 package com.sas.service.impl;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -109,6 +110,40 @@ public class CourseServiceImpl implements CourseService {
 	public int updateSelect(Course course) {
 		// TODO Auto-generated method stub
 		return courseMapper.updateByPrimaryKeySelective(course);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectAllOpenAttendanceCourse</p> 
+	* <p>Description: </p> 
+	* @param studentid
+	* @param date
+	* @param isAttendances
+	* @return 
+	* @see com.sas.service.CourseService#selectAllOpenAttendanceCourse(java.lang.Integer, java.util.Date, java.lang.Integer) 
+	*/
+	@Override
+	public List<Course> selectAllOpenAttendanceCourse(Integer studentid,
+			Date date, Integer isAttendances) {
+		CourseExample example = new CourseExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andStudentidlistLike("%"+","+studentid+","+"%");
+		criteria.andIsattendanceEqualTo(isAttendances);
+		return courseMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectCourseByStudentId</p> 
+	* <p>Description: </p> 
+	* @param studentid
+	* @return 
+	* @see com.sas.service.CourseService#selectCourseByStudentId(java.lang.Integer) 
+	*/
+	@Override
+	public List<Course> selectCourseByStudentId(Integer studentid) {
+		CourseExample example = new CourseExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andStudentidlistLike("%"+","+studentid+","+"%");
+		return courseMapper.selectByExample(example);
 	}
 
 

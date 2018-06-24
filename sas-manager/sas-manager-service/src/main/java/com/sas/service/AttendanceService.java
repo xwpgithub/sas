@@ -26,6 +26,10 @@ public interface AttendanceService {
 	List<Attendance> selectAttendanceByCourseId(Integer courseid,Integer state);//根据教师所属机构查找教室
 	List<Attendance> selectAttendanceByCourseIdAndTimeAndState(Integer courseid,Integer state,Date date);//根据教师所属机构查找教室
 	int delete(Integer aid);//删除
+	int selectIsAttendance(Date date,Integer courseid,Integer studentid);//删除
+	List<Attendance> selectAllLeave(Integer studentid);//查找请假信息
+	List<Attendance> selectOkToSeatNum(Integer courseid);//查找请假信息
+	int deleteByCourseId(Integer aid);//删除
 	
 }
 

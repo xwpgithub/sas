@@ -181,28 +181,30 @@ public class ProsceniumPersonnelController  {
 		        //使用SimpleDateFormat的parse()方法生成Date  
 		        Date time = sf.parse(date); 
 				List<Absenteeism> absenteeisms = absenteeismService.selectallByCourseIdAndTime(courseid, time);			
-				List<Attendance> attendancesQingJia = attendanceService.selectAttendanceByCourseIdAndTimeAndState(courseid, state, time);
-				String[] str = absenteeisms.get(0).getAbsenteeismlist().split(",");
-				ArrayList<Integer> studentList1 = new ArrayList<Integer>();//初始化学生列表
-				//将学生id int化;
-				for (int i = 0; i < str.length-1; i++) {
-					System.out.println("for--找到学生id信息--："+str[i+1]);
-					studentList1.add( Integer.parseInt(str[i+1]));
-				}
-				List<Personnel> personnels =  personnelService.selectAllStudentByListIds(studentList1);
+				
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				String data  = null;
-				if (personnels==null) {
-					map.put("code", 404);
-					map.put("msg", "获取失败");
-					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
-				}else {
+				if (absenteeisms!=null && !absenteeisms.isEmpty()) {
+					List<Attendance> attendancesQingJia = attendanceService.selectAttendanceByCourseIdAndTimeAndState(courseid, state, time);					
+					String[] str = absenteeisms.get(0).getAbsenteeismlist().split(",");		
+					ArrayList<Integer> studentList1 = new ArrayList<Integer>();//初始化学生列表
+					//将学生id int化;
+					for (int i = 0; i < str.length-1; i++) {
+						System.out.println("for--找到学生id信息--："+str[i+1]);
+						studentList1.add( Integer.parseInt(str[i+1]));
+					}
+					List<Personnel> personnels =  personnelService.selectAllStudentByListIds(studentList1);//旷课人的信息
 					map.put("code", 200);
 					map.put("msg", "获取成功");
 					map.put("data", personnels);//旷课人信息
-					map.put("absenteeisms", absenteeisms);//签到统计信息
+					map.put("absenteeisms", absenteeisms.get(0));//签到统计信息
 					map.put("attendancesQingJia", attendancesQingJia);//请假人员信息
 					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+				}else {
+					map.put("code", 404);
+					map.put("msg", "该日期下无考勤情况");
+					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");					
+					
 				}
 			
 			return data;
@@ -240,12 +242,7 @@ public class ProsceniumPersonnelController  {
 				UserLoginInfo userLoginInfo = new UserLoginInfo();
 				HashMap<String, Object> map = new HashMap<String, Object>();
 				String data  = null;
-				if (lists==null) {
-					map.put("code", 405);
-					map.put("msg", "原密码错误");
-					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
-				}
-				else {
+				if (lists!=null && !lists.isEmpty()) {
 					userLoginInfo = lists.get(0);
 					userLoginInfo.setLoginpassword(newpassword);
 					int Result = userLoginInfoService.updateByUserid(userLoginInfo);
@@ -258,6 +255,13 @@ public class ProsceniumPersonnelController  {
 						map.put("msg", "密码更新成功");
 						data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
 					}
+				}
+				else {
+					map.put("code", 405);
+					map.put("msg", "原密码错误");
+					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+					
+					
 				}
 
 			return data;

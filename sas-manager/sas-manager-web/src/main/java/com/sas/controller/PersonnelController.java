@@ -7,9 +7,11 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
 
+import org.apache.commons.logging.Log;
 import org.apache.http.ParseException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -156,9 +158,12 @@ public class PersonnelController  {
 		
 			@ResponseBody
 			@RequestMapping(value = "/insertTeacher", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String insertTeacher(Personnel personnel,String entrytimes, MultipartFile file_img,String username,String password)
+			public String insertTeacher(Personnel personnel,String entrytimes, MultipartFile file_img,String username,String password,HttpServletRequest request,HttpServletResponse response)
 					throws Exception {	
 				System.out.println("权限id为"+personnel.getRoleid());
+				/*String name =request.getParameter("name");
+				name = new String(name.getBytes("ISO-8859-1"),"UTF-8");		
+				personnel.setName(name);*/
 				personnel.setId(null);
 		        //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
 		        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
@@ -217,9 +222,22 @@ public class PersonnelController  {
 		    
 			@ResponseBody
 			@RequestMapping(value = "/updateTeacher", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-			public String updateStaff(Personnel personnel,String entrytimes,Integer id,String username,String password, MultipartFile file_img)
+			public String updateStaff(Personnel personnel,String entrytimes,Integer id,String username,String password, MultipartFile file_img,HttpServletRequest request,HttpServletResponse response)
 					throws Exception {
-				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id);
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id+"-----"+personnel.getName());
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id+"-----"+personnel.getName());
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id+"-----"+personnel.getName());
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id+"-----"+personnel.getName());
+				System.out.println("当前更新的用户id为:"+personnel.getId()+"-------"+id+"-----"+personnel.getName());
+				
+				/*String name=request.getParameter("username");
+				System.out.println("假设拿到的中文是乱码"+name);
+				username = new String( request.getParameter( "username" ).getBytes( "ISO8859-1" ), "utf-8" );
+				System.out.println("重新编码得到的是"+username);
+				System.out.println("重新编码得到的是"+username);
+				System.out.println("重新编码得到的是"+username);
+				System.out.println("重新编码得到的是"+username);
+				personnel.setName(username);*/
 				 SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  
 			        try {  
 			            //使用SimpleDateFormat的parse()方法生成Date  

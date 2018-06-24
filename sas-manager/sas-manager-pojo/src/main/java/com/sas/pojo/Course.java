@@ -7,6 +7,10 @@ public class Course {
 
     private Integer organizationid;
 
+    private Integer classroomsize;
+
+    private String classroomname;
+
     private Integer classroomid;
 
     private Integer teacherid;
@@ -53,6 +57,22 @@ public class Course {
 
     public void setOrganizationid(Integer organizationid) {
         this.organizationid = organizationid;
+    }
+
+    public Integer getClassroomsize() {
+        return classroomsize;
+    }
+
+    public void setClassroomsize(Integer classroomsize) {
+        this.classroomsize = classroomsize;
+    }
+
+    public String getClassroomname() {
+        return classroomname;
+    }
+
+    public void setClassroomname(String classroomname) {
+        this.classroomname = classroomname == null ? null : classroomname.trim();
     }
 
     public Integer getClassroomid() {

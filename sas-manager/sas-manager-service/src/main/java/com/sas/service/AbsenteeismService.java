@@ -20,4 +20,7 @@ public interface AbsenteeismService {
 	int insert(Absenteeism absenteeism);//添加
 	List<Absenteeism> selectallByCourseId(Integer courseid);
 	List<Absenteeism> selectallByCourseIdAndTime(Integer courseid,Date time);
+	int delete(Integer courseid,Date time);
+	List<Absenteeism> selectallByStudent(Integer studentid);
+	int deleteByCourse(Integer courseid);
 }

@@ -252,6 +252,136 @@ public class CourseExample {
             return (Criteria) this;
         }
 
+        public Criteria andClassroomsizeIsNull() {
+            addCriterion("ClassRoomSize is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeIsNotNull() {
+            addCriterion("ClassRoomSize is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeEqualTo(Integer value) {
+            addCriterion("ClassRoomSize =", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeNotEqualTo(Integer value) {
+            addCriterion("ClassRoomSize <>", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeGreaterThan(Integer value) {
+            addCriterion("ClassRoomSize >", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("ClassRoomSize >=", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeLessThan(Integer value) {
+            addCriterion("ClassRoomSize <", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeLessThanOrEqualTo(Integer value) {
+            addCriterion("ClassRoomSize <=", value, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeIn(List<Integer> values) {
+            addCriterion("ClassRoomSize in", values, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeNotIn(List<Integer> values) {
+            addCriterion("ClassRoomSize not in", values, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeBetween(Integer value1, Integer value2) {
+            addCriterion("ClassRoomSize between", value1, value2, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomsizeNotBetween(Integer value1, Integer value2) {
+            addCriterion("ClassRoomSize not between", value1, value2, "classroomsize");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameIsNull() {
+            addCriterion("ClassRoomName is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameIsNotNull() {
+            addCriterion("ClassRoomName is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameEqualTo(String value) {
+            addCriterion("ClassRoomName =", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameNotEqualTo(String value) {
+            addCriterion("ClassRoomName <>", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameGreaterThan(String value) {
+            addCriterion("ClassRoomName >", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameGreaterThanOrEqualTo(String value) {
+            addCriterion("ClassRoomName >=", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameLessThan(String value) {
+            addCriterion("ClassRoomName <", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameLessThanOrEqualTo(String value) {
+            addCriterion("ClassRoomName <=", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameLike(String value) {
+            addCriterion("ClassRoomName like", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameNotLike(String value) {
+            addCriterion("ClassRoomName not like", value, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameIn(List<String> values) {
+            addCriterion("ClassRoomName in", values, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameNotIn(List<String> values) {
+            addCriterion("ClassRoomName not in", values, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameBetween(String value1, String value2) {
+            addCriterion("ClassRoomName between", value1, value2, "classroomname");
+            return (Criteria) this;
+        }
+
+        public Criteria andClassroomnameNotBetween(String value1, String value2) {
+            addCriterion("ClassRoomName not between", value1, value2, "classroomname");
+            return (Criteria) this;
+        }
+
         public Criteria andClassroomidIsNull() {
             addCriterion("ClassRoomId is null");
             return (Criteria) this;
@@ -843,52 +973,52 @@ public class CourseExample {
         }
 
         public Criteria andCreatedateEqualTo(Date value) {
-            addCriterion("CreateDate =", value, "createdate");
+            addCriterionForJDBCDate("CreateDate =", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotEqualTo(Date value) {
-            addCriterion("CreateDate <>", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <>", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateGreaterThan(Date value) {
-            addCriterion("CreateDate >", value, "createdate");
+            addCriterionForJDBCDate("CreateDate >", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateGreaterThanOrEqualTo(Date value) {
-            addCriterion("CreateDate >=", value, "createdate");
+            addCriterionForJDBCDate("CreateDate >=", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateLessThan(Date value) {
-            addCriterion("CreateDate <", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateLessThanOrEqualTo(Date value) {
-            addCriterion("CreateDate <=", value, "createdate");
+            addCriterionForJDBCDate("CreateDate <=", value, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateIn(List<Date> values) {
-            addCriterion("CreateDate in", values, "createdate");
+            addCriterionForJDBCDate("CreateDate in", values, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotIn(List<Date> values) {
-            addCriterion("CreateDate not in", values, "createdate");
+            addCriterionForJDBCDate("CreateDate not in", values, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateBetween(Date value1, Date value2) {
-            addCriterion("CreateDate between", value1, value2, "createdate");
+            addCriterionForJDBCDate("CreateDate between", value1, value2, "createdate");
             return (Criteria) this;
         }
 
         public Criteria andCreatedateNotBetween(Date value1, Date value2) {
-            addCriterion("CreateDate not between", value1, value2, "createdate");
+            addCriterionForJDBCDate("CreateDate not between", value1, value2, "createdate");
             return (Criteria) this;
         }
 

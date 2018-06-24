@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -13,12 +13,13 @@
 <head>
 <base href="<%=basePath%>">
 <title>My JSP 'main.jsp' starting page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
-<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+<!-- <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" /> -->
 <link rel="stylesheet" href="${ctx}/css/zTreeStyle.css" type="text/css">
 <link rel="stylesheet" href="${ctx}/layui/css/layui.css" media="all"> 
 <script type="text/javascript" src="${ctx}/js/jquery.min.js"></script>
@@ -328,7 +329,7 @@
 					scriptCharset : "utf-8",
 					contentType : false,
 					processData : false,
-					dataType : 'HTML',
+					dataType : "json",
 					success : function(data) {
 						if (data == "1") {
 							alert("新增成功");
@@ -361,7 +362,7 @@
 					scriptCharset : "utf-8",
 					contentType : false,
 					processData : false,
-					dataType : 'HTML',
+					dataType : "json",
 					success : function(data) {
 						if (data == "1") {
 							alert("修改成功");
@@ -566,7 +567,7 @@
 					success : function(data) {			
 						$('#tbodyStaff').empty();					
 						for ( var i = 0; i < data[0].length; i++) {
-							var xingbie = data[0][i].teachersex == 0 ? "女" : "男";
+							var xingbie = data[0][i].sex == 0 ? "女" : "男";
 							var html = "<tr onclick='onclickStaffRow(this)'><td><a  href='javascript:deleteStaff("
 									+ data[0][i].id
 									+ ")'>【删除】</a><a href='javascript:updateStaff("

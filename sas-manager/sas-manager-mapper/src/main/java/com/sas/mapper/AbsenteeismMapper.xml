@@ -3,6 +3,7 @@
 <mapper namespace="com.sas.mapper.AbsenteeismMapper" >
   <resultMap id="BaseResultMap" type="com.sas.pojo.Absenteeism" >
     <id column="AId" property="aid" jdbcType="INTEGER" />
+    <result column="CourseName" property="coursename" jdbcType="VARCHAR" />
     <result column="CourseId" property="courseid" jdbcType="INTEGER" />
     <result column="AtteanceNum" property="atteancenum" jdbcType="INTEGER" />
     <result column="LeaveNum" property="leavenum" jdbcType="INTEGER" />
@@ -69,7 +70,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    AId, CourseId, AtteanceNum, LeaveNum, AbsenteeismNum, AbsenteeismList, CreateTime
+    AId, CourseName, CourseId, AtteanceNum, LeaveNum, AbsenteeismNum, AbsenteeismList, 
+    CreateTime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.AbsenteeismExample" >
     select
@@ -102,18 +104,21 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sas.pojo.Absenteeism" >
-    insert into absenteeism (AId, CourseId, AtteanceNum, 
-      LeaveNum, AbsenteeismNum, AbsenteeismList, 
-      CreateTime)
-    values (#{aid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{atteancenum,jdbcType=INTEGER}, 
-      #{leavenum,jdbcType=INTEGER}, #{absenteeismnum,jdbcType=INTEGER}, #{absenteeismlist,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=DATE})
+    insert into absenteeism (AId, CourseName, CourseId, 
+      AtteanceNum, LeaveNum, AbsenteeismNum, 
+      AbsenteeismList, CreateTime)
+    values (#{aid,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{courseid,jdbcType=INTEGER}, 
+      #{atteancenum,jdbcType=INTEGER}, #{leavenum,jdbcType=INTEGER}, #{absenteeismnum,jdbcType=INTEGER}, 
+      #{absenteeismlist,jdbcType=VARCHAR}, #{createtime,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Absenteeism" >
     insert into absenteeism
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="aid != null" >
         AId,
+      </if>
+      <if test="coursename != null" >
+        CourseName,
       </if>
       <if test="courseid != null" >
         CourseId,
@@ -137,6 +142,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="aid != null" >
         #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="coursename != null" >
+        #{coursename,jdbcType=VARCHAR},
       </if>
       <if test="courseid != null" >
         #{courseid,jdbcType=INTEGER},
@@ -170,6 +178,9 @@
       <if test="record.aid != null" >
         AId = #{record.aid,jdbcType=INTEGER},
       </if>
+      <if test="record.coursename != null" >
+        CourseName = #{record.coursename,jdbcType=VARCHAR},
+      </if>
       <if test="record.courseid != null" >
         CourseId = #{record.courseid,jdbcType=INTEGER},
       </if>
@@ -196,6 +207,7 @@
   <update id="updateByExample" parameterType="map" >
     update absenteeism
     set AId = #{record.aid,jdbcType=INTEGER},
+      CourseName = #{record.coursename,jdbcType=VARCHAR},
       CourseId = #{record.courseid,jdbcType=INTEGER},
       AtteanceNum = #{record.atteancenum,jdbcType=INTEGER},
       LeaveNum = #{record.leavenum,jdbcType=INTEGER},
@@ -209,6 +221,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sas.pojo.Absenteeism" >
     update absenteeism
     <set >
+      <if test="coursename != null" >
+        CourseName = #{coursename,jdbcType=VARCHAR},
+      </if>
       <if test="courseid != null" >
         CourseId = #{courseid,jdbcType=INTEGER},
       </if>
@@ -232,7 +247,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sas.pojo.Absenteeism" >
     update absenteeism
-    set CourseId = #{courseid,jdbcType=INTEGER},
+    set CourseName = #{coursename,jdbcType=VARCHAR},
+      CourseId = #{courseid,jdbcType=INTEGER},
       AtteanceNum = #{atteancenum,jdbcType=INTEGER},
       LeaveNum = #{leavenum,jdbcType=INTEGER},
       AbsenteeismNum = #{absenteeismnum,jdbcType=INTEGER},

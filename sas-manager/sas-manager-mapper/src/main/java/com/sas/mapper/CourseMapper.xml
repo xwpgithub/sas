@@ -4,6 +4,8 @@
   <resultMap id="BaseResultMap" type="com.sas.pojo.Course" >
     <id column="CourseId" property="courseid" jdbcType="INTEGER" />
     <result column="OrganizationId" property="organizationid" jdbcType="INTEGER" />
+    <result column="ClassRoomSize" property="classroomsize" jdbcType="INTEGER" />
+    <result column="ClassRoomName" property="classroomname" jdbcType="VARCHAR" />
     <result column="ClassRoomId" property="classroomid" jdbcType="INTEGER" />
     <result column="TeacherId" property="teacherid" jdbcType="INTEGER" />
     <result column="CourseName" property="coursename" jdbcType="VARCHAR" />
@@ -13,7 +15,7 @@
     <result column="StudentNum" property="studentnum" jdbcType="INTEGER" />
     <result column="TeacherName" property="teachername" jdbcType="VARCHAR" />
     <result column="CreateBy" property="createby" jdbcType="VARCHAR" />
-    <result column="CreateDate" property="createdate" jdbcType="TIMESTAMP" />
+    <result column="CreateDate" property="createdate" jdbcType="DATE" />
     <result column="ModifyDate" property="modifydate" jdbcType="TIMESTAMP" />
     <result column="ModifyBy" property="modifyby" jdbcType="VARCHAR" />
     <result column="CourseAdminId" property="courseadminid" jdbcType="INTEGER" />
@@ -80,9 +82,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    CourseId, OrganizationId, ClassRoomId, TeacherId, CourseName, SchoolTime, StartTime, 
-    EndTime, StudentNum, TeacherName, CreateBy, CreateDate, ModifyDate, ModifyBy, CourseAdminId, 
-    StudentIdList, DayOfWeek, IsAttendance
+    CourseId, OrganizationId, ClassRoomSize, ClassRoomName, ClassRoomId, TeacherId, CourseName, 
+    SchoolTime, StartTime, EndTime, StudentNum, TeacherName, CreateBy, CreateDate, ModifyDate, 
+    ModifyBy, CourseAdminId, StudentIdList, DayOfWeek, IsAttendance
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.CourseExample" >
     select
@@ -115,20 +117,20 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sas.pojo.Course" >
-    insert into course (CourseId, OrganizationId, ClassRoomId, 
-      TeacherId, CourseName, SchoolTime, 
-      StartTime, EndTime, StudentNum, 
-      TeacherName, CreateBy, CreateDate, 
-      ModifyDate, ModifyBy, CourseAdminId, 
-      StudentIdList, DayOfWeek, IsAttendance
-      )
-    values (#{courseid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{classroomid,jdbcType=INTEGER}, 
-      #{teacherid,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{schooltime,jdbcType=VARCHAR}, 
-      #{starttime,jdbcType=DATE}, #{endtime,jdbcType=DATE}, #{studentnum,jdbcType=INTEGER}, 
-      #{teachername,jdbcType=VARCHAR}, #{createby,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
-      #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}, #{courseadminid,jdbcType=INTEGER}, 
-      #{studentidlist,jdbcType=VARCHAR}, #{dayofweek,jdbcType=VARCHAR}, #{isattendance,jdbcType=INTEGER}
-      )
+    insert into course (CourseId, OrganizationId, ClassRoomSize, 
+      ClassRoomName, ClassRoomId, TeacherId, 
+      CourseName, SchoolTime, StartTime, 
+      EndTime, StudentNum, TeacherName, 
+      CreateBy, CreateDate, ModifyDate, 
+      ModifyBy, CourseAdminId, StudentIdList, 
+      DayOfWeek, IsAttendance)
+    values (#{courseid,jdbcType=INTEGER}, #{organizationid,jdbcType=INTEGER}, #{classroomsize,jdbcType=INTEGER}, 
+      #{classroomname,jdbcType=VARCHAR}, #{classroomid,jdbcType=INTEGER}, #{teacherid,jdbcType=INTEGER}, 
+      #{coursename,jdbcType=VARCHAR}, #{schooltime,jdbcType=VARCHAR}, #{starttime,jdbcType=DATE}, 
+      #{endtime,jdbcType=DATE}, #{studentnum,jdbcType=INTEGER}, #{teachername,jdbcType=VARCHAR}, 
+      #{createby,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{modifyby,jdbcType=VARCHAR}, #{courseadminid,jdbcType=INTEGER}, #{studentidlist,jdbcType=VARCHAR}, 
+      #{dayofweek,jdbcType=VARCHAR}, #{isattendance,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Course" >
     insert into course
@@ -138,6 +140,12 @@
       </if>
       <if test="organizationid != null" >
         OrganizationId,
+      </if>
+      <if test="classroomsize != null" >
+        ClassRoomSize,
+      </if>
+      <if test="classroomname != null" >
+        ClassRoomName,
       </if>
       <if test="classroomid != null" >
         ClassRoomId,
@@ -195,6 +203,12 @@
       <if test="organizationid != null" >
         #{organizationid,jdbcType=INTEGER},
       </if>
+      <if test="classroomsize != null" >
+        #{classroomsize,jdbcType=INTEGER},
+      </if>
+      <if test="classroomname != null" >
+        #{classroomname,jdbcType=VARCHAR},
+      </if>
       <if test="classroomid != null" >
         #{classroomid,jdbcType=INTEGER},
       </if>
@@ -223,7 +237,7 @@
         #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        #{createdate,jdbcType=TIMESTAMP},
+        #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         #{modifydate,jdbcType=TIMESTAMP},
@@ -260,6 +274,12 @@
       <if test="record.organizationid != null" >
         OrganizationId = #{record.organizationid,jdbcType=INTEGER},
       </if>
+      <if test="record.classroomsize != null" >
+        ClassRoomSize = #{record.classroomsize,jdbcType=INTEGER},
+      </if>
+      <if test="record.classroomname != null" >
+        ClassRoomName = #{record.classroomname,jdbcType=VARCHAR},
+      </if>
       <if test="record.classroomid != null" >
         ClassRoomId = #{record.classroomid,jdbcType=INTEGER},
       </if>
@@ -288,7 +308,7 @@
         CreateBy = #{record.createby,jdbcType=VARCHAR},
       </if>
       <if test="record.createdate != null" >
-        CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{record.createdate,jdbcType=DATE},
       </if>
       <if test="record.modifydate != null" >
         ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
@@ -317,6 +337,8 @@
     update course
     set CourseId = #{record.courseid,jdbcType=INTEGER},
       OrganizationId = #{record.organizationid,jdbcType=INTEGER},
+      ClassRoomSize = #{record.classroomsize,jdbcType=INTEGER},
+      ClassRoomName = #{record.classroomname,jdbcType=VARCHAR},
       ClassRoomId = #{record.classroomid,jdbcType=INTEGER},
       TeacherId = #{record.teacherid,jdbcType=INTEGER},
       CourseName = #{record.coursename,jdbcType=VARCHAR},
@@ -326,7 +348,7 @@
       StudentNum = #{record.studentnum,jdbcType=INTEGER},
       TeacherName = #{record.teachername,jdbcType=VARCHAR},
       CreateBy = #{record.createby,jdbcType=VARCHAR},
-      CreateDate = #{record.createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{record.createdate,jdbcType=DATE},
       ModifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{record.modifyby,jdbcType=VARCHAR},
       CourseAdminId = #{record.courseadminid,jdbcType=INTEGER},
@@ -342,6 +364,12 @@
     <set >
       <if test="organizationid != null" >
         OrganizationId = #{organizationid,jdbcType=INTEGER},
+      </if>
+      <if test="classroomsize != null" >
+        ClassRoomSize = #{classroomsize,jdbcType=INTEGER},
+      </if>
+      <if test="classroomname != null" >
+        ClassRoomName = #{classroomname,jdbcType=VARCHAR},
       </if>
       <if test="classroomid != null" >
         ClassRoomId = #{classroomid,jdbcType=INTEGER},
@@ -371,7 +399,7 @@
         CreateBy = #{createby,jdbcType=VARCHAR},
       </if>
       <if test="createdate != null" >
-        CreateDate = #{createdate,jdbcType=TIMESTAMP},
+        CreateDate = #{createdate,jdbcType=DATE},
       </if>
       <if test="modifydate != null" >
         ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
@@ -397,6 +425,8 @@
   <update id="updateByPrimaryKey" parameterType="com.sas.pojo.Course" >
     update course
     set OrganizationId = #{organizationid,jdbcType=INTEGER},
+      ClassRoomSize = #{classroomsize,jdbcType=INTEGER},
+      ClassRoomName = #{classroomname,jdbcType=VARCHAR},
       ClassRoomId = #{classroomid,jdbcType=INTEGER},
       TeacherId = #{teacherid,jdbcType=INTEGER},
       CourseName = #{coursename,jdbcType=VARCHAR},
@@ -406,7 +436,7 @@
       StudentNum = #{studentnum,jdbcType=INTEGER},
       TeacherName = #{teachername,jdbcType=VARCHAR},
       CreateBy = #{createby,jdbcType=VARCHAR},
-      CreateDate = #{createdate,jdbcType=TIMESTAMP},
+      CreateDate = #{createdate,jdbcType=DATE},
       ModifyDate = #{modifydate,jdbcType=TIMESTAMP},
       ModifyBy = #{modifyby,jdbcType=VARCHAR},
       CourseAdminId = #{courseadminid,jdbcType=INTEGER},

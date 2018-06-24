@@ -1,4 +1,5 @@
 package com.sas.proscenium.controller;
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -147,7 +148,9 @@ public class ProsceniumCourseController  {
 		@RequestMapping(value = "/deleteById", produces = "text/html;charset=UTF-8")
 		public String deleteCourseById(Integer courseid,HttpServletRequest request ) {
 					
-			int result = courseService.delete(courseid);							
+			int result = courseService.delete(courseid);
+			absenteeismService.deleteByCourse(courseid);
+			attendanceService.deleteByCourseId(courseid);
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
 			if (result==0) {
@@ -166,7 +169,10 @@ public class ProsceniumCourseController  {
 		@RequestMapping(value = "/updateById", produces = "text/html;charset=UTF-8")
 		public String updateCourseById(Integer courseid ,Integer organizationid ,Integer classroomid,Integer teacherid,String coursename,
 				String schooltime,String starttime,String endtime,Integer studentnum,String teachername,
-				Integer courseadminid,String studentidlist,String dayofweek,HttpServletRequest request ) throws java.text.ParseException {
+				Integer courseadminid,String studentidlist,String dayofweek,HttpServletRequest request ) throws java.text.ParseException, UnsupportedEncodingException {
+			/*coursename= new String(request.getParameter("coursename").getBytes("ISO8859-1"),"UTF-8");
+			teachername= new String(request.getParameter("teachername").getBytes("ISO8859-1"),"UTF-8");
+			dayofweek= new String(request.getParameter("dayofweek").getBytes("ISO8859-1"),"UTF-8");*/
 			Course course = new Course();
 			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
 	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
@@ -205,10 +211,13 @@ public class ProsceniumCourseController  {
 		//插入一条课程信息
 		@ResponseBody
 		@RequestMapping(value = "/insert", produces = "text/html;charset=UTF-8")
-		public String insert(Integer organizationid ,Integer classroomid,Integer teacherid,String coursename,
+		public String insert(Integer organizationid ,Integer classroomid,String classroomname,Integer classroomsize,Integer teacherid,String coursename,
 				String schooltime,String starttime,String endtime,Integer studentnum,String teachername,
 				Integer courseadminid,String studentidlist,String dayofweek,
-				HttpServletRequest request ) throws java.text.ParseException {
+				HttpServletRequest request ) throws java.text.ParseException, UnsupportedEncodingException {
+			/*coursename= new String(request.getParameter("coursename").getBytes("ISO8859-1"),"UTF-8");
+			teachername= new String(request.getParameter("teachername").getBytes("ISO8859-1"),"UTF-8");
+			dayofweek= new String(request.getParameter("dayofweek").getBytes("ISO8859-1"),"UTF-8");*/
 			Course course = new Course();
 			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
 	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
@@ -228,6 +237,9 @@ public class ProsceniumCourseController  {
 	        course.setStudentnum(studentnum);
 	        course.setTeacherid(teacherid);
 	        course.setCreatedate(new Date());
+	        course.setClassroomname(classroomname);
+	        course.setClassroomsize(classroomsize);
+	        course.setTeachername(teachername);
 			int result = courseService.insert(course);							
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
@@ -243,32 +255,89 @@ public class ProsceniumCourseController  {
 			
 			return data;
 		}
-		//教师对课程进行开始签到,以及关闭签到
+		//教师对课程进行开始签到
 		@ResponseBody
 		@RequestMapping(value = "/updateFlagById", produces = "text/html;charset=UTF-8")
 		public String updateCourseByFalg(Integer Flag,Integer courseid,HttpServletRequest request ) {
-			Course  course = new Course();
-			course.setCourseid(courseid);
-			course.setIsattendance(Flag);
-			int result = courseService.updateSelect(course);							
+			List<Absenteeism> list = absenteeismService.selectallByCourseIdAndTime(courseid, new Date());
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
-			if (result==0) {
+			if (list!=null && !list.isEmpty()) {
 				map.put("code", 404);
-				map.put("msg", "更新失败");
+				map.put("msg", "今天该课程已经进行签到，如果需要重新签到，请删除该条签到统计信息!");
 				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+				
+				
 			}else {
-				map.put("code", 200);
-				map.put("msg", "更新成功");
-				data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+				
+				Course  course = new Course();
+				course.setCourseid(courseid);
+				course.setIsattendance(Flag);
+				int result = courseService.updateSelect(course);							
+				
+				if (result==0) {
+					map.put("code", 404);
+					map.put("msg", "更新失败");
+					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+				}else {
+					map.put("code", 200);
+					map.put("msg", "更新成功");
+					map.put("data", list);
+					data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+				}
 			}
 			
 			return data;
 		}
+		//教师对课程进行关闭签到
+				@ResponseBody
+				@RequestMapping(value = "/updateFlagClose", produces = "text/html;charset=UTF-8")
+				public String updateFlagClose(Integer Flag,Integer courseid,HttpServletRequest request ) {
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					String data  = null;
+					
+						Course  course = new Course();
+						course.setCourseid(courseid);
+						course.setIsattendance(Flag);
+						int result = courseService.updateSelect(course);							
+						
+						if (result==0) {
+							map.put("code", 404);
+							map.put("msg", "更新失败");
+							data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+						}else {
+							map.put("code", 200);
+							map.put("msg", "更新成功");
+							data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+						}
+						
+					
+					
+					return data;
+				}
+		//教师对课程签到信息进行整体删除
+				@ResponseBody
+				@RequestMapping(value = "/deleteAbsenteeism", produces = "text/html;charset=UTF-8")
+				public String deleteAbsenteeism(Integer courseid,HttpServletRequest request ) {
+					int result = absenteeismService.delete(courseid, new Date());
+					HashMap<String, Object> map = new HashMap<String, Object>();
+					String data  = null;
+					if (result==0) {
+						map.put("code", 404);
+						map.put("msg", "删除失败");
+						data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+					}else {
+						map.put("code", 200);
+						map.put("msg", "删除成功");
+						data = JSON.toJSONStringWithDateFormat(map, "yyyy-MM-dd");
+					}
+					
+					return data;
+				}
 		//关闭签到是，对签到信息进行汇总统计
 		@ResponseBody
 		@RequestMapping(value = "/insertAbsenteeism", produces = "text/html;charset=UTF-8")
-		public String insertAbsenteeism(Integer courseid,HttpServletRequest request ) throws java.text.ParseException {
+		public String insertAbsenteeism(Integer courseid,String coursename,HttpServletRequest request ) throws java.text.ParseException {
 			Date date = new Date();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String nowdayTime = dateFormat.format(date);
@@ -324,6 +393,7 @@ public class ProsceniumCourseController  {
 			absenteeism.setLeavenum(LeaveNum);
 			absenteeism.setCourseid(courseid);
 			absenteeism.setAbsenteeismnum(absenteeismnum);
+			absenteeism.setCoursename(coursename);
 			//插入数据
 			int result = absenteeismService.insert(absenteeism);
 			
@@ -344,12 +414,9 @@ public class ProsceniumCourseController  {
 		//查看座位号被签到了
 		@ResponseBody
 		@RequestMapping(value = "/selectAttendanceByState", produces = "text/html;charset=UTF-8")
-		public String selectAttendanceByState(Integer courseid,Integer state,String date,HttpServletRequest request ) throws java.text.ParseException {
-			 //获得SimpleDateFormat类，我们转换为yyyy-MM-dd的时间格式  
-	        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");  		      
-	        //使用SimpleDateFormat的parse()方法生成Date  
-	        Date date2 = sf.parse(date); 			
-			List<Attendance> attendances = attendanceService.selectAttendanceByCourseIdAndTimeAndState(courseid, state, date2);					
+		public String selectAttendanceByState(Integer courseid,Integer state,HttpServletRequest request ) throws java.text.ParseException {
+			
+			List<Attendance> attendances = attendanceService.selectAttendanceByCourseIdAndTimeAndState(courseid, state, new Date());					
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			String data  = null;
 			if (attendances==null) {

@@ -92,6 +92,53 @@ public class AbsenteeismServiceImpl implements AbsenteeismService {
 		criteria.andCreatetimeEqualTo(time);
 		return absenteeismMapper.selectByExample(example);
 	}
+
+	/* (非 Javadoc) 
+	* <p>Title: delete</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @param time
+	* @return 
+	* @see com.sas.service.AbsenteeismService#delete(java.lang.Integer, java.util.Date) 
+	*/
+	@Override
+	public int delete(Integer courseid, Date time) {
+		AbsenteeismExample example = new AbsenteeismExample();
+		com.sas.pojo.AbsenteeismExample.Criteria criteria = example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		criteria.andCreatetimeEqualTo(time);
+		return absenteeismMapper.deleteByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: selectallByStudent</p> 
+	* <p>Description: </p> 
+	* @param studentid
+	* @return 
+	* @see com.sas.service.AbsenteeismService#selectallByStudent(java.lang.Integer) 
+	*/
+	@Override
+	public List<Absenteeism> selectallByStudent(Integer studentid) {
+		AbsenteeismExample example = new AbsenteeismExample();
+		com.sas.pojo.AbsenteeismExample.Criteria criteria = example.createCriteria();
+		criteria.andAbsenteeismlistLike("%"+","+studentid+","+"%");
+		return absenteeismMapper.selectByExample(example);
+	}
+
+	/* (非 Javadoc) 
+	* <p>Title: deleteByCourse</p> 
+	* <p>Description: </p> 
+	* @param courseid
+	* @return 
+	* @see com.sas.service.AbsenteeismService#deleteByCourse(java.lang.Integer) 
+	*/
+	@Override
+	public int deleteByCourse(Integer courseid) {
+		AbsenteeismExample example = new AbsenteeismExample();
+		com.sas.pojo.AbsenteeismExample.Criteria criteria = example.createCriteria();
+		criteria.andCourseidEqualTo(courseid);
+		return absenteeismMapper.deleteByExample(example);
+	}
 	
 
 	

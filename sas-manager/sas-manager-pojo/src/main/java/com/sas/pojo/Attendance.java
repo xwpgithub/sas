@@ -5,6 +5,8 @@ import java.util.Date;
 public class Attendance {
     private Integer aid;
 
+    private String coursename;
+
     private Integer courseid;
 
     private String studentname;
@@ -33,6 +35,14 @@ public class Attendance {
 
     public void setAid(Integer aid) {
         this.aid = aid;
+    }
+
+    public String getCoursename() {
+        return coursename;
+    }
+
+    public void setCoursename(String coursename) {
+        this.coursename = coursename == null ? null : coursename.trim();
     }
 
     public Integer getCourseid() {

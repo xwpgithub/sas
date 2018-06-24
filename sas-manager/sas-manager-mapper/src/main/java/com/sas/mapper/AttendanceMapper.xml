@@ -3,6 +3,7 @@
 <mapper namespace="com.sas.mapper.AttendanceMapper" >
   <resultMap id="BaseResultMap" type="com.sas.pojo.Attendance" >
     <id column="Aid" property="aid" jdbcType="INTEGER" />
+    <result column="CourseName" property="coursename" jdbcType="VARCHAR" />
     <result column="CourseId" property="courseid" jdbcType="INTEGER" />
     <result column="StudentName" property="studentname" jdbcType="VARCHAR" />
     <result column="StudentId" property="studentid" jdbcType="INTEGER" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    Aid, CourseId, StudentName, StudentId, State, SignDeskTime, SignDeskAddress, SeatNumber, 
-    CreateBy, CreateDate, ModifyDate, ModifyBy
+    Aid, CourseName, CourseId, StudentName, StudentId, State, SignDeskTime, SignDeskAddress, 
+    SeatNumber, CreateBy, CreateDate, ModifyDate, ModifyBy
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.sas.pojo.AttendanceExample" >
     select
@@ -108,22 +109,25 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.sas.pojo.Attendance" >
-    insert into attendance (Aid, CourseId, StudentName, 
-      StudentId, State, SignDeskTime, 
-      SignDeskAddress, SeatNumber, CreateBy, 
-      CreateDate, ModifyDate, ModifyBy
-      )
-    values (#{aid,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{studentname,jdbcType=VARCHAR}, 
-      #{studentid,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{signdesktime,jdbcType=TIMESTAMP}, 
-      #{signdeskaddress,jdbcType=VARCHAR}, #{seatnumber,jdbcType=INTEGER}, #{createby,jdbcType=VARCHAR}, 
-      #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyby,jdbcType=VARCHAR}
-      )
+    insert into attendance (Aid, CourseName, CourseId, 
+      StudentName, StudentId, State, 
+      SignDeskTime, SignDeskAddress, SeatNumber, 
+      CreateBy, CreateDate, ModifyDate, 
+      ModifyBy)
+    values (#{aid,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{courseid,jdbcType=INTEGER}, 
+      #{studentname,jdbcType=VARCHAR}, #{studentid,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{signdesktime,jdbcType=TIMESTAMP}, #{signdeskaddress,jdbcType=VARCHAR}, #{seatnumber,jdbcType=INTEGER}, 
+      #{createby,jdbcType=VARCHAR}, #{createdate,jdbcType=DATE}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{modifyby,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.sas.pojo.Attendance" >
     insert into attendance
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="aid != null" >
         Aid,
+      </if>
+      <if test="coursename != null" >
+        CourseName,
       </if>
       <if test="courseid != null" >
         CourseId,
@@ -162,6 +166,9 @@
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="aid != null" >
         #{aid,jdbcType=INTEGER},
+      </if>
+      <if test="coursename != null" >
+        #{coursename,jdbcType=VARCHAR},
       </if>
       <if test="courseid != null" >
         #{courseid,jdbcType=INTEGER},
@@ -210,6 +217,9 @@
       <if test="record.aid != null" >
         Aid = #{record.aid,jdbcType=INTEGER},
       </if>
+      <if test="record.coursename != null" >
+        CourseName = #{record.coursename,jdbcType=VARCHAR},
+      </if>
       <if test="record.courseid != null" >
         CourseId = #{record.courseid,jdbcType=INTEGER},
       </if>
@@ -251,6 +261,7 @@
   <update id="updateByExample" parameterType="map" >
     update attendance
     set Aid = #{record.aid,jdbcType=INTEGER},
+      CourseName = #{record.coursename,jdbcType=VARCHAR},
       CourseId = #{record.courseid,jdbcType=INTEGER},
       StudentName = #{record.studentname,jdbcType=VARCHAR},
       StudentId = #{record.studentid,jdbcType=INTEGER},
@@ -269,6 +280,9 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sas.pojo.Attendance" >
     update attendance
     <set >
+      <if test="coursename != null" >
+        CourseName = #{coursename,jdbcType=VARCHAR},
+      </if>
       <if test="courseid != null" >
         CourseId = #{courseid,jdbcType=INTEGER},
       </if>
@@ -307,7 +321,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.sas.pojo.Attendance" >
     update attendance
-    set CourseId = #{courseid,jdbcType=INTEGER},
+    set CourseName = #{coursename,jdbcType=VARCHAR},
+      CourseId = #{courseid,jdbcType=INTEGER},
       StudentName = #{studentname,jdbcType=VARCHAR},
       StudentId = #{studentid,jdbcType=INTEGER},
       State = #{state,jdbcType=INTEGER},
